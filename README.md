@@ -1,7 +1,9 @@
 jsonEditor
 ==========
 
-JSON data editor and management
+jQuery를 사용하는 javascript 에디터입니다.
+이 프로그램은 관리 프로그램에서 json 형태의 데이터를 쉽게 편집하기 위하여 만들었습니다.
 
-* ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ
-* ㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁㅁ
+현재 코드와 문서는 작업 준비중입니다. 코드는 사용 가능합니다만 
+
+데모페이지 : http://xxxx.com
