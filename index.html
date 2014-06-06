@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<title>JSON Manager</title>
+<link rel="stylesheet" href="./css/JSONManager.css" />
+</head>
+<body>
+<main>
+	<header id="header">
+		<h1><a href="./">JSON Manager</a></h1>
+	</header>
+	<div id="container">
+		<div id="index">
+			<ul>
+				<li type="Object" loc="root" class="on">
+					<dl>
+						<dt>
+							<button type="button" role="control">control</button>
+							<button type="button" role="toggle">toggle</button>
+							<em class="no">0</em><strong data-ph="Object"></strong><span class="type"></span><em class="count">0</em>
+						</dt>
+					</dl>
+					<ul></ul>
+				</li>
+			</ul>
+		</div>
+		<nav class="btngroup">
+			<button type="button" role="btn_toJSON">Export JSON</button>
+		</nav>
+		<pre id="result"></pre>
+	</div>
+	<nav id="context">
+		<ul>
+			<li role="Type">
+				<div>
+					<ul>
+						<li role="Object">
+							<button type="button">Object</button>
+						</li>
+						<li role="Array">
+							<button type="button">Array</button>
+						</li>
+						<li role="String">
+							<button type="button">String</button>
+						</li>
+					</ul>
+				</div>
+				<button type="button">Type</button>
+			</li>
+			<li role="Insert">
+				<div>
+					<ul>
+						<li role="Object">
+							<button type="button">Object</button>
+						</li>
+						<li role="Array">
+							<button type="button">Array</button>
+						</li>
+						<li role="String">
+							<button type="button">String</button>
+						</li>
+					</ul>
+				</div>
+				<button type="button">Insert</button>
+			</li>
+			<li role="Duplicate">
+				<button type="button">Duplicate</button>
+			</li>
+			<li role="Remove">
+				<button type="button">Remove</button>
+			</li>
+		</ul>
+	</nav>
+</main>
+
+<script src="./js/jQuery-2.1.1.js"></script>
+<script src="./js/jquery-sortable.min.js"></script>
+<script src="./js/Util.min.js"></script>
+<script src="./js/IndexEvent.min.js"></script>
+<script src="./js/ContextEvent.min.js"></script>
+<script src="./js/JSONManager.min.js"></script>
+</body>
+</html>
