@@ -74,11 +74,52 @@
 	</nav>
 </main>
 
-<script src="./js/jQuery-2.1.1.js"></script>
+<script src="./js/jquery-2.1.1.min.js"></script>
 <script src="./js/jquery-sortable.min.js"></script>
 <script src="./js/Util.min.js"></script>
 <script src="./js/IndexEvent.min.js"></script>
 <script src="./js/ContextEvent.min.js"></script>
-<script src="./js/JSONManager.min.js"></script>
+<script>
+jQuery(function($){
+	var
+		$index = $('#index')
+		,$context = $('#context')
+		,$root = $index.find('li[loc=root]')
+		,context = new ContextEvent({
+			context : $context
+			,index : $index
+		})
+		,index = new IndexEvent({
+			index : $index
+			,context : $context
+			,_context : context
+		})
+	;
+
+	// dummy data
+	var dummy = '{"과일들":["111","222",{"KKK":"VVV","KKK2":"VVV"}]}';
+
+	// import json
+	try {
+		var json = JSON.parse(dummy);
+	}
+	catch(e) {
+		var json = new Object();
+	}
+	if (Array.isArray(json))
+	{
+		index.typeItem({
+			active : $root,
+			type : 'Array'
+		});
+	}
+	index.importJSON(json, $root);
+
+	// export JSON
+	$('button[role=btn_toJSON]').on('click', function(){
+		$('#result').text(index.exportJSON(4));
+	});
+});
+</script>
 </body>
 </html>
