@@ -1,3 +1,4 @@
 resource/
 .DS_Store
 css/.sass-cache/
+.gitignore
