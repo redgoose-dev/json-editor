@@ -1,0 +1,284 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #333;
+  background: #fff; }
+
+*, *:before, *:after {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+/* sprite images */
+#index li > dl > dt > button, #context li[role=Type]:after,
+#context li[role=Insert]:after {
+  display: inline-block;
+  background: url("../img/sp-icon@x1.png") 0 0 no-repeat; }
+  @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    #index li > dl > dt > button, #context li[role=Type]:after,
+    #context li[role=Insert]:after {
+      background-image: url("../img/sp-icon@x2.png");
+      background-size: 100px 50px; } }
+
+/* blind */
+/* button */
+.btngroup button {
+  display: inline-block;
+  margin: 1px 2px;
+  padding: 10px 20px;
+  font-size: 13px;
+  color: #fff;
+  border: none;
+  background: #aaa;
+  cursor: pointer; }
+  .btngroup button.highlight {
+    background: #72b3ca; }
+
+/* layout */
+main {
+  margin: 15px;
+  position: relative; }
+
+#header > h1 {
+  margin: 0;
+  padding: 0 0 5px;
+  font-size: 24px; }
+  #header > h1 a {
+    color: #111;
+    text-decoration: none; }
+
+/* index */
+#index {
+  border-width: 1px 0;
+  border-style: solid;
+  border-color: #ccc;
+  font-size: 13px; }
+  #index ul {
+    margin: 0;
+    padding: 0 0 0 22px;
+    list-style: none;
+    clear: both; }
+  #index > ul {
+    margin: 5px 0;
+    padding-left: 0; }
+  #index li {
+    padding: 0;
+    margin: 2px 0; }
+    #index li > dl {
+      margin: 0;
+      display: table;
+      width: 100%; }
+      #index li > dl > dt, #index li > dl > dd {
+        display: table-cell;
+        vertical-align: top;
+        padding: 3px 5px; }
+      #index li > dl > dt {
+        width: 30px;
+        white-space: nowrap;
+        padding-left: 0;
+        padding-right: 8px;
+        color: #333; }
+        #index li > dl > dt em {
+          display: inline-block;
+          font-style: normal;
+          color: #999; }
+        #index li > dl > dt > em.no {
+          margin: 0 3px 0 5px;
+          display: none; }
+          #index li > dl > dt > em.no:before {
+            content: '['; }
+          #index li > dl > dt > em.no:after {
+            content: ']'; }
+        #index li > dl > dt > strong {
+          display: inline-block;
+          font-weight: normal;
+          min-width: 40px; }
+          #index li > dl > dt > strong:empty:not(:focus):before {
+            content: attr(data-ph);
+            color: #aaa; }
+        #index li > dl > dt > .type {
+          display: none;
+          color: #999; }
+        #index li > dl > dt > em.count {
+          margin: 0 0 0 4px; }
+        #index li > dl > dt > button {
+          display: inline-block;
+          margin: -3px 0;
+          cursor: pointer;
+          text-indent: -9999px;
+          width: 24px;
+          height: 24px;
+          border: none; }
+          #index li > dl > dt > button.on {
+            background-color: #eee; }
+          #index li > dl > dt > button[role=toggle] {
+            background-position: 9px -23px; }
+      #index li > dl > dd {
+        position: relative;
+        padding-left: 12px;
+        color: #666; }
+        #index li > dl > dd:before {
+          content: ':';
+          display: block;
+          position: absolute;
+          left: 0;
+          top: 2px; }
+        #index li > dl > dd > span {
+          min-width: 40px; }
+          #index li > dl > dd > span:empty:not(:focus):before {
+            content: 'empty';
+            color: #aaa; }
+    #index li > ul {
+      display: none; }
+    #index li.on > dl > dt > [role=toggle] {
+      background-position: -8px -21px; }
+    #index li.on > ul {
+      display: block; }
+    #index li[type=Object] > dl > dt > .count:before {
+      content: '{'; }
+    #index li[type=Object] > dl > dt > .count:after {
+      content: '}'; }
+    #index li[type=Object] > dl > dt > .type:before {
+      content: 'Object'; }
+    #index li[type=Object] > dl > dd {
+      display: none; }
+    #index li[type=Array] > dl > dt > .count:before {
+      content: '['; }
+    #index li[type=Array] > dl > dt > .count:after {
+      content: ']'; }
+    #index li[type=Array] > dl > dt > .type:before {
+      content: 'Array'; }
+    #index li[type=Array] > dl > dd {
+      display: none; }
+    #index li[type=Array] > ul > li > dl > dt > .no {
+      display: inline-block; }
+    #index li[type=Array] > ul > li[type=String] > dl > dt > strong {
+      display: none; }
+    #index li[type=Array] > ul > li[type=Object] > dl > dt > strong,
+    #index li[type=Array] > ul > li[type=Array] > dl > dt > strong {
+      display: none; }
+    #index li[type=Array] > ul > li[type=Object] > dl > dt > .type,
+    #index li[type=Array] > ul > li[type=Array] > dl > dt > .type {
+      display: inline; }
+    #index li[type=String] > dl > dt > strong {
+      margin-left: 8px; }
+    #index li[type=String] > dl > dt > .count {
+      display: none; }
+    #index li[type=String] > dl > dt > button[role=toggle] {
+      display: none; }
+    #index li[type=String] > dl > dt > .type:before {
+      content: 'String'; }
+    #index li[type=String] > ul {
+      display: none; }
+    #index li[loc=root] > dl > dt > strong {
+      display: none; }
+    #index li[loc=root] > dl > dt > .type {
+      display: inline; }
+  #index button[role=move] {
+    background-position: -50px -26px; }
+  #index button[role=control] {
+    background-position: -73px -24px; }
+
+/* Context */
+#context {
+  position: absolute;
+  left: 0;
+  top: 0;
+  min-width: 120px;
+  display: none; }
+  #context ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+    background: #fff; }
+    #context ul > li {
+      position: relative;
+      margin: 0; }
+      #context ul > li > button {
+        display: block;
+        margin: 0;
+        padding: 7px 8px;
+        width: 100%;
+        cursor: pointer;
+        color: #333;
+        font-size: 12px;
+        border: none;
+        background: none;
+        text-align: left; }
+      #context ul > li:hover > button {
+        background: #eee; }
+  #context > ul > li > div {
+    position: relative;
+    display: none;
+    z-index: 2; }
+    #context > ul > li > div > ul {
+      position: absolute;
+      left: 98%;
+      top: -1px;
+      min-width: 100px; }
+  #context > ul > li:hover > div {
+    display: block; }
+  #context[type] {
+    display: block; }
+  #context[type=String] > ul > li[role=Insert] {
+    display: none; }
+  #context[loc=root] > ul > li[role=Duplicate],
+  #context[loc=root] > ul > li[role=Remove] {
+    display: none; }
+  #context[loc=root] > ul > li[role=Type] li[role=String] {
+    display: none; }
+  #context li[role=Type]:after,
+  #context li[role=Insert]:after {
+    content: '';
+    display: block;
+    z-index: 1;
+    width: 5px;
+    height: 8px;
+    margin-top: -4px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    background-position: 0 -30px; }
+
+/* button group */
+.btngroup {
+  text-align: center;
+  margin: 12px 0; }
+
+/* Result */
+#result {
+  border: 1px solid #ccc;
+  min-height: 100px;
+  padding: 12px 15px;
+  font-size: 13px; }
+
+/* jQuery Sortable */
+body.dragging {
+  width: 100%;
+  overflow: hidden; }
+
+body.dragging, body.dragging * {
+  cursor: move !important; }
+
+.dragged {
+  position: absolute;
+  opacity: 0.3;
+  z-index: 2000;
+  background: white;
+  border: 1px dashed #999; }
+
+#index li.placeholder {
+  position: relative; }
+#index li.placeholder:before {
+  position: absolute;
+  content: '';
+  left: 0;
+  right: 0;
+  top: -1px;
+  height: 3px;
+  background: #7a7c7d; }
