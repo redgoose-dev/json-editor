@@ -7,11 +7,15 @@
 </head>
 <body>
 <main>
-	<header id="header">
+	<!-- Header -->
+	<header>
 		<h1><a href="./">JSON Manager</a></h1>
 	</header>
-	<div id="container">
-		<div id="index">
+	<!-- // Header -->
+
+	<div>
+		<!-- JSON editor index -->
+		<div class="jsonEditorIndex">
 			<ul>
 				<li type="Object" loc="root" class="on">
 					<dl>
@@ -25,12 +29,18 @@
 				</li>
 			</ul>
 		</div>
+		<!-- // JSON editor index -->
+
+		<!-- JSON Result -->
 		<nav class="btngroup">
 			<button type="button" role="btn_toJSON">Export JSON</button>
 		</nav>
 		<pre id="result"></pre>
+		<!-- // JSON Result -->
 	</div>
-	<nav id="context">
+
+	<!-- JSON editor context -->
+	<nav class="jsonEditorContext">
 		<ul>
 			<li role="Type">
 				<div>
@@ -72,6 +82,7 @@
 			</li>
 		</ul>
 	</nav>
+	<!-- // JSON editor context -->
 </main>
 
 <script src="./js/jquery-2.1.1.min.js"></script>
@@ -82,8 +93,8 @@
 <script>
 jQuery(function($){
 	var
-		$index = $('#index')
-		,$context = $('#context')
+		$index = $('div.jsonEditorIndex')
+		,$context = $('nav.jsonEditorContext')
 		,$root = $index.find('li[loc=root]')
 		,context = new ContextEvent({
 			context : $context
@@ -96,8 +107,8 @@ jQuery(function($){
 		})
 	;
 
-	// dummy data
-	var dummy = '{"과일들":["111","222",{"KKK":"VVV","KKK2":"VVV"}]}';
+	// dummy data import
+	var dummy = '{"사과":"빨간색", "바나나":"노란색", "키위":"녹색", "포도":"보라색"}';
 
 	// import json
 	try {
@@ -115,9 +126,9 @@ jQuery(function($){
 	}
 	index.importJSON(json, $root);
 
-	// export JSON
+	// Export JSON button event
 	$('button[role=btn_toJSON]').on('click', function(){
-		$('#result').text(index.exportJSON(4));
+		$('#result').text(index.exportJSON(5));
 	});
 });
 </script>
