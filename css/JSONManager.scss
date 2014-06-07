@@ -37,20 +37,22 @@ body {
 
 
 /* layout */
-main {margin: 15px; position: relative;}
-#header {
-	> h1 {
-		margin: 0; padding: 0 0 5px;
-		font-size: 24px;
-		a {
-			color: #111; text-decoration: none;
+main {
+	margin: 15px; position: relative;
+	> header {
+		> h1 {
+			margin: 0; padding: 0 0 5px;
+			font-size: 24px;
+			a {
+				color: #111; text-decoration: none;
+			}
 		}
 	}
 }
 
 
 /* index */
-#index {
+.jsonEditorIndex {
 	border-width: 1px 0; border-style: solid; border-color: #ccc;
 	font-size: 13px;
 	ul {margin: 0; padding: 0 0 0 22px; list-style: none; clear: both;}
@@ -189,11 +191,28 @@ main {margin: 15px; position: relative;}
 	}
 	button[role=move] {background-position: -50px -26px;}
 	button[role=control] {background-position: -73px -24px;}
+
+	li.placeholder {position: relative;}
+	li.placeholder:before {
+		position: absolute;
+		content: '';
+		left: 0; right: 0; top: -1px; height: 3px; background: #7a7c7d;
+	}
+}
+
+
+/* jQuery Sortable */
+body.dragging {width: 100%; overflow: hidden}
+body.dragging, body.dragging * {cursor: move !important;}
+.dragged {
+	position: absolute; opacity: 0.3; z-index: 2000;
+	background: white;
+	border: 1px dashed #999;
 }
 
 
 /* Context */
-#context {
+.jsonEditorContext {
 	position: absolute; left: 0; top: 0;
 	min-width: 120px; display: none;
 	ul {
@@ -228,7 +247,6 @@ main {margin: 15px; position: relative;}
 		}
 	}
 	&[type] {display: block;}
-	&[type=Object] {}
 	&[type=String] {
 		> ul {
 			> li[role=Insert] {display: none;}
@@ -269,22 +287,4 @@ main {margin: 15px; position: relative;}
 #result {
 	border: 1px solid #ccc; min-height: 100px; padding: 12px 15px;
 	font-size: 13px;
-}
-
-
-/* jQuery Sortable */
-body.dragging {width: 100%; overflow: hidden}
-body.dragging, body.dragging * {cursor: move !important;}
-.dragged {
-	position: absolute; opacity: 0.3; z-index: 2000;
-	background: white;
-	border: 1px dashed #999;
-}
-#index {
-	li.placeholder {position: relative;}
-	li.placeholder:before {
-		position: absolute;
-		content: '';
-		left: 0; right: 0; top: -1px; height: 3px; background: #7a7c7d;
-	}
 }
