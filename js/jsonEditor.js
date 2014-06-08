@@ -6,22 +6,148 @@ Object.size = function(obj) {
     return size;
 };
 
-function IndexEvent(get)
+function log(o)
 {
+	console.log(o);
+}
+
+function JSONEditor($index, $context)
+{
+	/**
+	 * Util Class
+	**/
+	function Util()
+	{
+		/**
+		 * remove <br/>
+		 * <br/> 엘리먼트를 공백으로 변환시켜줍니다.
+		 * 
+		 * @param $ element : 컨테이너 엘리먼트
+		**/
+		this.removeBR = function (element)
+		{
+			element.find('br').replaceWith(' ');
+		}
+	
+		/**
+		 * string limiter
+		 * 글자길이를 체크하여 지정된 수치보다 높으면 잘라버립니다.
+		 * 
+		 * @param $ element : 글이 들어있는 엘리먼트
+		 * @param Number limit : 글자 갯수제한
+		**/
+		this.stringLimiter = function(element, limit)
+		{
+			var str = element.text();
+			if (str.length > limit)
+			{
+				element.text(str.substring(0, limit));
+			}
+		}
+	
+		/**
+		 * remove space
+		 * 공백을 없애줍니다.
+		 * 
+		 * @param $ element : 내용이 적혀있는 엘리먼트입니다.
+		**/
+		this.removeSpace = function(element)
+		{
+			element.text(element.text().replace(/\s+/g, ''));
+		}
+	}
+
+
+	/**
+	 * Context class
+	 *  
+	 * @param JSONEditor _main : 메인 클래스
+	 * @param DOM $index : json목록 엘리먼트
+	 * @param DOM $context : context 엘리먼트
+	**/
+	function Context(_main, $index, $context)
+	{
+		var
+			_context = this,
+			wrap = $('html'),
+			active = null
+		;
+	
+		/* Methods */
+		// on
+		this.on = function(li, button)
+		{
+			active = li;
+			$context
+				.attr('type', li.attr('type'))
+				.css({
+					left : button.position().left + button.outerWidth()
+					,top : button.position().top - 3
+				})
+			;
+			if (li.attr('loc') == 'root')
+			{
+				$context.attr('loc', li.attr('loc'))
+			}
+			else
+			{
+				$context.removeAttr('loc');
+			}
+			wrap.on('click', function(){
+				_context.off();
+			});
+		}
+	
+		// off
+		this.off = function()
+		{
+			active = null;
+			$context.removeAttr('type');
+			wrap.off();
+		}
+	
+		/* Context navigation */
+		// items event
+		$context.find('li').on('click', function(e){
+			e.stopPropagation();
+		});
+
+		$context.find('li[role=Type] li').on('click', function(){
+			_index.typeItem({
+				active : active,
+				type : $(this).attr('role')
+			});
+			_context.off();
+		});
+	
+		$context.find('li[role=Insert] li').on('click', function(){
+			_index.insertItem({
+				active : active,
+				type : $(this).attr('role'),
+				data : null
+			});
+			_context.off();
+		});
+	
+		$context.find('li[role=Duplicate]').on('click', function(){
+			_index.duplicateItem(active);
+			_context.off();
+		});
+	
+		$context.find('li[role=Remove]').on('click', function(){
+			_index.removeItem(active);
+			_context.off();
+		});
+	}
+
 	var
 		_index = this,
-		_context = get._context,
-		index = get.index,
-		context = get.context,
-		root = index.children().children('li[loc=root]'),
 		_util = new Util()
+		_context = new Context(_index, $index, $context),
+		$root = $index.children().children('li[loc=root]')
 	;
 
-	// send self object to Context
-	_context.getIndex(this);
 
-
-	/* Functions */
 	// select buttons
 	function selectButtons(li)
 	{
@@ -59,6 +185,7 @@ function IndexEvent(get)
 	{
 		var $item = buttons.closest('li');
 
+		//log(_context);
 		// control
 		buttons.filter('[role=control]').on('click', function(e){
 			e.stopPropagation();
@@ -267,18 +394,18 @@ function IndexEvent(get)
 			return obj;
 		}
 		var json = items(
-			root
-			,(root.attr('type') == 'Array') ? new Array() : new Object()
+			$root
+			,($root.attr('type') == 'Array') ? new Array() : new Object()
 		);
 		return JSON.stringify(json, null, (space) ? space : 0);
 	}
 
 	// Init
-	buttonsEvent(selectButtons(root));
+	buttonsEvent(selectButtons($root));
 
 	// drag and drop event
 	var adjustment, beforeItem;
-	root.children('ul').sortable({
+	$root.children('ul').sortable({
 		itemSelector : 'li'
 		,handle : 'button[role=move]'
 		,group : 'index'

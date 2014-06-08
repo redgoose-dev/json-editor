@@ -86,25 +86,17 @@
 </main>
 
 <script src="./js/jquery-2.1.1.min.js"></script>
-<script src="./js/jquery-sortable.min.js"></script>
-<script src="./js/Util.min.js"></script>
-<script src="./js/IndexEvent.min.js"></script>
-<script src="./js/ContextEvent.min.js"></script>
+<script src="./js/jquery-sortable.js"></script>
+<script src="./js/jsonEditor.js"></script>
 <script>
 jQuery(function($){
 	var
-		$index = $('div.jsonEditorIndex')
-		,$context = $('nav.jsonEditorContext')
-		,$root = $index.find('li[loc=root]')
-		,context = new ContextEvent({
-			context : $context
-			,index : $index
-		})
-		,index = new IndexEvent({
-			index : $index
-			,context : $context
-			,_context : context
-		})
+		$index = $('div.jsonEditorIndex'),
+		jsonEditor = new JSONEditor(
+			$index,
+			$('nav.jsonEditorContext')
+		),
+		$root = $index.find('li[loc=root]')
 	;
 
 	// dummy data import
@@ -119,16 +111,16 @@ jQuery(function($){
 	}
 	if (Array.isArray(json))
 	{
-		index.typeItem({
+		jsonEditor.typeItem({
 			active : $root,
 			type : 'Array'
 		});
 	}
-	index.importJSON(json, $root);
+	jsonEditor.importJSON(json, $root);
 
 	// Export JSON button event
 	$('button[role=btn_toJSON]').on('click', function(){
-		$('#result').text(index.exportJSON(5));
+		$('#result').text(jsonEditor.exportJSON(5));
 	});
 });
 </script>
