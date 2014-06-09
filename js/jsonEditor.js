@@ -6,15 +6,22 @@ Object.size = function(obj) {
     return size;
 };
 
-function log(o)
-{
-	console.log(o);
-}
 
-function JSONEditor($index, $context)
+/**
+ * JSON Editor Class
+ * 
+ * author : Redgoose (2014.03)
+ * version : 0.1
+ * website : http://redgoose.me
+ * @param Array $wrap : json editor 껍데기되는 엘리먼트
+ * @returns {void}
+**/
+function JSONEditor($wrap)
 {
 	/**
 	 * Util Class
+	 * 
+	 * @returns {void}
 	**/
 	function Util()
 	{
@@ -61,9 +68,10 @@ function JSONEditor($index, $context)
 	/**
 	 * Context class
 	 *  
-	 * @param JSONEditor _main : 메인 클래스
-	 * @param DOM $index : json목록 엘리먼트
-	 * @param DOM $context : context 엘리먼트
+	 * @param Function _main : JSONEditor 클래스
+	 * @param Array $index : json목록 엘리먼트
+	 * @param Array $context : context 엘리먼트
+	 * @return {void}
 	**/
 	function Context(_main, $index, $context)
 	{
@@ -141,12 +149,14 @@ function JSONEditor($index, $context)
 	}
 
 	var
-		_index = this,
-		_util = new Util()
-		_context = new Context(_index, $index, $context),
-		$root = $index.children().children('li[loc=root]')
-	;
+		$index = $wrap.children('div.index'),
+		$context = $wrap.children('nav.context'),
+		$root = $index.children().children('li[loc=root]'),
 
+		_index = this,
+		_util = new Util(),
+		_context = new Context(_index, $index, $context)
+	;
 
 	// select buttons
 	function selectButtons(li)
