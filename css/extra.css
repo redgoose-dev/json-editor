@@ -1,0 +1,13 @@
+*, *:before, *:after { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
+
+body { margin: 0; padding: 0; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px; line-height: 1.428571429; color: #333; background: #fff; }
+
+main { margin: 15px; position: relative; }
+main > header > h1 { margin: 0; padding: 0 0 5px; font-size: 24px; }
+main > header > h1 a { color: #111; text-decoration: none; }
+
+/* json result */
+#jsonResult > nav { text-align: center; margin: 12px 0; }
+#jsonResult > nav button { display: inline-block; margin: 1px 2px; padding: 10px 20px; font-size: 13px; color: #fff; border: none; background: #aaa; cursor: pointer; }
+#jsonResult > nav button.highlight { background: #72b3ca; }
+#jsonResult > pre { border: 1px solid #ccc; min-height: 100px; padding: 12px 15px; font-size: 13px; }

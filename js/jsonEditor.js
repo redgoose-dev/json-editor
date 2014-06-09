@@ -6,16 +6,34 @@ Object.size = function(obj) {
     return size;
 };
 
-function log(o)
-{
-	console.log(o);
-}
 
-function JSONEditor($index, $context)
+/**
+ * JSON Editor Class
+ * 
+ * author : Redgoose (2014.03)
+ * version : 0.1
+ * website : http://redgoose.me
+ * @param Array $wrap : json editor 껍데기 엘리먼트
+ * @return void
+ */
+function JSONEditor($wrap)
 {
+	var
+		$index = $wrap.children('div.index'),
+		$context = $wrap.children('nav.context'),
+		$root = $index.children().children('li[loc=root]'),
+
+		_index = this,
+		_util = new Util(),
+		_context = new Context(_index, $index, $context)
+	;
+
+
 	/**
 	 * Util Class
-	**/
+	 * 
+	 * @return void
+	 */
 	function Util()
 	{
 		/**
@@ -61,10 +79,11 @@ function JSONEditor($index, $context)
 	/**
 	 * Context class
 	 *  
-	 * @param JSONEditor _main : 메인 클래스
-	 * @param DOM $index : json목록 엘리먼트
-	 * @param DOM $context : context 엘리먼트
-	**/
+	 * @param Function _main : JSONEditor 클래스
+	 * @param Array $index : json목록 엘리먼트
+	 * @param Array $context : context 엘리먼트
+	 * @return void
+	 */
 	function Context(_main, $index, $context)
 	{
 		var
@@ -140,28 +159,36 @@ function JSONEditor($index, $context)
 		});
 	}
 
-	var
-		_index = this,
-		_util = new Util()
-		_context = new Context(_index, $index, $context),
-		$root = $index.children().children('li[loc=root]')
-	;
 
-
-	// select buttons
-	function selectButtons(li)
+	/**
+	 * 버튼을 선택해주는 엘리먼트
+	 * 
+	 * @param Array $li : 버튼을 선택하는 li엘리먼트
+	 * @return Array button : 버튼 엘리먼트
+	 */
+	function selectButtons($li)
 	{
-		return li.children('dl').children('dt').children('button');
+		return $li.children('dl').children('dt').children('button');
 	}
 
-	// update count
-	function updateCount(li)
+	/**
+	 * Object나 Array 카운트 갱신
+	 * 
+	 * @param Array $li : 카운트 갱신할 li 엘리먼트
+	 * @return void
+	 */
+	function updateCount($li)
 	{
-		var itemCount = li.find('> ul > li').length;
-		li.find('> dl em.count').text(itemCount);
+		var itemCount = $li.find('> ul > li').length;
+		$li.find('> dl em.count').text(itemCount);
 	}
 
-	// update number
+	/**
+	 * 배열번호에 사용되는 순서에 대한 번호갱신
+	 * 
+	 * @param Array $lis : li 엘리먼트들
+	 * @return void
+	 */
 	function updateNumber($lis)
 	{
 		$lis.each(function(k){
@@ -169,10 +196,15 @@ function JSONEditor($index, $context)
 		});
 	}
 
-	// input checker
-	function inputCheckEvent(item)
+	/**
+	 * key값 텍스트 인풋에서 포커스가 떨어졌을때 문자 검사를 해주는 역할을 한다.
+	 * 
+	 * @param Array $item : 검사할 li엘리먼트
+	 * @return void
+	 */
+	function inputCheckEvent($item)
 	{
-		var $strong = item.find('> dl > dt > strong');
+		var $strong = $item.find('> dl > dt > strong');
 		$strong.on('blur', function(){
 			_util.removeBR($(this));
 			_util.removeSpace($(this));
@@ -180,12 +212,16 @@ function JSONEditor($index, $context)
 		});
 	}
 
-	// button event
+	/**
+	 * Context와 접었더 펴는 버튼 이벤트를 만들어준다.
+	 * 
+	 * @param Array buttons : 아이템 속 버튼 엘리먼트들
+	 * @return void
+	 */
 	function buttonsEvent(buttons)
 	{
 		var $item = buttons.closest('li');
 
-		//log(_context);
 		// control
 		buttons.filter('[role=control]').on('click', function(e){
 			e.stopPropagation();
@@ -200,8 +236,18 @@ function JSONEditor($index, $context)
 	}
 
 
-	/* Methods */
-	// insert item
+	/**
+	 * 아이템을 삽입해준다.
+	 * 
+	 * @param Object opt : 아이템 삽입에 필요한 정보
+	 * @param Array opt.active : 선택된 아이템
+	 * @param String opt.type : 추가할 아이템 타입 (String, Object, Array)
+	 * @param Object opt.data : 추가할 아이템의 데이터
+	 * @param String opt.data.key : 아이템 key
+	 * @param String opt.data.value : 아이템 value
+	 * @param Fucntion opt.complete : 역할을 끝내고 실행할 함수
+	 * @return void
+	 */
 	this.insertItem = function(opt)
 	{
 		var
@@ -279,14 +325,26 @@ function JSONEditor($index, $context)
 		}
 	}
 
-	// type item
+	/**
+	 * 아이템의 타입을 바꿔준다.
+	 * 
+	 * @param Object opt
+	 * @param Array opt.active : 선택된 아이템
+	 * @param String opt.type : 바꾸고싶은 타입 (String, Object, Array)
+	 * @return void
+	 */
 	this.typeItem = function(opt)
 	{
 		opt.active.attr('type', opt.type);
 		opt.active.find('> dl > dt > strong').attr('data-ph', opt.type);
 	}
 
-	// duplicate item
+	/**
+	 * 아이템 복제
+	 * 
+	 * @param Array target : 복사할 아이템
+	 * @return void
+	 */
 	this.duplicateItem = function(target)
 	{
 		var $copy = target.clone().insertAfter(target).find('li').andSelf();
@@ -298,7 +356,12 @@ function JSONEditor($index, $context)
 		updateNumber(target.parent().children());
 	}
 
-	// remove item
+	/**
+	 * 아이템 삭제
+	 * 
+	 * @param Array target : 삭제할 아이템
+	 * @return void
+	 */
 	this.removeItem = function(target)
 	{
 		var $parentItem = target.parent().parent();
@@ -306,7 +369,13 @@ function JSONEditor($index, $context)
 		updateCount($parentItem);
 	}
 
-	// Import JSON
+	/**
+	 * 가져온 Object 데이터로 아이템 트리 만들기
+	 * 
+	 * @param Object data : 데이터
+	 * @param Array $li : 삽입하려는 아이템
+	 * @return void
+	 */
 	this.importJSON = function(data, $li)
 	{
 		function items(getData, $item)
@@ -342,7 +411,12 @@ function JSONEditor($index, $context)
 		items(data, $li);
 	}
 
-	// Export JSON
+	/**
+	 * 아이템 트리의 내용을 
+	 * 
+	 * @param Number space : 탭 사이즈(스페이스값)
+	 * @return String : 문자로 변형된 json데이터
+	 */
 	this.exportJSON = function(space)
 	{
 		function items($li, obj)
@@ -400,7 +474,7 @@ function JSONEditor($index, $context)
 		return JSON.stringify(json, null, (space) ? space : 0);
 	}
 
-	// Init
+	// init
 	buttonsEvent(selectButtons($root));
 
 	// drag and drop event

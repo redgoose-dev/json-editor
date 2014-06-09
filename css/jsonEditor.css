@@ -1,0 +1,74 @@
+/* sprite images */
+.jsonEditor > .index li > dl > dt > button, .jsonEditor > .context li[role=Type]:after, .jsonEditor > .context li[role=Insert]:after { display: inline-block; background: url("../img/sp-icon@x1.png") 0 0 no-repeat; }
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { .jsonEditor > .index li > dl > dt > button, .jsonEditor > .context li[role=Type]:after, .jsonEditor > .context li[role=Insert]:after { background-image: url("../img/sp-icon@x2.png"); background-size: 100px 50px; } }
+
+/* json editor */
+.jsonEditor { /* index */ /* Context */ }
+.jsonEditor > .index { border-width: 1px 0; border-style: solid; border-color: #ccc; font-size: 13px; }
+.jsonEditor > .index ul { margin: 0; padding: 0 0 0 22px; list-style: none; clear: both; }
+.jsonEditor > .index > ul { margin: 5px 0; padding-left: 0; }
+.jsonEditor > .index li { padding: 0; margin: 2px 0; }
+.jsonEditor > .index li > dl { margin: 0; display: table; width: 100%; }
+.jsonEditor > .index li > dl > dt, .jsonEditor > .index li > dl > dd { display: table-cell; vertical-align: top; padding: 3px 5px; }
+.jsonEditor > .index li > dl > dt { width: 30px; white-space: nowrap; padding-left: 0; padding-right: 8px; color: #333; }
+.jsonEditor > .index li > dl > dt em { display: inline-block; font-style: normal; color: #999; }
+.jsonEditor > .index li > dl > dt > em.no { margin: 0 3px 0 5px; display: none; }
+.jsonEditor > .index li > dl > dt > em.no:before { content: '['; }
+.jsonEditor > .index li > dl > dt > em.no:after { content: ']'; }
+.jsonEditor > .index li > dl > dt > strong { display: inline-block; font-weight: normal; min-width: 40px; }
+.jsonEditor > .index li > dl > dt > strong:empty:not(:focus):before { content: attr(data-ph); color: #aaa; }
+.jsonEditor > .index li > dl > dt > .type { display: none; color: #999; }
+.jsonEditor > .index li > dl > dt > em.count { margin: 0 0 0 4px; }
+.jsonEditor > .index li > dl > dt > button { display: inline-block; margin: -3px 0; cursor: pointer; text-indent: -9999px; width: 24px; height: 24px; border: none; }
+.jsonEditor > .index li > dl > dt > button.on { background-color: #eee; }
+.jsonEditor > .index li > dl > dt > button[role=toggle] { background-position: 9px -23px; }
+.jsonEditor > .index li > dl > dd { position: relative; padding-left: 12px; color: #666; }
+.jsonEditor > .index li > dl > dd:before { content: ':'; display: block; position: absolute; left: 0; top: 2px; }
+.jsonEditor > .index li > dl > dd > span { min-width: 40px; }
+.jsonEditor > .index li > dl > dd > span:empty:not(:focus):before { content: 'empty'; color: #aaa; }
+.jsonEditor > .index li > ul { display: none; }
+.jsonEditor > .index li.on > dl > dt > [role=toggle] { background-position: -8px -21px; }
+.jsonEditor > .index li.on > ul { display: block; }
+.jsonEditor > .index li[type=Object] > dl > dt > .count:before { content: '{'; }
+.jsonEditor > .index li[type=Object] > dl > dt > .count:after { content: '}'; }
+.jsonEditor > .index li[type=Object] > dl > dt > .type:before { content: 'Object'; }
+.jsonEditor > .index li[type=Object] > dl > dd { display: none; }
+.jsonEditor > .index li[type=Array] > dl > dt > .count:before { content: '['; }
+.jsonEditor > .index li[type=Array] > dl > dt > .count:after { content: ']'; }
+.jsonEditor > .index li[type=Array] > dl > dt > .type:before { content: 'Array'; }
+.jsonEditor > .index li[type=Array] > dl > dd { display: none; }
+.jsonEditor > .index li[type=Array] > ul > li > dl > dt > .no { display: inline-block; }
+.jsonEditor > .index li[type=Array] > ul > li[type=String] > dl > dt > strong { display: none; }
+.jsonEditor > .index li[type=Array] > ul > li[type=Object] > dl > dt > strong, .jsonEditor > .index li[type=Array] > ul > li[type=Array] > dl > dt > strong { display: none; }
+.jsonEditor > .index li[type=Array] > ul > li[type=Object] > dl > dt > .type, .jsonEditor > .index li[type=Array] > ul > li[type=Array] > dl > dt > .type { display: inline; }
+.jsonEditor > .index li[type=String] > dl > dt > strong { margin-left: 8px; }
+.jsonEditor > .index li[type=String] > dl > dt > .count { display: none; }
+.jsonEditor > .index li[type=String] > dl > dt > button[role=toggle] { display: none; }
+.jsonEditor > .index li[type=String] > dl > dt > .type:before { content: 'String'; }
+.jsonEditor > .index li[type=String] > ul { display: none; }
+.jsonEditor > .index li[loc=root] > dl > dt > strong { display: none; }
+.jsonEditor > .index li[loc=root] > dl > dt > .type { display: inline; }
+.jsonEditor > .index button[role=move] { background-position: -50px -26px; }
+.jsonEditor > .index button[role=control] { background-position: -73px -24px; }
+.jsonEditor > .index li.placeholder { position: relative; }
+.jsonEditor > .index li.placeholder:before { position: absolute; content: ''; left: 0; right: 0; top: -1px; height: 3px; background: #7a7c7d; }
+.jsonEditor > .context { position: absolute; left: 0; top: 0; min-width: 120px; display: none; }
+.jsonEditor > .context ul { margin: 0; padding: 0; list-style: none; border: 1px solid #ccc; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); background: #fff; }
+.jsonEditor > .context ul > li { position: relative; margin: 0; }
+.jsonEditor > .context ul > li > button { display: block; margin: 0; padding: 7px 8px; width: 100%; cursor: pointer; color: #333; font-size: 12px; border: none; background: none; text-align: left; }
+.jsonEditor > .context ul > li:hover > button { background: #eee; }
+.jsonEditor > .context > ul > li > div { position: relative; display: none; z-index: 2; }
+.jsonEditor > .context > ul > li > div > ul { position: absolute; left: 98%; top: -1px; min-width: 100px; }
+.jsonEditor > .context > ul > li:hover > div { display: block; }
+.jsonEditor > .context[type] { display: block; }
+.jsonEditor > .context[type=String] > ul > li[role=Insert] { display: none; }
+.jsonEditor > .context[loc=root] > ul > li[role=Duplicate], .jsonEditor > .context[loc=root] > ul > li[role=Remove] { display: none; }
+.jsonEditor > .context[loc=root] > ul > li[role=Type] li[role=String] { display: none; }
+.jsonEditor > .context li[role=Type]:after, .jsonEditor > .context li[role=Insert]:after { content: ''; display: block; z-index: 1; width: 5px; height: 8px; margin-top: -4px; position: absolute; right: 10px; top: 50%; background-position: 0 -30px; }
+
+/* jQuery Sortable */
+body.dragging { width: 100%; overflow: hidden; }
+
+body.dragging, body.dragging * { cursor: move !important; }
+
+.dragged { position: absolute; opacity: 0.3; z-index: 2000; background: white; border: 1px dashed #999; }

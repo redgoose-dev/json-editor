@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <title>JSON Manager</title>
-<link rel="stylesheet" href="./css/JSONManager.css" />
+<link rel="stylesheet" href="./css/jsonEditor.css" />
+<link rel="stylesheet" href="./css/extra.css" />
 </head>
 <body>
 <main>
@@ -13,9 +14,10 @@
 	</header>
 	<!-- // Header -->
 
-	<div>
-		<!-- JSON editor index -->
-		<div class="jsonEditorIndex">
+	<!-- JSON editor -->
+	<div class="jsonEditor">
+		<!-- index -->
+		<div class="index">
 			<ul>
 				<li type="Object" loc="root" class="on">
 					<dl>
@@ -29,60 +31,62 @@
 				</li>
 			</ul>
 		</div>
-		<!-- // JSON editor index -->
+		<!-- // index -->
+		<!-- context -->
+		<nav class="context">
+			<ul>
+				<li role="Type">
+					<div>
+						<ul>
+							<li role="Object">
+								<button type="button">Object</button>
+							</li>
+							<li role="Array">
+								<button type="button">Array</button>
+							</li>
+							<li role="String">
+								<button type="button">String</button>
+							</li>
+						</ul>
+					</div>
+					<button type="button">Type</button>
+				</li>
+				<li role="Insert">
+					<div>
+						<ul>
+							<li role="Object">
+								<button type="button">Object</button>
+							</li>
+							<li role="Array">
+								<button type="button">Array</button>
+							</li>
+							<li role="String">
+								<button type="button">String</button>
+							</li>
+						</ul>
+					</div>
+					<button type="button">Insert</button>
+				</li>
+				<li role="Duplicate">
+					<button type="button">Duplicate</button>
+				</li>
+				<li role="Remove">
+					<button type="button">Remove</button>
+				</li>
+			</ul>
+		</nav>
+		<!-- // context -->
+	</div>
+	<!-- // JSON editor index -->
 
-		<!-- JSON Result -->
+	<!-- JSON Result -->
+	<div id="jsonResult">
 		<nav class="btngroup">
 			<button type="button" role="btn_toJSON">Export JSON</button>
 		</nav>
-		<pre id="result"></pre>
-		<!-- // JSON Result -->
+		<pre></pre>
 	</div>
-
-	<!-- JSON editor context -->
-	<nav class="jsonEditorContext">
-		<ul>
-			<li role="Type">
-				<div>
-					<ul>
-						<li role="Object">
-							<button type="button">Object</button>
-						</li>
-						<li role="Array">
-							<button type="button">Array</button>
-						</li>
-						<li role="String">
-							<button type="button">String</button>
-						</li>
-					</ul>
-				</div>
-				<button type="button">Type</button>
-			</li>
-			<li role="Insert">
-				<div>
-					<ul>
-						<li role="Object">
-							<button type="button">Object</button>
-						</li>
-						<li role="Array">
-							<button type="button">Array</button>
-						</li>
-						<li role="String">
-							<button type="button">String</button>
-						</li>
-					</ul>
-				</div>
-				<button type="button">Insert</button>
-			</li>
-			<li role="Duplicate">
-				<button type="button">Duplicate</button>
-			</li>
-			<li role="Remove">
-				<button type="button">Remove</button>
-			</li>
-		</ul>
-	</nav>
-	<!-- // JSON editor context -->
+	<!-- // JSON Result -->
 </main>
 
 <script src="./js/jquery-2.1.1.min.js"></script>
@@ -91,20 +95,17 @@
 <script>
 jQuery(function($){
 	var
-		$index = $('div.jsonEditorIndex'),
-		jsonEditor = new JSONEditor(
-			$index,
-			$('nav.jsonEditorContext')
-		),
+		$jsonEditor = $('div.jsonEditor'),
+		$index = $jsonEditor.children('div.index'),
+		jsonEditor = new JSONEditor($jsonEditor),
+
+		$jsonResult = $('#jsonResult')
 		$root = $index.find('li[loc=root]')
 	;
 
-	// dummy data import
-	var dummy = '{"사과":"빨간색", "바나나":"노란색", "키위":"녹색", "포도":"보라색"}';
-
 	// import json
 	try {
-		var json = JSON.parse(dummy);
+		var json = JSON.parse('{"사과":"빨간색", "바나나":"노란색", "키위":"녹색", "포도":"보라색"}');
 	}
 	catch(e) {
 		var json = new Object();
@@ -118,9 +119,9 @@ jQuery(function($){
 	}
 	jsonEditor.importJSON(json, $root);
 
-	// Export JSON button event
-	$('button[role=btn_toJSON]').on('click', function(){
-		$('#result').text(jsonEditor.exportJSON(5));
+	// Export json
+	$jsonResult.find('button[role=btn_toJSON]').on('click', function(){
+		$jsonResult.children('pre').text(jsonEditor.exportJSON(5));
 	});
 });
 </script>
