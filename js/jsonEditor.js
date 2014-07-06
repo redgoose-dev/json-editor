@@ -1,3 +1,4 @@
+function log(o){console.log(o);}
 Object.size = function(obj) {
     var size = 0, key;
     for (key in obj) {
@@ -11,22 +12,21 @@ Object.size = function(obj) {
  * JSON Editor Class
  * 
  * author : Redgoose (2014.03)
- * version : 0.1
+ * version : 0.2
  * website : http://redgoose.me
  * @param Array $wrap : json editor 껍데기 엘리먼트
  * @return void
  */
-function JSONEditor($wrap)
+var JSONEditor = function($wrap)
 {
 	var
-		$index = $wrap.children('div.index'),
-		$context = $wrap.children('nav.context'),
-		$root = $index.children().children('li[loc=root]'),
-
-		_index = this,
-		_util = new Util(),
-		_context = new Context(_index, $index, $context)
+		self = this
+		,util = new Util()
+		,context = new Context(this, this.contextTree)
 	;
+
+	self.$index = $wrap.children('div.index');
+	self.$root = null;
 
 
 	/**
@@ -79,19 +79,35 @@ function JSONEditor($wrap)
 	/**
 	 * Context class
 	 *  
-	 * @param Function _main : JSONEditor 클래스
-	 * @param Array $index : json목록 엘리먼트
-	 * @param Array $context : context 엘리먼트
-	 * @return void
+	 * @param {JSONEditor} getParent
+	 * @param {Array} tree
 	 */
-	function Context(_main, $index, $context)
+	function Context(getParent, tree)
 	{
 		var
-			_context = this,
-			wrap = $('html'),
-			active = null
+			self = this
+			,parent = getParent
+			//,wrap = $('html')
 		;
-	
+
+		self.$el = null;
+
+		var template = function(obj)
+		{
+			str = '';
+			str += '';
+			log(obj)
+			return $(str);
+		}
+
+		var createContext = function()
+		{
+			self.$el = $('<nav></nav>');
+			var dd = template(tree);
+			//log(self.$el);
+			// $wrap에 nav 넣기
+		}
+
 		/* Methods */
 		// on
 		this.on = function(li, button)
@@ -113,7 +129,7 @@ function JSONEditor($wrap)
 				$context.removeAttr('loc');
 			}
 			wrap.on('click', function(){
-				_context.off();
+				context.off();
 			});
 		}
 	
@@ -124,41 +140,72 @@ function JSONEditor($wrap)
 			$context.removeAttr('type');
 			wrap.off();
 		}
-	
+
+		createContext();
 		/* Context navigation */
 		// items event
+/*
 		$context.find('li').on('click', function(e){
 			e.stopPropagation();
 		});
 
 		$context.find('li[role=Type] li').on('click', function(){
-			_index.typeItem({
+			self.typeItem({
 				active : active,
 				type : $(this).attr('role')
 			});
-			_context.off();
+			context.off();
 		});
 	
 		$context.find('li[role=Insert] li').on('click', function(){
-			_index.insertItem({
+			self.insertItem({
 				active : active,
 				type : $(this).attr('role'),
 				data : null
 			});
-			_context.off();
+			context.off();
 		});
 	
 		$context.find('li[role=Duplicate]').on('click', function(){
-			_index.duplicateItem(active);
-			_context.off();
+			self.duplicateItem(active);
+			context.off();
 		});
 	
 		$context.find('li[role=Remove]').on('click', function(){
-			_index.removeItem(active);
-			_context.off();
+			self.removeItem(active);
+			context.off();
 		});
+*/
 	}
 
+
+	var init = function()
+	{
+		self.$root = createRoot();
+		//dragEvent();
+	}
+
+	var template = function(type)
+	{
+		var str = '<li type="' + type + '" class="on">\n';
+		str += '<dl>';
+		str += '<dt>';
+		str += '<button type="button" role="move">move</button>';
+		str += '<button type="button" role="control">control</button>';
+		str += '<em class="no">0</em>';
+		str += '<button type="button" role="toggle">toggle</button>';
+		str += '<strong contenteditable="true" spellcheck="false" data-ph="' + type + '"></strong>';
+		str += '<span class="type"></span>';
+		str += '<em class="count">0</em>';
+		str += '</dt>';
+		str += '<dd>';
+		str += '<span contenteditable="true" spellcheck="false"></span>';
+		str += '</dd>';
+		str += '</dl>';
+		str += '<ul></ul>';
+		str += '</li>';
+		return $(str);
+	}
 
 	/**
 	 * 버튼을 선택해주는 엘리먼트
@@ -206,33 +253,103 @@ function JSONEditor($wrap)
 	{
 		var $strong = $item.find('> dl > dt > strong');
 		$strong.on('blur', function(){
-			_util.removeBR($(this));
-			_util.removeSpace($(this));
-			_util.stringLimiter($(this), 20);
+			util.removeBR($(this));
+			util.removeSpace($(this));
+			util.stringLimiter($(this), 20);
 		});
 	}
 
 	/**
 	 * Context와 접었더 펴는 버튼 이벤트를 만들어준다.
 	 * 
-	 * @param Array buttons : 아이템 속 버튼 엘리먼트들
+	 * @param {DOM} buttons
 	 * @return void
 	 */
-	function buttonsEvent(buttons)
+	var buttonsEvent = function($buttons)
 	{
-		var $item = buttons.closest('li');
+		var $node = $buttons.closest('li');
 
 		// control
-		buttons.filter('[role=control]').on('click', function(e){
+		$buttons.filter('[role=control]').on('click', function(e){
 			e.stopPropagation();
-			_context.off($item);
-			_context.on($item, $(this));
+			context.off($node);
+			context.on($node, $(this));
 		});
 
 		// toggle
-		buttons.filter('[role=toggle]').on('click', function(){
-			$item.toggleClass('on')
+		$buttons.filter('[role=toggle]').on('click', function(e){
+			$node.toggleClass('on')
 		});
+	}
+
+
+	/**
+	 * drag event
+	 */
+	var dragEvent = function($item)
+	{
+		// drag and drop event
+		var adjustment, beforeItem;
+		$item.children('ul').sortable({
+			itemSelector : 'li'
+			,handle : 'button[role=move]'
+			,group : 'index'
+			,pullPlaceholder: true
+			,onDrop : function(item, targetContainer, _super) {
+				_super(item);
+	
+				updateCount(beforeItem.parent());
+				updateCount(targetContainer.el.parent());
+	
+				updateNumber(beforeItem.children());
+				updateNumber(targetContainer.el.children());
+	
+				beforeItem = adjustment = null;
+			}
+			,onDragStart : function($el, container, _super) {
+				var
+					offset = $el.offset()
+					,pointer = container.rootGroup.pointer
+				;
+				adjustment = {
+					left: pointer.left - offset.left
+					,top: pointer.top - offset.top
+				};
+				beforeItem = container.el;
+				_super($el, container)
+			}
+			,onDrag : function($el, position) {
+				$el.css({
+					left: position.left - adjustment.left
+					,top: position.top - adjustment.top
+				});
+			}
+			,isValidTarget : function ($el, container) {
+				return (container.el.parent().attr('type') == 'String') ? false : true;
+			}
+		});
+	}
+
+	/**
+	 * create root node
+	 * 
+	 * @return {DOM}
+	 */
+	var createRoot = function()
+	{
+		var $ul = $('<ul/>');
+		var $li = template('Object');
+
+		$li.attr('loc', 'root');
+		$li.find('[contenteditable]').attr('contenteditable', 'false');
+		$li.find('[role=move]').remove();
+
+		self.$index.append($ul.append($li));
+
+		buttonsEvent(selectButtons($li));
+		dragEvent($li);
+
+		return $li;
 	}
 
 
@@ -395,7 +512,7 @@ function JSONEditor($wrap)
 					type = (Array.isArray(value)) ? 'Array' : 'Object';
 				}
 
-				_index.insertItem({
+				self.insertItem({
 					active : $item,
 					type : type,
 					data : data,
@@ -474,47 +591,33 @@ function JSONEditor($wrap)
 		return JSON.stringify(json, null, (space) ? space : 0);
 	}
 
-	// init
-	buttonsEvent(selectButtons($root));
 
-	// drag and drop event
-	var adjustment, beforeItem;
-	$root.children('ul').sortable({
-		itemSelector : 'li'
-		,handle : 'button[role=move]'
-		,group : 'index'
-		,pullPlaceholder: true
-		,onDrop : function(item, targetContainer, _super) {
-			_super(item);
+	// act
+	init();
 
-			updateCount(beforeItem.parent());
-			updateCount(targetContainer.el.parent());
-
-			updateNumber(beforeItem.children());
-			updateNumber(targetContainer.el.children());
-
-			beforeItem = adjustment = null;
-		}
-		,onDragStart : function($item, container, _super) {
-			var
-				offset = $item.offset()
-				,pointer = container.rootGroup.pointer
-			;
-			adjustment = {
-				left: pointer.left - offset.left
-				,top: pointer.top - offset.top
-			};
-			beforeItem = container.el;
-			_super($item, container)
-		}
-		,onDrag : function($item, position) {
-			$item.css({
-				left: position.left - adjustment.left
-				,top: position.top - adjustment.top
-			});
-		}
-		,isValidTarget : function ($item, container) {
-			return (container.el.parent().attr('type') == 'String') ? false : true;
-		}
-	});
 }
+
+JSONEditor.prototype.contextTree = [
+	{
+		role : 'Type'
+		,roles : [
+			{role:'Object'}
+			,{role:'Array'}
+			,{role:'String'}
+		]
+	}
+	,{
+		role : 'Insert'
+		,roles : [
+			{role:'Object'}
+			,{role:'Array'}
+			,{role:'String'}
+		]
+	}
+	,{
+		role : 'Duplicate'
+	}
+	,{
+		role : 'Remove'
+	}
+];

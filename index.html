@@ -17,20 +17,7 @@
 	<!-- JSON editor -->
 	<div class="jsonEditor">
 		<!-- index -->
-		<div class="index">
-			<ul>
-				<li type="Object" loc="root" class="on">
-					<dl>
-						<dt>
-							<button type="button" role="control">control</button>
-							<button type="button" role="toggle">toggle</button>
-							<em class="no">0</em><strong data-ph="Object"></strong><span class="type"></span><em class="count">0</em>
-						</dt>
-					</dl>
-					<ul></ul>
-				</li>
-			</ul>
-		</div>
+		<div class="index"></div>
 		<!-- // index -->
 		<!-- context -->
 		<nav class="context">
@@ -117,7 +104,7 @@ jQuery(function($){
 			type : 'Array'
 		});
 	}
-	jsonEditor.importJSON(json, $root);
+	//jsonEditor.importJSON(json, $root);
 
 	// Export json
 	$jsonResult.find('button[role=btn_toJSON]').on('click', function(){
