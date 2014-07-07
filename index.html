@@ -15,65 +15,17 @@
 	<!-- // Header -->
 
 	<!-- JSON editor -->
-	<div class="jsonEditor">
-		<!-- index -->
-		<div class="index"></div>
-		<!-- // index -->
-<!--
-		<nav class="context">
-			<ul>
-				<li role="Type">
-					<div>
-						<ul>
-							<li role="Object">
-								<button type="button">Object</button>
-							</li>
-							<li role="Array">
-								<button type="button">Array</button>
-							</li>
-							<li role="String">
-								<button type="button">String</button>
-							</li>
-						</ul>
-					</div>
-					<button type="button">Type</button>
-				</li>
-				<li role="Insert">
-					<div>
-						<ul>
-							<li role="Object">
-								<button type="button">Object</button>
-							</li>
-							<li role="Array">
-								<button type="button">Array</button>
-							</li>
-							<li role="String">
-								<button type="button">String</button>
-							</li>
-						</ul>
-					</div>
-					<button type="button">Insert</button>
-				</li>
-				<li role="Duplicate">
-					<button type="button">Duplicate</button>
-				</li>
-				<li role="Remove">
-					<button type="button">Remove</button>
-				</li>
-			</ul>
-		</nav>
--->
-	</div>
-	<!-- // JSON editor index -->
+	<div class="jsonEditor"></div>
+	<!-- // JSON editor -->
 
-	<!-- JSON Result -->
+	<!-- result -->
 	<div id="jsonResult">
 		<nav class="btngroup">
 			<button type="button" role="btn_toJSON">Export JSON</button>
 		</nav>
 		<pre></pre>
 	</div>
-	<!-- // JSON Result -->
+	<!-- // result -->
 </main>
 
 <script src="./js/jquery-2.1.1.min.js"></script>
@@ -81,14 +33,9 @@
 <script src="./js/JSONEditor.class.js"></script>
 <script>
 jQuery(function($){
-	var
-		$jsonEditor = $('div.jsonEditor'),
-		$index = $jsonEditor.children('div.index'),
-		jsonEditor = new JSONEditor($jsonEditor),
 
-		$jsonResult = $('#jsonResult')
-		$root = $index.find('li[loc=root]')
-	;
+	var $jsonEditor = $('div.jsonEditor');
+	var jsonEditor = new JSONEditor($jsonEditor);
 
 	// import json
 	try {
@@ -100,13 +47,14 @@ jQuery(function($){
 	if (Array.isArray(json))
 	{
 		jsonEditor.typeItem({
-			active : $root,
+			active : $jsonEditor.find('li[loc=root]'),
 			type : 'Array'
 		});
 	}
-	//jsonEditor.importJSON(json, $root);
+	jsonEditor.importJSON(json);
 
 	// Export json
+	var $jsonResult = $('#jsonResult');
 	$jsonResult.find('button[role=btn_toJSON]').on('click', function(){
 		$jsonResult.children('pre').text(jsonEditor.exportJSON(5));
 	});
