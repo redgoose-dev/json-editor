@@ -15,93 +15,27 @@
 	<!-- // Header -->
 
 	<!-- JSON editor -->
-	<div class="jsonEditor">
-		<!-- index -->
-		<div class="index">
-			<ul>
-				<li type="Object" loc="root" class="on">
-					<dl>
-						<dt>
-							<button type="button" role="control">control</button>
-							<button type="button" role="toggle">toggle</button>
-							<em class="no">0</em><strong data-ph="Object"></strong><span class="type"></span><em class="count">0</em>
-						</dt>
-					</dl>
-					<ul></ul>
-				</li>
-			</ul>
-		</div>
-		<!-- // index -->
-		<!-- context -->
-		<nav class="context">
-			<ul>
-				<li role="Type">
-					<div>
-						<ul>
-							<li role="Object">
-								<button type="button">Object</button>
-							</li>
-							<li role="Array">
-								<button type="button">Array</button>
-							</li>
-							<li role="String">
-								<button type="button">String</button>
-							</li>
-						</ul>
-					</div>
-					<button type="button">Type</button>
-				</li>
-				<li role="Insert">
-					<div>
-						<ul>
-							<li role="Object">
-								<button type="button">Object</button>
-							</li>
-							<li role="Array">
-								<button type="button">Array</button>
-							</li>
-							<li role="String">
-								<button type="button">String</button>
-							</li>
-						</ul>
-					</div>
-					<button type="button">Insert</button>
-				</li>
-				<li role="Duplicate">
-					<button type="button">Duplicate</button>
-				</li>
-				<li role="Remove">
-					<button type="button">Remove</button>
-				</li>
-			</ul>
-		</nav>
-		<!-- // context -->
-	</div>
-	<!-- // JSON editor index -->
+	<div class="JSONEditor"></div>
+	<!-- // JSON editor -->
 
-	<!-- JSON Result -->
+	<!-- result -->
 	<div id="jsonResult">
 		<nav class="btngroup">
 			<button type="button" role="btn_toJSON">Export JSON</button>
 		</nav>
 		<pre></pre>
 	</div>
-	<!-- // JSON Result -->
+	<!-- // result -->
 </main>
 
 <script src="./js/jquery-2.1.1.min.js"></script>
 <script src="./js/jquery-sortable.js"></script>
-<script src="./js/jsonEditor.js"></script>
+<script src="./js/JSONEditor.class.js"></script>
 <script>
 jQuery(function($){
-	var
-		$jsonEditor = $('div.jsonEditor'),
-		$index = $jsonEditor.children('div.index'),
-		jsonEditor = new JSONEditor($jsonEditor),
 
-		$jsonResult = $('#jsonResult')
-		$root = $index.find('li[loc=root]')
-	;
+	var $jsonEditor = $('div.JSONEditor');
+	var jsonEditor = new JSONEditor($jsonEditor);
 
 	// import json
 	try {
@@ -113,13 +47,14 @@ jQuery(function($){
 	if (Array.isArray(json))
 	{
 		jsonEditor.typeItem({
-			active : $root,
+			active : $jsonEditor.find('li[loc=root]'),
 			type : 'Array'
 		});
 	}
-	jsonEditor.importJSON(json, $root);
+	jsonEditor.importJSON(json);
 
 	// Export json
+	var $jsonResult = $('#jsonResult');
 	$jsonResult.find('button[role=btn_toJSON]').on('click', function(){
 		$jsonResult.children('pre').text(jsonEditor.exportJSON(5));
 	});
