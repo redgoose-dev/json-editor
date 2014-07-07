@@ -87,7 +87,12 @@ var JSONEditor = function($wrap)
 		self.$el = null;
 		self.active = null;
 
-		// context template
+		/**
+		 * context template
+		 * 
+		 * @param {Object} obj
+		 * @return {DOM}
+		 */
 		var template = function(obj)
 		{
 			function node(obj)
@@ -114,14 +119,20 @@ var JSONEditor = function($wrap)
 			return $(str);
 		}
 
-		// create context
+		/**
+		 * create context
+		 */
 		var createContext = function()
 		{
 			self.$el = template(tree);
 			parent.$wrap.append(self.$el);
 		}
 
-		// context event
+		/**
+		 * context event
+		 * 
+		 * @param {DOM} $nav
+		 */
 		var contextEvent = function($nav)
 		{
 			$nav.find('li').on('click', function(e){
@@ -150,20 +161,24 @@ var JSONEditor = function($wrap)
 		}
 
 
-		// on
-		this.on = function(li, button)
+		/**
+		 * context open
+		 * 
+		 * @param {DOM} $item
+		 */
+		this.on = function($item, button)
 		{
-			self.active = li;
+			self.active = $item;
 			self.$el
-				.attr('type', li.attr('type'))
+				.attr('type', $item.attr('type'))
 				.css({
 					left : button.position().left + button.outerWidth()
 					,top : button.position().top - 3
 				})
 			;
-			if (li.attr('loc') == 'root')
+			if ($item.attr('loc') == 'root')
 			{
-				self.$el.attr('loc', li.attr('loc'))
+				self.$el.attr('loc', $item.attr('loc'))
 			}
 			else
 			{
@@ -174,7 +189,9 @@ var JSONEditor = function($wrap)
 			});
 		}
 	
-		// off
+		/**
+		 * context close
+		 */
 		this.off = function()
 		{
 			self.active = null;
