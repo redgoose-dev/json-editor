@@ -182,7 +182,6 @@ var JSONEditor = function($wrap)
 	var init = function()
 	{
 		self.$root = createRoot();
-		//dragEvent();
 	}
 
 	var template = function(type)
