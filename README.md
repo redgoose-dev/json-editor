@@ -9,24 +9,25 @@ json 데이터 import로 데이터를 에디터로 가져올 수 있고, export�
 데모페이지 : (준비중입니다.)
 
 
-##사용방법
-다운받아서 index페이지를 열어보면 샘플 데이터가 불러와져있고, "export JSON"버튼을 누르면 그 아래에 json데이터 결과물을 확인할 수 있습니다.
-
-먼저 `<head/>` 엘리먼트에서 아래와 같이 jsonEditor.css 파일을 로드합니다.
+##Installation
+###Step 1. 파일링크
+먼저 JSONEditor를 사용하기 위하여 jQuery라이브러리와 드래그 jQuery 플러그인, JSONEditor js와 css파일을 먼저 불러들여서 사용할 준비를 해야합니다.
 ```
 <link rel="stylesheet" href="./css/jsonEditor.css" />
-```
-
-그리고 중간에 `<div class="jsonEditor"> ... </div>` 엘리먼트 부분을 때내어 작업할 곳에다 붙여넣습니다.
-
-그 다음은 아래 소스와 같이 제이쿼리와 관련 자바스크립트 소스를 로드합니다.
-```
 <script src="./js/jquery-2.1.1.min.js"></script>
 <script src="./js/jquery-sortable.js"></script>
-<script src="./js/jsonEditor.js"></script>
+<script src="./js/JSONEditor.class.js"></script>
 ```
 
-마지막으로 아래 소스와 같이 JSONEditor 클래스를 초기화합니다.
+###Step 2. 출력할 위치에 엘리먼트 삽입
+에디터가 만들어지는 위치에서 아래와 같은 엘리먼트를 넣어줍니다.  
+css의 class이름이 "JSONEditor"으로 되어있는데 이름을 수정하려면 css에 있는 class이름도 수정해야합니다.
+```
+<div class="JSONEditor"></div>
+```
+
+###Step 3. JSONEditor 인스턴스 객체 만들기
+이제 실질적으로 사용하기 위하여 인스턴스 객체를 만듭니다. 객체를 만들때 필요한 엘리먼트와 이벤트를 만들게 됩니다.
 ```
 <script>
 jQuery(function($){
@@ -39,7 +40,10 @@ jQuery(function($){
 
 
 ##브라우저 지원
-맥용 사파리에서 개발했으며, 크롬과 파이어폭스에서 정상작동하지만 IE에서 테스트해보지 않았습니다.
+맥용 사파리에서 개발했으며, 크롬과 파이어폭스에서 정상작동하지만 IE에서 테스트해보지 않았습니다.  
 구 브라우저를 지원하지 않는 속성들이 사용되어서 구버전의 브라우저에서 사용은 권장되지 않습니다.
 
-테스트 브라우저 : 사파리, 크롬, 파이어폭스
+###테스트 브라우저
+* 사파리
+* 크롬
+* 파이어폭스
