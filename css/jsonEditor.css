@@ -1,57 +1,57 @@
 /* sprite images */
-.JSONEditor > .index li > dl > dt > button, .JSONEditor > .context li[role=Type]:after, .JSONEditor > .context li[role=Insert]:after { display: inline-block; background: url("../img/sp-icon@x1.png") 0 0 no-repeat; }
-@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { .JSONEditor > .index li > dl > dt > button, .JSONEditor > .context li[role=Type]:after, .JSONEditor > .context li[role=Insert]:after { background-image: url("../img/sp-icon@x2.png"); background-size: 100px 50px; } }
+.JSONEditor > div.index li > dl > dt > button, .JSONEditor > .context li[role=Type]:after, .JSONEditor > .context li[role=Insert]:after { display: inline-block; background: url("../img/sp-icon@x1.png") 0 0 no-repeat; }
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { .JSONEditor > div.index li > dl > dt > button, .JSONEditor > .context li[role=Type]:after, .JSONEditor > .context li[role=Insert]:after { background-image: url("../img/sp-icon@x2.png"); background-size: 100px 50px; } }
 
 /* json editor */
 .JSONEditor { /* index */ /* Context */ }
-.JSONEditor > .index { border-width: 1px 0; border-style: solid; border-color: #ccc; font-size: 13px; }
-.JSONEditor > .index ul { margin: 0; padding: 0 0 0 22px; list-style: none; clear: both; }
-.JSONEditor > .index > ul { margin: 5px 0; padding-left: 0; }
-.JSONEditor > .index li { padding: 0; margin: 2px 0; }
-.JSONEditor > .index li > dl { margin: 0; display: table; width: 100%; }
-.JSONEditor > .index li > dl > dt, .JSONEditor > .index li > dl > dd { display: table-cell; vertical-align: top; padding: 3px 5px; }
-.JSONEditor > .index li > dl > dt { width: 30px; white-space: nowrap; padding-left: 0; padding-right: 8px; color: #333; }
-.JSONEditor > .index li > dl > dt em { display: inline-block; font-style: normal; color: #999; }
-.JSONEditor > .index li > dl > dt > em.no { margin: 0 3px 0 5px; display: none; }
-.JSONEditor > .index li > dl > dt > em.no:before { content: '['; }
-.JSONEditor > .index li > dl > dt > em.no:after { content: ']'; }
-.JSONEditor > .index li > dl > dt > strong { display: inline-block; font-weight: normal; min-width: 40px; }
-.JSONEditor > .index li > dl > dt > strong:empty:not(:focus):before { content: attr(data-ph); color: #aaa; }
-.JSONEditor > .index li > dl > dt > .type { display: none; color: #999; }
-.JSONEditor > .index li > dl > dt > em.count { margin: 0 0 0 4px; }
-.JSONEditor > .index li > dl > dt > button { display: inline-block; margin: -3px 0; cursor: pointer; text-indent: -9999px; width: 24px; height: 24px; border: none; }
-.JSONEditor > .index li > dl > dt > button.on { background-color: #eee; }
-.JSONEditor > .index li > dl > dt > button[role=toggle] { background-position: 9px -23px; }
-.JSONEditor > .index li > dl > dd { position: relative; padding-left: 12px; color: #666; }
-.JSONEditor > .index li > dl > dd:before { content: ':'; display: block; position: absolute; left: 0; top: 2px; }
-.JSONEditor > .index li > dl > dd > span { min-width: 40px; }
-.JSONEditor > .index li > dl > dd > span:empty:not(:focus):before { content: 'empty'; color: #aaa; }
-.JSONEditor > .index li > ul { display: none; }
-.JSONEditor > .index li.on > dl > dt > [role=toggle] { background-position: -8px -21px; }
-.JSONEditor > .index li.on > ul { display: block; }
-.JSONEditor > .index li[type=Object] > dl > dt > .count:before { content: '{'; }
-.JSONEditor > .index li[type=Object] > dl > dt > .count:after { content: '}'; }
-.JSONEditor > .index li[type=Object] > dl > dt > .type:before { content: 'Object'; }
-.JSONEditor > .index li[type=Object] > dl > dd { display: none; }
-.JSONEditor > .index li[type=Array] > dl > dt > .count:before { content: '['; }
-.JSONEditor > .index li[type=Array] > dl > dt > .count:after { content: ']'; }
-.JSONEditor > .index li[type=Array] > dl > dt > .type:before { content: 'Array'; }
-.JSONEditor > .index li[type=Array] > dl > dd { display: none; }
-.JSONEditor > .index li[type=Array] > ul > li > dl > dt > .no { display: inline-block; }
-.JSONEditor > .index li[type=Array] > ul > li[type=String] > dl > dt > strong { display: none; }
-.JSONEditor > .index li[type=Array] > ul > li[type=Object] > dl > dt > strong, .JSONEditor > .index li[type=Array] > ul > li[type=Array] > dl > dt > strong { display: none; }
-.JSONEditor > .index li[type=Array] > ul > li[type=Object] > dl > dt > .type, .JSONEditor > .index li[type=Array] > ul > li[type=Array] > dl > dt > .type { display: inline; }
-.JSONEditor > .index li[type=String] > dl > dt > strong { margin-left: 8px; }
-.JSONEditor > .index li[type=String] > dl > dt > .count { display: none; }
-.JSONEditor > .index li[type=String] > dl > dt > button[role=toggle] { display: none; }
-.JSONEditor > .index li[type=String] > dl > dt > .type:before { content: 'String'; }
-.JSONEditor > .index li[type=String] > ul { display: none; }
-.JSONEditor > .index li[loc=root] > dl > dt > strong { display: none; }
-.JSONEditor > .index li[loc=root] > dl > dt > .type { display: inline; }
-.JSONEditor > .index button[role=move] { background-position: -50px -26px; }
-.JSONEditor > .index button[role=control] { background-position: -73px -24px; }
-.JSONEditor > .index li.placeholder { position: relative; }
-.JSONEditor > .index li.placeholder:before { position: absolute; content: ''; left: 0; right: 0; top: -1px; height: 3px; background: #7a7c7d; }
+.JSONEditor > div.index { border-width: 1px 0; border-style: solid; border-color: #ccc; font-size: 13px; }
+.JSONEditor > div.index ul { margin: 0; padding: 0 0 0 22px; list-style: none; clear: both; }
+.JSONEditor > div.index > ul { margin: 5px 0; padding-left: 0; }
+.JSONEditor > div.index li { padding: 0; margin: 2px 0; }
+.JSONEditor > div.index li > dl { margin: 0; display: table; width: 100%; }
+.JSONEditor > div.index li > dl > dt, .JSONEditor > div.index li > dl > dd { display: table-cell; vertical-align: top; padding: 3px 5px; }
+.JSONEditor > div.index li > dl > dt { width: 30px; white-space: nowrap; padding-left: 0; padding-right: 8px; color: #333; }
+.JSONEditor > div.index li > dl > dt em { display: inline-block; font-style: normal; color: #999; }
+.JSONEditor > div.index li > dl > dt > em.no { margin: 0 3px 0 5px; display: none; }
+.JSONEditor > div.index li > dl > dt > em.no:before { content: '['; }
+.JSONEditor > div.index li > dl > dt > em.no:after { content: ']'; }
+.JSONEditor > div.index li > dl > dt > strong { display: inline-block; font-weight: normal; min-width: 40px; }
+.JSONEditor > div.index li > dl > dt > strong:empty:not(:focus):before { content: attr(data-ph); color: #aaa; }
+.JSONEditor > div.index li > dl > dt > .type { display: none; color: #999; }
+.JSONEditor > div.index li > dl > dt > em.count { margin: 0 0 0 4px; }
+.JSONEditor > div.index li > dl > dt > button { display: inline-block; margin: -3px 0; cursor: pointer; text-indent: -9999px; width: 24px; height: 24px; border: none; }
+.JSONEditor > div.index li > dl > dt > button.on { background-color: #eee; }
+.JSONEditor > div.index li > dl > dt > button[role=toggle] { background-position: 9px -23px; }
+.JSONEditor > div.index li > dl > dd { position: relative; padding-left: 12px; color: #666; }
+.JSONEditor > div.index li > dl > dd:before { content: ':'; display: block; position: absolute; left: 0; top: 2px; }
+.JSONEditor > div.index li > dl > dd > span { min-width: 40px; }
+.JSONEditor > div.index li > dl > dd > span:empty:not(:focus):before { content: 'empty'; color: #aaa; }
+.JSONEditor > div.index li > ul { display: none; }
+.JSONEditor > div.index li.on > dl > dt > [role=toggle] { background-position: -8px -21px; }
+.JSONEditor > div.index li.on > ul { display: block; }
+.JSONEditor > div.index li[type=Object] > dl > dt > .count:before { content: '{'; }
+.JSONEditor > div.index li[type=Object] > dl > dt > .count:after { content: '}'; }
+.JSONEditor > div.index li[type=Object] > dl > dt > .type:before { content: 'Object'; }
+.JSONEditor > div.index li[type=Object] > dl > dd { display: none; }
+.JSONEditor > div.index li[type=Array] > dl > dt > .count:before { content: '['; }
+.JSONEditor > div.index li[type=Array] > dl > dt > .count:after { content: ']'; }
+.JSONEditor > div.index li[type=Array] > dl > dt > .type:before { content: 'Array'; }
+.JSONEditor > div.index li[type=Array] > dl > dd { display: none; }
+.JSONEditor > div.index li[type=Array] > ul > li > dl > dt > .no { display: inline-block; }
+.JSONEditor > div.index li[type=Array] > ul > li[type=String] > dl > dt > strong { display: none; }
+.JSONEditor > div.index li[type=Array] > ul > li[type=Object] > dl > dt > strong, .JSONEditor > div.index li[type=Array] > ul > li[type=Array] > dl > dt > strong { display: none; }
+.JSONEditor > div.index li[type=Array] > ul > li[type=Object] > dl > dt > .type, .JSONEditor > div.index li[type=Array] > ul > li[type=Array] > dl > dt > .type { display: inline; }
+.JSONEditor > div.index li[type=String] > dl > dt > strong { margin-left: 8px; }
+.JSONEditor > div.index li[type=String] > dl > dt > .count { display: none; }
+.JSONEditor > div.index li[type=String] > dl > dt > button[role=toggle] { display: none; }
+.JSONEditor > div.index li[type=String] > dl > dt > .type:before { content: 'String'; }
+.JSONEditor > div.index li[type=String] > ul { display: none; }
+.JSONEditor > div.index li[loc=root] > dl > dt > strong { display: none; }
+.JSONEditor > div.index li[loc=root] > dl > dt > .type { display: inline; }
+.JSONEditor > div.index button[role=move] { background-position: -50px -26px; }
+.JSONEditor > div.index button[role=control] { background-position: -73px -24px; }
+.JSONEditor > div.index li.placeholder { position: relative; }
+.JSONEditor > div.index li.placeholder:before { position: absolute; content: ''; left: 0; right: 0; top: -1px; height: 3px; background: #7a7c7d; }
 .JSONEditor > .context { position: absolute; left: 0; top: 0; min-width: 120px; display: none; }
 .JSONEditor > .context ul { margin: 0; padding: 0; list-style: none; border: 1px solid #ccc; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); background: #fff; }
 .JSONEditor > .context ul > li { position: relative; margin: 0; }
