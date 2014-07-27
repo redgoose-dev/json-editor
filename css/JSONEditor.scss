@@ -247,7 +247,7 @@
 		border: 1px solid #ccc;
 		font-size: 13px;
 		&:before {
-			content: 'Preview'; display: block; position: absolute;
+			content: 'Preview'; display: block; position: absolute; margin: 0;
 			padding: 2px 6px 2px 8px;
 			right: 0; top: 0;
 			font-size: 12px; font-weight: 600; font-family: Verdana, sans-serif; color: #666;
