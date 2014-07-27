@@ -1,0 +1,83 @@
+/* sprite images */
+.JSONEditor > div.index li > dl > dt > button, .JSONEditor > .context li[role=Type]:after, .JSONEditor > .context li[role=Insert]:after { display: inline-block; background: url("../img/sp-icon@x1.png") 0 0 no-repeat; }
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) { .JSONEditor > div.index li > dl > dt > button, .JSONEditor > .context li[role=Type]:after, .JSONEditor > .context li[role=Insert]:after { background-image: url("../img/sp-icon@x2.png"); background-size: 100px 50px; } }
+
+/* json editor */
+.JSONEditor { position: relative; /* index */ /* Context */ /* Preview */ }
+.JSONEditor *, .JSONEditor *:before, .JSONEditor *:after { box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; }
+.JSONEditor:after { content: ''; display: block; clear: both; }
+.JSONEditor > div.index { position: relative; padding: 8px 12px; margin: 0; border-width: 1px; border-style: solid; border-color: #ccc; font-size: 13px; }
+.JSONEditor > div.index ul { margin: 0; padding: 0 0 0 22px; list-style: none; clear: both; }
+.JSONEditor > div.index > ul { margin: 5px 0; padding-left: 0; }
+.JSONEditor > div.index li { padding: 0; margin: 2px 0; }
+.JSONEditor > div.index li > dl { margin: 0; display: table; width: 100%; }
+.JSONEditor > div.index li > dl > dt, .JSONEditor > div.index li > dl > dd { display: table-cell; vertical-align: top; padding: 3px 5px; }
+.JSONEditor > div.index li > dl > dt { width: 30px; white-space: nowrap; padding-left: 0; padding-right: 8px; color: #333; }
+.JSONEditor > div.index li > dl > dt em { display: inline-block; font-style: normal; color: #999; }
+.JSONEditor > div.index li > dl > dt > em.no { margin: 0 3px 0 5px; display: none; }
+.JSONEditor > div.index li > dl > dt > em.no:before { content: '['; }
+.JSONEditor > div.index li > dl > dt > em.no:after { content: ']'; }
+.JSONEditor > div.index li > dl > dt > strong { display: inline-block; font-weight: normal; min-width: 40px; }
+.JSONEditor > div.index li > dl > dt > strong:empty:not(:focus):before { content: attr(data-ph); color: #aaa; }
+.JSONEditor > div.index li > dl > dt > .type { display: none; color: #999; }
+.JSONEditor > div.index li > dl > dt > em.count { margin: 0 0 0 4px; }
+.JSONEditor > div.index li > dl > dt > button { display: inline-block; margin: -3px 0; cursor: pointer; text-indent: -9999px; width: 24px; height: 24px; border: none; }
+.JSONEditor > div.index li > dl > dt > button.on { background-color: #eee; }
+.JSONEditor > div.index li > dl > dt > button[role=toggle] { background-position: 9px -23px; }
+.JSONEditor > div.index li > dl > dd { position: relative; padding-left: 12px; color: #666; }
+.JSONEditor > div.index li > dl > dd:before { content: ':'; display: block; position: absolute; left: 0; top: 2px; }
+.JSONEditor > div.index li > dl > dd > span { min-width: 40px; }
+.JSONEditor > div.index li > dl > dd > span:empty:not(:focus):before { content: 'empty'; color: #aaa; }
+.JSONEditor > div.index li > ul { display: none; }
+.JSONEditor > div.index li.on > dl > dt > [role=toggle] { background-position: -8px -21px; }
+.JSONEditor > div.index li.on > ul { display: block; }
+.JSONEditor > div.index li[type=Object] > dl > dt > .count:before { content: '{'; }
+.JSONEditor > div.index li[type=Object] > dl > dt > .count:after { content: '}'; }
+.JSONEditor > div.index li[type=Object] > dl > dt > .type:before { content: 'Object'; }
+.JSONEditor > div.index li[type=Object] > dl > dd { display: none; }
+.JSONEditor > div.index li[type=Array] > dl > dt > .count:before { content: '['; }
+.JSONEditor > div.index li[type=Array] > dl > dt > .count:after { content: ']'; }
+.JSONEditor > div.index li[type=Array] > dl > dt > .type:before { content: 'Array'; }
+.JSONEditor > div.index li[type=Array] > dl > dd { display: none; }
+.JSONEditor > div.index li[type=Array] > ul > li > dl > dt > .no { display: inline-block; }
+.JSONEditor > div.index li[type=Array] > ul > li[type=String] > dl > dt > strong { display: none; }
+.JSONEditor > div.index li[type=Array] > ul > li[type=Object] > dl > dt > strong, .JSONEditor > div.index li[type=Array] > ul > li[type=Array] > dl > dt > strong { display: none; }
+.JSONEditor > div.index li[type=Array] > ul > li[type=Object] > dl > dt > .type, .JSONEditor > div.index li[type=Array] > ul > li[type=Array] > dl > dt > .type { display: inline; }
+.JSONEditor > div.index li[type=String] > dl > dt > strong { margin-left: 8px; }
+.JSONEditor > div.index li[type=String] > dl > dt > .count { display: none; }
+.JSONEditor > div.index li[type=String] > dl > dt > button[role=toggle] { display: none; }
+.JSONEditor > div.index li[type=String] > dl > dt > .type:before { content: 'String'; }
+.JSONEditor > div.index li[type=String] > ul { display: none; }
+.JSONEditor > div.index li[loc=root] > dl > dt > strong { display: none; }
+.JSONEditor > div.index li[loc=root] > dl > dt > .type { display: inline; }
+.JSONEditor > div.index button[role=move] { background-position: -50px -26px; }
+.JSONEditor > div.index button[role=control] { background-position: -73px -24px; }
+.JSONEditor > div.index li.placeholder { position: relative; }
+.JSONEditor > div.index li.placeholder:before { position: absolute; content: ''; left: 0; right: 0; top: -1px; height: 3px; background: #7a7c7d; }
+.JSONEditor > div.index:before { content: 'Editor'; display: block; position: absolute; padding: 2px 6px 2px 8px; right: 0; top: 0; font-size: 12px; font-weight: 600; font-family: Verdana, sans-serif; color: #666; background: #f5f5f5; border-width: 0 0 1px 1px; border-style: solid; border-color: #ccc; border-bottom-left-radius: 3px; }
+.JSONEditor > .context { position: absolute; left: 0; top: 0; min-width: 120px; display: none; }
+.JSONEditor > .context ul { margin: 0; padding: 0; list-style: none; border: 1px solid #ccc; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); background: #fff; }
+.JSONEditor > .context ul > li { position: relative; margin: 0; }
+.JSONEditor > .context ul > li > button { display: block; margin: 0; padding: 7px 8px; width: 100%; cursor: pointer; color: #333; font-size: 12px; border: none; background: none; text-align: left; }
+.JSONEditor > .context ul > li:hover > button { background: #eee; }
+.JSONEditor > .context > ul > li > div { position: relative; display: none; z-index: 2; }
+.JSONEditor > .context > ul > li > div > ul { position: absolute; left: 98%; top: -1px; min-width: 100px; }
+.JSONEditor > .context > ul > li:hover > div { display: block; }
+.JSONEditor > .context[type] { display: block; }
+.JSONEditor > .context[type=String] > ul > li[role=Insert] { display: none; }
+.JSONEditor > .context[loc=root] > ul > li[role=Duplicate], .JSONEditor > .context[loc=root] > ul > li[role=Remove] { display: none; }
+.JSONEditor > .context[loc=root] > ul > li[role=Type] li[role=String] { display: none; }
+.JSONEditor > .context li[role=Type]:after, .JSONEditor > .context li[role=Insert]:after { content: ''; display: block; z-index: 1; width: 5px; height: 8px; margin-top: -4px; position: absolute; right: 10px; top: 50%; background-position: 0 -30px; }
+.JSONEditor > pre.preview { position: relative; float: right; width: 49%; min-height: 100px; margin: 0; padding: 12px; border: 1px solid #ccc; font-size: 13px; }
+.JSONEditor > pre.preview:before { content: 'Preview'; display: block; position: absolute; margin: 0; padding: 2px 6px 2px 8px; right: 0; top: 0; font-size: 12px; font-weight: 600; font-family: Verdana, sans-serif; color: #666; background: #f5f5f5; border-width: 0 0 1px 1px; border-style: solid; border-color: #ccc; border-bottom-left-radius: 3px; }
+.JSONEditor.preview > div.index { width: 49%; float: left; overflow: auto; }
+.JSONEditor.preview > pre.preview { display: block; }
+
+@media all and (max-width: 640px) { .JSONEditor.preview > div.index { width: auto; float: none; overflow: visible; }
+  .JSONEditor.preview > pre.preview { width: auto; float: none; margin-top: 15px; } }
+/* jQuery Sortable */
+body.dragging { width: 100%; overflow: hidden; }
+
+body.dragging, body.dragging * { cursor: move !important; }
+
+.dragged { position: absolute; opacity: 0.3; z-index: 2000; background: white; border: 1px dashed #999; }
