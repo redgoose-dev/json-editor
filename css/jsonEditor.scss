@@ -243,7 +243,7 @@
 
 	/* Preview */
 	> pre.preview {
-		position: relative; float: right; width: 48%; min-height: 100px; margin: 0; padding: 12px;
+		position: relative; float: right; width: 49%; min-height: 100px; margin: 0; padding: 12px;
 		border: 1px solid #ccc;
 		font-size: 13px;
 		&:before {
@@ -258,7 +258,7 @@
 	}
 
 	&.preview {
-		> div.index {width: 48%; float: left; overflow: auto;}
+		> div.index {width: 49%; float: left; overflow: auto;}
 		> pre.preview {display: block;}
 	}
 }
