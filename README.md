@@ -1,4 +1,4 @@
-jsonEditor
+jsonEditor 0.3
 ==========
 
 jQuery를 사용하는 javascript 에디터입니다.
@@ -8,6 +8,7 @@ json 데이터 import로 데이터를 에디터로 가져올 수 있고, export�
 
 데모페이지 : (준비중입니다.)
 
+[업데이트 내역](https://github.com/RedgooseDev/JSONEditor/releases) 페이지를 통하여 업데이트 내역을 확인할 수 있으니 참고해주세요.
 
 ##Installation
 ###Step 1. 파일링크
