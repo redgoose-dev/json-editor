@@ -12,17 +12,19 @@ Object.size = function(obj) {
  * JSON Editor Class
  * 
  * author : Redgoose (2014.03)
- * version : 0.2
+ * version : 0.3
  * website : http://redgoose.me
- * @param Array $wrap : json editor 껍데기 엘리먼트
+ * @Param {Array} $wrap : json editor 껍데기 엘리먼트
+ * @Param {Boolean} usePreview : 프리뷰 창을 사용할건지에 대한 값
  * @return void
  */
-var JSONEditor = function($wrap)
+var JSONEditor = function($wrap, usePreview)
 {
 	var self = this;
 
 	self.$wrap = $wrap;
 	self.$index = null;
+	self.$preview = null;
 
 	var util = new Util();
 	var context = new Context(this, this.contextTree);
@@ -211,9 +213,15 @@ var JSONEditor = function($wrap)
 	 */
 	var init = function()
 	{
-		self.$index = $('<div class="index"/>');
+		self.$index = $('<div class="index" />');
 		self.$index.append(createRoot());
 		self.$wrap.prepend(self.$index);
+
+		self.$preview = $('<pre class="preview" />');
+		self.$wrap.append(self.$preview);
+		self.$wrap.addClass('preview');
+
+		updatePreview();
 	}
 
 	/**
@@ -286,10 +294,16 @@ var JSONEditor = function($wrap)
 	var inputCheckEvent = function($item)
 	{
 		var $strong = $item.find('> dl > dt > strong');
+		var $inputs = $item.find('> dl > dt > strong, > dl > dd > span');
+
 		$strong.on('blur', function(){
 			util.removeBR($(this));
 			util.removeSpace($(this));
 			util.stringLimiter($(this), 20);
+		});
+		// preview update
+		$inputs.on('blur', function(){
+			updatePreview();
 		});
 	}
 
@@ -315,7 +329,6 @@ var JSONEditor = function($wrap)
 		});
 	}
 
-
 	/**
 	 * drag event
 	 * 
@@ -338,6 +351,8 @@ var JSONEditor = function($wrap)
 	
 				updateNumber(beforeItem.children());
 				updateNumber(targetContainer.el.children());
+
+				updatePreview();
 	
 				beforeItem = adjustment = null;
 			}
@@ -366,7 +381,7 @@ var JSONEditor = function($wrap)
 	}
 
 	/**
-	 * create root node
+	 * Create root node
 	 * 
 	 * @return {DOM}
 	 */
@@ -385,6 +400,14 @@ var JSONEditor = function($wrap)
 		dragEvent($li);
 
 		return $ul;
+	}
+
+	/**
+	 * Updata preview
+	 */
+	var updatePreview = function()
+	{
+		self.$preview.text(self.exportJSON(5));
 	}
 
 
@@ -431,6 +454,7 @@ var JSONEditor = function($wrap)
 	{
 		$active.attr('type', type);
 		$active.find('> dl > dt > strong').attr('data-ph', type);
+		updatePreview();
 	}
 
 	/**
@@ -447,6 +471,7 @@ var JSONEditor = function($wrap)
 		});
 		updateCount($target.parent().parent());
 		updateNumber($target.parent().children());
+		updatePreview();
 	}
 
 	/**
@@ -459,6 +484,7 @@ var JSONEditor = function($wrap)
 		var $parentItem = $target.parent().parent();
 		$target.remove();
 		updateCount($parentItem);
+		updatePreview();
 	}
 
 	/**
@@ -494,6 +520,7 @@ var JSONEditor = function($wrap)
 			});
 		}
 		items(data, self.$index.find('[loc=root]'));
+		updatePreview();
 	}
 
 	/**

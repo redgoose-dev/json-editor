@@ -11,9 +11,18 @@
 
 /* json editor */
 .JSONEditor {
+	position: relative;
+	*, *:before, *:after {
+		box-sizing: border-box;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+	}
+	&:after {content: ''; display: block; clear: both;}
+
 	/* index */
 	> div.index {
-		border-width: 1px 0; border-style: solid; border-color: #ccc;
+		position: relative; padding: 8px 12px; margin: 0;
+		border-width: 1px; border-style: solid; border-color: #ccc;
 		font-size: 13px;
 		ul {margin: 0; padding: 0 0 0 22px; list-style: none; clear: both;}
 		> ul {margin: 5px 0; padding-left: 0;}
@@ -158,6 +167,16 @@
 			content: '';
 			left: 0; right: 0; top: -1px; height: 3px; background: #7a7c7d;
 		}
+
+		&:before {
+			content: 'Editor'; display: block; position: absolute;
+			padding: 2px 6px 2px 8px;
+			right: 0; top: 0;
+			font-size: 12px; font-weight: 600; font-family: Verdana, sans-serif; color: #666;
+			background: #f5f5f5;
+			border-width: 0 0 1px 1px; border-style: solid; border-color: #ccc;
+			border-bottom-left-radius: 3px;
+		}
 	}
 
 	/* Context */
@@ -221,8 +240,37 @@
 			@extend %sp-ico;
 		}
 	}
+
+	/* Preview */
+	> pre.preview {
+		position: relative; float: right; width: 48%; min-height: 100px; margin: 0; padding: 12px;
+		border: 1px solid #ccc;
+		font-size: 13px;
+		&:before {
+			content: 'Preview'; display: block; position: absolute;
+			padding: 2px 6px 2px 8px;
+			right: 0; top: 0;
+			font-size: 12px; font-weight: 600; font-family: Verdana, sans-serif; color: #666;
+			background: #f5f5f5;
+			border-width: 0 0 1px 1px; border-style: solid; border-color: #ccc;
+			border-bottom-left-radius: 3px;
+		}
+	}
+
+	&.preview {
+		> div.index {width: 48%; float: left; overflow: auto;}
+		> pre.preview {display: block;}
+	}
 }
 
+@media all and (max-width:640px) {
+	.JSONEditor {
+		&.preview {
+			> div.index {width: auto; float: none; overflow: visible;}
+			> pre.preview {width: auto; float: none; margin-top: 15px;}
+		}
+	}
+}
 
 /* jQuery Sortable */
 body.dragging {width: 100%; overflow: hidden}
