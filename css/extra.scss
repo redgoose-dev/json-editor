@@ -14,7 +14,7 @@ pre {font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;}
 hr {margin: 30px 0; border: none; height: 1px; background: #aaa;}
 
 main {
-	margin: 15px; position: relative;
+	display: block; margin: 15px; position: relative;
 	> header {
 		> h1 {
 			margin: 0; padding: 0 0 5px;
