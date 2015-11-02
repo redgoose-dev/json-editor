@@ -576,10 +576,10 @@ var JSONEditor = function($wrap, usePreview)
 	/**
 	 * 아이템 트리의 내용을 문자형태로 내보내기
 	 *
-	 * @param {Boolean} is_tab 탭 사용여부
+	 * @param {Number|Boolean} getSpace 숫자 : 스페이스 수, true : 탭, false : 0
 	 * @return {String} : 문자로 변형된 json데이터
 	 */
-	this.export = function(is_tab)
+	this.export = function(getSpace)
 	{
 		function items($li, obj)
 		{
@@ -664,7 +664,9 @@ var JSONEditor = function($wrap, usePreview)
 			$root
 			,($root.attr('type') == 'Array') ? [] : {}
 		);
-		return JSON.stringify(json, null, (is_tab) ? '\t' : 0);
+		var space = (typeof getSpace === 'boolean') ? '\t' : 0;
+		space = (typeof getSpace === 'number') ? getSpace : space;
+		return JSON.stringify(json, null, space);
 	};
 
 

@@ -82,8 +82,8 @@ jsonEditor.import({
 });
 ```
 
-### editor.export(is_tab)
-에디터에 있는 내용을 json 문자 데이터로 내보냅니다. `is_tab`은 탭 키워드를 사용할지에 대한 boolean값입니다.
+### editor.export(getSpace)
+에디터에 있는 내용을 json 문자 데이터로 내보냅니다. `getSpace`값을 숫자로 넣으면 스페이스 수, true로 넣으면 탭, false로 넣으면 0 값으로 들어갑니다.
 ```
 var export_json = jsonEditor.export(true);
 ```
