@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <title>JSON Manager</title>
-<link rel="stylesheet" href="./css/JSONEditor.css" />
-<link rel="stylesheet" href="./css/extra.css" />
+<link rel="stylesheet" href="./dist/css/JSONEditor.css" />
+<link rel="stylesheet" href="./dist/css/extra.css" />
 </head>
 <body>
 <main>
@@ -15,7 +15,7 @@
 	<!-- // Header -->
 
 	<!-- JSON editor -->
-	<div class="JSONEditor"></div>
+	<div class="JSONEditor" id="json_editor"></div>
 	<!-- // JSON editor -->
 
 	<hr />
@@ -23,42 +23,44 @@
 	<!-- result -->
 	<div id="jsonResult">
 		<nav class="btngroup">
-			<button type="button" role="btn_toJSON">Export JSON</button>
+			<button type="button" role-action="importJSON">Import JSON</button>
+			<button type="button" role-action="replaceJSON">Replace JSON</button>
+			<button type="button" role-action="exportJSON">Export JSON</button>
 		</nav>
 		<pre></pre>
 	</div>
 	<!-- // result -->
 </main>
 
-<script src="./js/jquery-2.1.1.min.js"></script>
-<script src="./js/jquery-sortable.js"></script>
-<script src="./js/JSONEditor.class.js"></script>
+<script src="./vendor/jquery/jquery.min.js"></script>
+<script src="./vendor/jquery-sortable/jquery-sortable.js"></script>
+<script src="./dist/js/JSONEditor.class.js"></script>
 <script>
 jQuery(function($){
 
-	var $jsonEditor = $('div.JSONEditor');
+	var $jsonEditor = $('#json_editor');
 	var jsonEditor = new JSONEditor($jsonEditor);
+	var $jsonResult = $('#jsonResult');
 
-	// import json
-	try {
-		var json = JSON.parse('{"사과":"빨간색", "바나나":"노란색", "키위":"녹색", "포도":"보라색"}');
-	}
-	catch(e) {
-		var json = new Object();
-	}
-	if (Array.isArray(json))
-	{
-		jsonEditor.typeItem({
-			active : $jsonEditor.find('li[loc=root]'),
-			type : 'Array'
-		});
-	}
-	jsonEditor.importJSON(json);
+	var sampleJsonArray = JSON.parse('[{"name":"Ann", "age":24, "sex":"female", "hobby":"Reading book"}, {"name":"Mike", "age":"17", "sex":"mail", "hobby":"Baseball"}]');
+	var sampleJsonObject = JSON.parse('{"member" : {"name":"Ann", "age":24, "sex":"female", "hobby":"Reading book"}}');
+	var defaultJson = JSON.parse('{"apple":"빨간색", "banana":"노란색", "kiwi":"녹색", "the_number_of_grape":36, "is_fruits":true}');
+
+	jsonEditor.replace(defaultJson);
 
 	// Export json
-	var $jsonResult = $('#jsonResult');
-	$jsonResult.find('button[role=btn_toJSON]').on('click', function(){
-		$jsonResult.children('pre').text(jsonEditor.exportJSON(5));
+	$('button[role-action=exportJSON]').on('click', function(){
+		$jsonResult.children('pre').text(jsonEditor.export());
+	});
+
+	// import json
+	$('button[role-action=importJSON]').on('click', function(){
+		jsonEditor.import(sampleJsonObject);
+	});
+
+	// replace json
+	$('button[role-action=replaceJSON]').on('click', function(){
+		jsonEditor.replace(sampleJsonArray);
 	});
 });
 </script>

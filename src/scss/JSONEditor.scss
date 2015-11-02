@@ -123,13 +123,12 @@
 							> strong {}
 						}
 					}
-					> li[type=String] {
+					> li[type=String], > li[type=Number], > li[type=Boolean] {
 						> dl > dt {
 							> strong {display: none;}
 						}
 					}
-					> li[type=Object],
-					> li[type=Array] {
+					> li[type=Object], > li[type=Array] {
 						> dl > dt {
 							> strong {display: none;}
 							> .type {display: inline;}
@@ -137,20 +136,20 @@
 					}
 				}
 			}
-			&[type=String] {
+			&[type=String], &[type=Number], &[type=Boolean] {
 				> dl {
 					> dt {
 						> strong {margin-left: 8px;}
 						> .count {display: none;}
 						> button[role=toggle] {display: none;}
-						> .type {
-							&:before {content: 'String'}
-						}
 					}
 					> dd {}
 				}
 				> ul {display: none;}
 			}
+			&[type=String] > dl > dt > .type:before {content: 'String';}
+			&[type=Number] > dl > dt > .type:before {content: 'Number';}
+			&[type=Boolean] > dl > dt > .type:before {content: 'Boolean';}
 			&[loc=root] {
 				> dl > dt {
 					> strong {display: none;}
@@ -160,7 +159,7 @@
 		}
 		button[role=move] {background-position: -50px -26px;}
 		button[role=control] {background-position: -73px -24px;}
-	
+
 		li.placeholder {position: relative;}
 		li.placeholder:before {
 			position: absolute;
@@ -215,7 +214,7 @@
 			}
 		}
 		&[type] {display: block;}
-		&[type=String] {
+		&[type=String], &[type=Number], &[type=Boolean] {
 			> ul {
 				> li[role=Insert] {display: none;}
 			}
@@ -227,7 +226,7 @@
 					display: none;
 				}
 				> li[role=Type] {
-					li[role=String] {display: none;}
+					li[role=String], li[role=Number], li[role=Boolean] {display: none;}
 				}
 			}
 		}
