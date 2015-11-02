@@ -664,7 +664,7 @@ var JSONEditor = function($wrap, usePreview)
 			$root
 			,($root.attr('type') == 'Array') ? [] : {}
 		);
-		var space = (typeof getSpace === 'boolean') ? '\t' : 0;
+		var space = ((typeof getSpace === 'boolean') && getSpace == true) ? '\t' : 0;
 		space = (typeof getSpace === 'number') ? getSpace : space;
 		return JSON.stringify(json, null, space);
 	};
