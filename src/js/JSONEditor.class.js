@@ -1,10 +1,10 @@
 function log(o){console.log(o);}
 Object.size = function(obj) {
-    var size = 0, key;
-    for (key in obj) {
-        if (obj.hasOwnProperty(key)) size++;
-    }
-    return size;
+	var size = 0, key;
+	for (key in obj) {
+		if (obj.hasOwnProperty(key)) size++;
+	}
+	return size;
 };
 
 
@@ -44,7 +44,7 @@ var JSONEditor = function($wrap, usePreview)
 		this.removeBR = function (element)
 		{
 			element.find('br').replaceWith(' ');
-		}
+		};
 
 		/**
 		 * string limiter
@@ -77,7 +77,7 @@ var JSONEditor = function($wrap, usePreview)
 
 	/**
 	 * Context class
-     * 기능을 실행하는 context 메뉴
+	 * 기능을 실행하는 context 메뉴
 	 *
 	 * @param {JSONEditor} getParent
 	 * @param {Array} tree
@@ -414,7 +414,7 @@ var JSONEditor = function($wrap, usePreview)
 
 
 	/**
-     * Insert item
+	 * Insert item
 	 * 아이템을 삽입해준다.
 	 *
 	 * @param {Object} $active : 선택된 아이템
@@ -448,7 +448,7 @@ var JSONEditor = function($wrap, usePreview)
 	};
 
 	/**
-     * Change type
+	 * Change type
 	 * 아이템의 타입을 바꿔준다.
 	 *
 	 * @param {Object} $active : 선택된 아이템
@@ -456,29 +456,29 @@ var JSONEditor = function($wrap, usePreview)
 	 */
 	this.typeItem = function($active, type)
 	{
-        var $key = $active.find('> dl > dt > strong');
-        var $value = $active.find('> dl > dd > span');
+		var $key = $active.find('> dl > dt > strong');
+		var $value = $active.find('> dl > dd > span');
 
 		$active.attr('type', type);
 		$key.attr('data-ph', type);
 
-        switch(type)
-        {
-            case "Number":
-                var value = parseInt($value.text());
-                value = (!value) ? 0 : value;
-                $value.text(value);
-                break;
-            case "Boolean":
-                $value.text(!!($value.text()));
-                break;
-        }
+		switch(type)
+		{
+			case "Number":
+				var value = parseInt($value.text());
+				value = (!value) ? 0 : value;
+				$value.text(value);
+				break;
+			case "Boolean":
+				$value.text(!!($value.text()));
+				break;
+		}
 
 		updatePreview();
 	};
 
 	/**
-     * Duplicate item
+	 * Duplicate item
 	 * 아이템 복제
 	 *
 	 * @param {Object} $target : 복사할 아이템
@@ -496,7 +496,7 @@ var JSONEditor = function($wrap, usePreview)
 	};
 
 	/**
-     * Remove item
+	 * Remove item
 	 * 아이템 삭제
 	 *
 	 * @param {Object} $target
@@ -509,161 +509,163 @@ var JSONEditor = function($wrap, usePreview)
 		updatePreview();
 	};
 
-    /**
-     * Import JSON
-     * 에디터로 json 데이터 가져오기(add)
-     *
-     * @param {Object} data
-     */
-    this.import = function(data)
-    {
-        function items(getData, $item)
-        {
-            $.each(getData, function(index, value){
-                var
-                    data = {key : index, value : value}
-                    ,type = null
-                ;
+	/**
+	 * Import JSON
+	 * 에디터로 json 데이터 가져오기(add)
+	 *
+	 * @param {Object} data
+	 */
+	this.import = function(data)
+	{
+		function items(getData, $item)
+		{
+			$.each(getData, function(index, value){
+				var
+					data = {key : index, value : value}
+					,type = null
+				;
 
-                if (typeof value === 'string')
-                {
-                    type = 'String';
-                }
-                else if (typeof value === 'object')
-                {
-                    type = (Array.isArray(value)) ? 'Array' : 'Object';
-                }
-                else if (typeof value === 'number')
-                {
-                    type = 'Number';
-                }
-                else if (typeof value === 'boolean')
-                {
-                    type = 'Boolean';
-                }
+				if (typeof value === 'string')
+				{
+					type = 'String';
+				}
+				else if (typeof value === 'object')
+				{
+					type = (Array.isArray(value)) ? 'Array' : 'Object';
+				}
+				else if (typeof value === 'number')
+				{
+					type = 'Number';
+				}
+				else if (typeof value === 'boolean')
+				{
+					type = 'Boolean';
+				}
 
-                self.insertItem($item, type, data, function($item){
-                    if (type !== 'String' && Object.size(value) > 0)
-                    {
-                        items(value, $item);
-                    }
-                });
-            });
-        }
-        items(data, self.$index.find('[loc=root]'));
-        updatePreview();
-    };
+				self.insertItem($item, type, data, function($item){
+					if (type !== 'String' && Object.size(value) > 0)
+					{
+						items(value, $item);
+					}
+				});
+			});
+		}
+		items(data, self.$index.find('[loc=root]'));
+		updatePreview();
+	};
 
-    /**
-     * Replace JSON
-     * 에디터로 json 데이터 가져오기(replace)
-     *
-     * @param {Object} data
-     */
-    this.replace = function(data)
-    {
-        var $root = this.$index.find('[loc=root]');
-        var $lis = $root.find('> ul > li');
+	/**
+	 * Replace JSON
+	 * 에디터로 json 데이터 가져오기(replace)
+	 *
+	 * @param {Object} data
+	 */
+	this.replace = function(data)
+	{
+		var $root = this.$index.find('[loc=root]');
+		var $lis = $root.find('> ul > li');
 
-        this.removeItem($lis);
-        if (Array.isArray(data))
-        {
-            this.typeItem($root, 'Array');
-        }
-        this.import(data);
-    };
+		this.removeItem($lis);
+		if (Array.isArray(data))
+		{
+			this.typeItem($root, 'Array');
+		}
+		this.import(data);
+	};
 
-    /**
-     * 아이템 트리의 내용을 문자형태로 내보내기
-     *
+	/**
+	 * 아이템 트리의 내용을 문자형태로 내보내기
+	 *
 	 * @param {Boolean} is_tab 탭 사용여부
-     * @return {String} : 문자로 변형된 json데이터
-     */
-    this.export = function(is_tab)
-    {
-        function items($li, obj)
-        {
-            var $lis = $li.children('ul').children('li');
-            if ($lis.length)
-            {
-                $lis.each(function(){
-                    var
-                        $this = $(this),
-                        key = $this.find('> dl > dt > strong').text(),
-                        value = $this.find('> dl > dd > span').text(),
-                        $parent = $this.parent().parent()
-                    ;
+	 * @return {String} : 문자로 변형된 json데이터
+	 */
+	this.export = function(is_tab)
+	{
+		function items($li, obj)
+		{
+			var $lis = $li.children('ul').children('li');
+			if ($lis.length)
+			{
+				$lis.each(function(){
+					var
+						$this = $(this),
+						key = $this.find('> dl > dt > strong').text(),
+						value = $this.find('> dl > dd > span').text(),
+						$parent = $this.parent().parent()
+					;
 
-                    if (($parent.attr('type') !== 'Array') && !key)
-                    {
-                        return true;
-                    }
+					if (($parent.attr('type') !== 'Array') && !key)
+					{
+						return true;
+					}
 
-                    switch($(this).attr('type'))
-                    {
-                        case 'String':
-                            if ($li.attr('type') == 'Array')
-                            {
-                                obj.push(value);
-                            }
-                            else
-                            {
-                                obj[key] = value;
-                            }
-                            break;
-                        case 'Array':
-                            if ($li.attr('type') == 'Array')
-                            {
-                                obj.push(items($this, []));
-                            }
-                            else
-                            {
-                                obj[key] = items($this, []);
-                            }
-                            break;
-                        case 'Object':
-                            if ($li.attr('type') == 'Array')
-                            {
-                                obj.push(items($this, []));
-                            }
-                            else
-                            {
-                                obj[key] = items($this, []);
-                            }
-                            break;
-                        case 'Number':
-                            if ($li.attr('type') == 'Array')
-                            {
-                                obj.push(value);
-                            }
-                            else
-                            {
-                                obj[key] = parseInt(value);
-                            }
-                            break;
-                        case 'Boolean':
-                            if ($li.attr('type') == 'Array')
-                            {
-                                obj.push(value);
-                            }
-                            else
-                            {
-                                obj[key] = !!(value == 'true' || value == 1);
-                            }
-                            break;
-                    }
-                });
-            }
-            return obj;
-        }
+					switch($this.attr('type'))
+					{
+						case 'String':
+							if ($li.attr('type') == 'Array')
+							{
+								obj.push(value);
+							}
+							else
+							{
+								obj[key] = value;
+							}
+							break;
+						case 'Array':
+							if ($li.attr('type') == 'Array')
+							{
+								obj.push(items($this, []));
+							}
+							else
+							{
+								obj[key] = items($this, []);
+							}
+							break;
+						case 'Object':
+							if ($li.attr('type') == 'Array')
+							{
+								obj.push(items($this, {}));
+							}
+							else
+							{
+								obj[key] = items($this, {});
+							}
+							break;
+						case 'Number':
+							value = parseInt(value);
+							if ($li.attr('type') == 'Array')
+							{
+								obj.push(value);
+							}
+							else
+							{
+								obj[key] = value;
+							}
+							break;
+						case 'Boolean':
+							value = !!(value == 'true' || value == 1);
+							if ($li.attr('type') == 'Array')
+							{
+								obj.push(value);
+							}
+							else
+							{
+								obj[key] = !!(value == 'true' || value == 1);
+							}
+							break;
+					}
+				});
+			}
+			return obj;
+		}
 
-        var $root = self.$index.find('[loc=root]');
-        var json = items(
-            $root
-            ,($root.attr('type') == 'Array') ? [] : {}
-        );
-        return JSON.stringify(json, null, (is_tab) ? '\t' : 0);
-    };
+		var $root = self.$index.find('[loc=root]');
+		var json = items(
+			$root
+			,($root.attr('type') == 'Array') ? [] : {}
+		);
+		return JSON.stringify(json, null, (is_tab) ? '\t' : 0);
+	};
 
 
 	// act
@@ -681,8 +683,8 @@ JSONEditor.prototype.contextTree = [
 			{role:'Object'}
 			,{role : 'Array'}
 			,{role : 'String'}
-            ,{role : 'Number'}
-            ,{role : 'Boolean'}
+			,{role : 'Number'}
+			,{role : 'Boolean'}
 		]
 	}
 	,{
@@ -691,8 +693,8 @@ JSONEditor.prototype.contextTree = [
 			{role : 'Object'}
 			,{role : 'Array'}
 			,{role : 'String'}
-            ,{role : 'Number'}
-            ,{role : 'Boolean'}
+			,{role : 'Number'}
+			,{role : 'Boolean'}
 		]
 	}
 	,{role : 'Duplicate'}
