@@ -50,7 +50,7 @@ jQuery(function($){
 
 	// Export json
 	$('button[role-action=exportJSON]').on('click', function(){
-		$jsonResult.children('pre').text(jsonEditor.export());
+		$jsonResult.children('pre').text(jsonEditor.export(true));
 	});
 
 	// import json

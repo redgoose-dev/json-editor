@@ -82,10 +82,10 @@ jsonEditor.import({
 });
 ```
 
-### editor.export()
-에디터에 있는 내용을 json 문자 데이터로 내보냅니다.
+### editor.export(is_tab)
+에디터에 있는 내용을 json 문자 데이터로 내보냅니다. `is_tab`은 탭 키워드를 사용할지에 대한 boolean값입니다.
 ```
-var export_json = jsonEditor.export();
+var export_json = jsonEditor.export(true);
 ```
 
 
