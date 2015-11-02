@@ -92,4 +92,35 @@ var export_json = jsonEditor.export();
 ## Development
 이 프로그램을 수정하거나 기능을 더하기 위한 개발작업을 준비할 필요가 있습니다.
 
-글 준비중..
+### Ready
+먼저 npm을 사용하기 때문에 node.js가 설치되어 있어야 합니다.  
+npm을 사용할 수 있다면 프로젝트를 이용하여 gulp와 그와 관련된 개발용 도구를 설치합니다.
+```
+cd ~/JSONEditor
+npm install
+```
+
+### Compile scss, javascript
+프로그램에서 주로 수정되는 부분은 `src/scss/JSONEditor.scss`와 `src/js/JSONEditor.class.js`인데 이 파일들을 수정하고 `/dist` 에 저장하는 명령어들은 다음과 같습니다.
+
+__Compile scss__
+```
+gulp scss
+```
+
+__Watch compile scss__
+```
+gulp scss:watch
+```
+
+__Compile javascript__
+```
+gulp javascript
+```
+
+__Watch compile javascript__
+```
+gulp javascript:watch
+```
+
+> `:Watch`가 들어간 명령을 실행하면 계속 실행되어 있으며 소스가 저장되면 그것을 인식하여 컴파일을 실행합니다.
