@@ -244,7 +244,7 @@
 	> pre.preview {
 		position: relative; float: right; width: 49%; min-height: 100px; margin: 0; padding: 12px;
 		border: 1px solid #ccc;
-		font-size: 13px;
+		font-size: 13px; line-height: 22px;
 		overflow-x: auto;
 		&:before {
 			content: 'Preview'; display: block; position: absolute; margin: 0;
