@@ -20,6 +20,8 @@ var JSONEditor = function($wrap, usePreview)
 {
 	var self = this;
 
+	var EVENT_NAME = 'GooseEvent';
+
 	self.$wrap = $wrap;
 	self.$index = null;
 	self.$preview = null;
@@ -38,7 +40,7 @@ var JSONEditor = function($wrap, usePreview)
 		 * <br/> 엘리먼트를 공백으로 변환시켜줍니다.
 		 *
 		 * @param {Object} element : 컨테이너 엘리먼트
-		**/
+		 */
 		this.removeBR = function (element)
 		{
 			element.find('br').replaceWith(' ');
@@ -50,7 +52,7 @@ var JSONEditor = function($wrap, usePreview)
 		 *
 		 * @param {Object} element : 글이 들어있는 엘리먼트
 		 * @param {Number} limit : 글자 갯수제한
-		**/
+		 */
 		this.stringLimiter = function(element, limit)
 		{
 			var str = element.text();
@@ -65,7 +67,7 @@ var JSONEditor = function($wrap, usePreview)
 		 * 공백을 없애줍니다.
 		 *
 		 * @param {Object} element : 내용이 적혀있는 엘리먼트입니다.
-		**/
+		 */
 		this.removeSpace = function(element)
 		{
 			element.text(element.text().replace(/\s+/g, ''));
@@ -136,26 +138,26 @@ var JSONEditor = function($wrap, usePreview)
 		 */
 		var contextEvent = function($nav)
 		{
-			$nav.find('li').on('click', function(e){
+			$nav.find('li').on('click.' + EVENT_NAME, function(e){
 				e.stopPropagation();
 			});
 
-			$nav.find('li[role=Type] li').on('click', function(){
+			$nav.find('li[role=Type] li').on('click.' + EVENT_NAME, function(){
 				parent.typeItem(self.active, $(this).attr('role'));
 				context.off();
 			});
 
-			$nav.find('li[role=Insert] li').on('click', function(){
+			$nav.find('li[role=Insert] li').on('click.' + EVENT_NAME, function(){
 				parent.insertItem(self.active, $(this).attr('role'), null);
 				context.off();
 			});
 
-			$nav.find('li[role=Duplicate]').on('click', function(){
+			$nav.find('li[role=Duplicate]').on('click.' + EVENT_NAME, function(){
 				parent.duplicateItem(self.active);
 				context.off();
 			});
 
-			$nav.find('li[role=Remove]').on('click', function(){
+			$nav.find('li[role=Remove]').on('click.' + EVENT_NAME, function(){
 				parent.removeItem(self.active);
 				context.off();
 			});
@@ -186,7 +188,7 @@ var JSONEditor = function($wrap, usePreview)
 			{
 				self.$el.removeAttr('loc');
 			}
-			$('html').on('click', function(){
+			$('html').on('click.' + EVENT_NAME, function(){
 				self.off();
 			});
 		};
@@ -296,13 +298,13 @@ var JSONEditor = function($wrap, usePreview)
 		var $strong = $item.find('> dl > dt > strong');
 		var $inputs = $item.find('> dl > dt > strong, > dl > dd > span');
 
-		$strong.on('blur', function(){
+		$strong.on('blur.' + EVENT_NAME, function(){
 			util.removeBR($(this));
 			util.removeSpace($(this));
 			util.stringLimiter($(this), 20);
 		});
 		// preview update
-		$inputs.on('blur', function(){
+		$inputs.on('blur.' + EVENT_NAME, function(){
 			updatePreview();
 		});
 	};
@@ -317,14 +319,14 @@ var JSONEditor = function($wrap, usePreview)
 		var $node = $buttons.closest('li');
 
 		// control
-		$buttons.filter('[role=control]').on('click', function(e){
+		$buttons.filter('[role=control]').on('click.' + EVENT_NAME, function(e){
 			e.stopPropagation();
 			context.off($node);
 			context.on($node, $(this));
 		});
 
 		// toggle
-		$buttons.filter('[role=toggle]').on('click', function(e){
+		$buttons.filter('[role=toggle]').on('click.' + EVENT_NAME, function(e){
 			$node.toggleClass('on')
 		});
 	};
@@ -517,10 +519,8 @@ var JSONEditor = function($wrap, usePreview)
 		function items(getData, $item)
 		{
 			$.each(getData, function(index, value){
-				var
-					data = {key : index, value : value}
-					,type = null
-				;
+				var data = {key : index, value : value};
+				var type = null;
 
 				if (typeof value === 'string')
 				{
@@ -584,12 +584,10 @@ var JSONEditor = function($wrap, usePreview)
 			if ($lis.length)
 			{
 				$lis.each(function(){
-					var
-						$this = $(this),
-						key = $this.find('> dl > dt > strong').text(),
-						value = $this.find('> dl > dd > span').text(),
-						$parent = $this.parent().parent()
-					;
+					var $this = $(this);
+					var key = $this.find('> dl > dt > strong').text();
+					var value = $this.find('> dl > dd > span').text();
+					var $parent = $this.parent().parent();
 
 					if (($parent.attr('type') !== 'Array') && !key)
 					{
@@ -657,10 +655,7 @@ var JSONEditor = function($wrap, usePreview)
 		}
 
 		var $root = self.$index.find('[loc=root]');
-		var json = items(
-			$root
-			,($root.attr('type') == 'Array') ? [] : {}
-		);
+		var json = items( $root, ($root.attr('type') == 'Array') ? [] : {} );
 		var space = ((typeof getSpace === 'boolean') && getSpace == true) ? '\t' : 0;
 		space = (typeof getSpace === 'number') ? getSpace : space;
 		return JSON.stringify(json, null, space);
@@ -677,25 +672,25 @@ var JSONEditor = function($wrap, usePreview)
 // context tree data
 JSONEditor.prototype.contextTree = [
 	{
-		role : 'Type'
-		,roles : [
-			{role:'Object'}
-			,{role : 'Array'}
-			,{role : 'String'}
-			,{role : 'Number'}
-			,{role : 'Boolean'}
+		role : 'Type',
+		roles : [
+			{role:'Object'},
+			{role : 'Array'},
+			{role : 'String'},
+			{role : 'Number'},
+			{role : 'Boolean'}
 		]
-	}
-	,{
-		role : 'Insert'
-		,roles : [
-			{role : 'Object'}
-			,{role : 'Array'}
-			,{role : 'String'}
-			,{role : 'Number'}
-			,{role : 'Boolean'}
+	},
+	{
+		role : 'Insert',
+		roles : [
+			{role : 'Object'},
+			{role : 'Array'},
+			{role : 'String'},
+			{role : 'Number'},
+			{role : 'Boolean'}
 		]
-	}
-	,{role : 'Duplicate'}
-	,{role : 'Remove'}
+	},
+	{role : 'Duplicate'},
+	{role : 'Remove'}
 ];
