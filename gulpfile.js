@@ -27,8 +27,7 @@ gulp.task('javascript', function(){
 		.pipe(sourcemaps.init())
 		.pipe(uglify())
 		.pipe(sourcemaps.write('../maps'))
-		.pipe(gulp.dest('dist/js/'))
-	;
+		.pipe(gulp.dest('dist/js/'));
 });
 // watch react and javascript
 gulp.task('javascript:watch', function(){

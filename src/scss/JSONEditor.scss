@@ -160,11 +160,13 @@
 		button[role=move] {background-position: -50px -26px;}
 		button[role=control] {background-position: -73px -24px;}
 
-		li.placeholder {position: relative;}
-		li.placeholder:before {
-			position: absolute;
-			content: '';
-			left: 0; right: 0; top: -1px; height: 3px; background: #7a7c7d;
+		li.placeholder {
+			position: relative; height: 24px;
+			&:before {
+				content: ''; position: absolute;
+				left: 0; right: 0; top: 0; bottom: 0;
+				border: 1px dashed #999;
+			}
 		}
 
 		&:before {

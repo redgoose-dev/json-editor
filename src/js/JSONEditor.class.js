@@ -1,4 +1,3 @@
-function log(o){console.log(o);}
 Object.size = function(obj) {
 	var size = 0, key;
 	for (key in obj) {
@@ -11,8 +10,7 @@ Object.size = function(obj) {
 /**
  * JSON Editor Class
  *
- * author : Redgoose (2014.03)
- * version : 0.3
+ * author : Redgoose
  * website : http://redgoose.me
  * @Param {Array} $wrap : json editor 껍데기 엘리먼트
  * @Param {Boolean} usePreview : 프리뷰 창을 사용할건지에 대한 값
@@ -334,7 +332,7 @@ var JSONEditor = function($wrap, usePreview)
 	/**
 	 * drag event
 	 *
-	 * @param {DOM} $item
+	 * @param {Object} $item
 	 */
 	var dragEvent = function($item)
 	{
@@ -345,30 +343,29 @@ var JSONEditor = function($wrap, usePreview)
 			,handle : 'button[role=move]'
 			,group : 'index'
 			,pullPlaceholder: true
-			,onDrop : function(item, targetContainer, _super) {
-				_super(item);
 
+			,onDrop : function($item, container, _super) {
 				updateCount(beforeItem.parent());
-				updateCount(targetContainer.el.parent());
+				updateCount(container.el.parent());
 
 				updateNumber(beforeItem.children());
-				updateNumber(targetContainer.el.children());
+				updateNumber(container.el.children());
 
 				updatePreview();
 
 				beforeItem = adjustment = null;
+				_super($item, container);
 			}
-			,onDragStart : function($el, container, _super) {
-				var
-					offset = $el.offset()
-					,pointer = container.rootGroup.pointer
-				;
+			,onDragStart : function($item, container, _super) {
+				var offset = $item.offset();
+				var pointer = container.rootGroup.pointer;
+
 				adjustment = {
 					left: pointer.left - offset.left
 					,top: pointer.top - offset.top
 				};
 				beforeItem = container.el;
-				_super($el, container)
+				_super($item, container);
 			}
 			,onDrag : function($el, position) {
 				$el.css({
