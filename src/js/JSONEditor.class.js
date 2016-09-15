@@ -484,7 +484,7 @@ var JSONEditor = function($wrap, usePreview)
 	 */
 	this.duplicateItem = function($target)
 	{
-		var $copy = $target.clone().insertAfter($target).find('li').andSelf();
+		var $copy = $target.clone().insertAfter($target).find('li').end();
 		$copy.each(function(){
 			buttonsEvent(selectButtons($(this)));
 			inputCheckEvent($(this));
