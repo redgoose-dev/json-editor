@@ -6,9 +6,9 @@ jQuery를 사용하는 javascript 에디터입니다.
 
 json 데이터 import로 데이터를 에디터로 가져올 수 있고, export로 json데이터로 내보낼 수 있습니다.
 
-데모페이지 : [http://projects.redgoose.me/2014/JSONEditor](http://projects.redgoose.me/2014/JSONEditor)
+데모페이지 : https://projects.redgoose.me/2014/json-editor
 
-[업데이트 내역](https://github.com/RedgooseDev/JSONEditor/releases) 페이지를 통하여 업데이트 내역을 확인할 수 있으니 참고해주세요.
+[업데이트 내역](https://github.com/redgoose-dev/json-editor/releases) 페이지를 통하여 업데이트 내역을 확인할 수 있으니 참고해주세요.
 
 ##Installation
 ###Step 1. 파일링크
