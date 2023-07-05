@@ -1,0 +1,43 @@
+{
+  "name": "json-editor",
+  "description": "Easy editing json data",
+  "author": "redgoose <scripter@me.com>",
+  "version": "1.0.0",
+  "keywords": [
+    "json",
+    "editor"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/redgoose-dev/json-editor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/redgoose-dev/json-editor/issues"
+  },
+  "homepage": "",
+  "engines": {
+    "node": "20"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "main": "",
+  "module": "",
+  "type": "module",
+  "types": "",
+  "scripts": {
+    "dev": "vite --config vite.config/dev.js",
+    "lib": "vite build --config vite.config/lib.js",
+    "prebuild": "",
+    "build": "vite build --config vite.config/docs.js"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^2.4.2",
+    "sass": "^1.63.6",
+    "svelte": "^4.0.4",
+    "vite": "^4.3.9"
+  }
+}
