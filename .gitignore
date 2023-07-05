@@ -1,5 +1,12 @@
-resource/
-.DS_Store
-css/.sass-cache/
+# directories
+.idea/
+.vscode/
 node_modules/
-.idea
+dist/
+
+# files
+.DS_Store
+yarn.lock
+package-lock.json
+bun.lockb
+.env.local
