@@ -29,9 +29,9 @@
   "types": "",
   "scripts": {
     "dev": "vite --config vite.config/dev.js",
-    "lib": "vite build --config vite.config/lib.js",
-    "prebuild": "",
-    "build": "vite build --config vite.config/docs.js"
+    "docs": "vite --config vite.config/docs.js",
+    "prebuild": "rm -rf docs2 && rm -rf lib",
+    "build": "vite build --config vite.config/lib.js && vite build --config vite.config/docs.js"
   },
   "dependencies": {},
   "devDependencies": {

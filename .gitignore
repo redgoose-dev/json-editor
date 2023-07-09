@@ -11,3 +11,8 @@ yarn.lock
 package-lock.json
 bun.lockb
 .env.local
+
+
+# TODO: 나중에 삭제할거
+docs2/
+lib/
