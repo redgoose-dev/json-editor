@@ -10,38 +10,18 @@
   {#if error}
     <div>.error</div>
   {:else}
-    <div class="item-root">
-      <ItemKey
-        type={type}
-        fold={fold}
-        count={children?.length || 0}
-        useFold={true}
-        useLabel={false}
-        useCount={true}
-        useSort={false}
-        on:fold={onChangeFold}
-        on:context={onOpenContext}/>
-    </div>
-    {#if children?.length > 0}
-      <ul
-        class="tree"
-        class:show={fold}>
-        {#each children as { key, value }}
-          <Item
-            root={root}
-            parentType={type}
-            keyName={key}
-            data={value}/>
-        {/each}
-      </ul>
-    {/if}
+    <Item
+      root={root}
+      parentType={undefined}
+      keyName={undefined}
+      data={data}/>
   {/if}
 </div>
 
 <script>
 import { onMount, onDestroy } from 'svelte'
 import { getTypeName } from './libs/object.js'
-import ItemKey from './components/item/assets/item-key.svelte'
+import ItemKey from './components/item/item-key.svelte'
 import Item from './components/item/index.svelte'
 
 export let data

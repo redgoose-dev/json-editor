@@ -1,43 +1,65 @@
-<li class="item">
-  {#if type === 'object'}
-    <ItemKey
-      type="object"
-      fold={fold}
-      count={children.length}
-      label={keyName}
-      useFold={true}
-      useLabel={parentType === 'object'}
-      useCount={true}
-      useSort={true}
-      on:fold={onChangeFold}
-      on:context={onOpenContext}/>
-  {:else if type === 'array'}
-    <ItemKey
-      type="array"
-      fold={fold}
-      count={children.length}
-      label={keyName}
-      useFold={true}
-      useLabel={parentType === 'object'}
-      useCount={true}
-      useSort={true}
-      on:fold={onChangeFold}
-      on:context={onOpenContext}/>
-  {:else if (type === 'string' || type === 'number' || type === 'boolean')}
-    <ItemKey
-      type={type}
-      label={data}
-      useFold={false}
-      useLabel={true}
-      useCount={false}
-      useSort={true}
-      on:fold={onChangeFold}
-      on:context={onOpenContext}/>
-  {/if}
+<svelte:element
+  this={!isRoot ? 'li' : 'div'}
+  class="item"
+  data-type={type}>
+  <dl>
+    <dt>
+      {#if type === 'object'}
+        <ItemKey
+          type="object"
+          fold={fold}
+          count={children.length}
+          label={keyName}
+          useFold={true}
+          useLabel={parentType === 'object'}
+          useCount={true}
+          useSort={!isRoot}
+          on:fold={onChangeFold}
+          on:context={onOpenContext}/>
+      {:else if type === 'array'}
+        <ItemKey
+          type="array"
+          fold={fold}
+          count={children.length}
+          label={keyName}
+          useFold={true}
+          useLabel={parentType === 'object'}
+          useCount={true}
+          useSort={!isRoot}
+          on:fold={onChangeFold}
+          on:context={onOpenContext}/>
+      {:else if (type === 'string' || type === 'number' || type === 'boolean')}
+        {#if parentType === 'array'}
+          <ItemKey
+            type={type}
+            label={data}
+            useFold={false}
+            useLabel={true}
+            useCount={false}
+            useSort={true}
+            on:fold={onChangeFold}
+            on:context={onOpenContext}/>
+        {:else}
+          <ItemKey
+            type={type}
+            label={keyName}
+            useFold={false}
+            useLabel={true}
+            useCount={false}
+            useSort={true}
+            on:fold={onChangeFold}
+            on:context={onOpenContext}/>
+        {/if}
+      {/if}
+    </dt>
+    {#if useValue}
+      <dd>
+        <Label bind:value={data}/>
+      </dd>
+    {/if}
+  </dl>
   {#if children?.length > 0}
-    <ul
-      class="tree"
-      class:show={fold}>
+    <ul class:show={fold}>
       {#each children as { key, value }}
         <Item
           root={root}
@@ -47,23 +69,24 @@
       {/each}
     </ul>
   {/if}
-</li>
+</svelte:element>
 
 <script>
-import { onMount, onDestroy } from 'svelte'
 import { getTypeName } from '../../libs/object.js'
-import ItemKey from './assets/item-key.svelte'
+import ItemKey from './item-key.svelte'
+import Label from './label.svelte'
 import Item from './index.svelte'
+import Context from '../context/index.svelte'
 
 export let root
 export let data
-export let parentType = 'object'
+export let parentType
 export let keyName = ''
-let type
+let isRoot = !parentType
 let fold = true
-
-$: type = getTypeName(data)
-$: children = createChildren(data, type)
+let type = getTypeName(data)
+let children = createChildren(data, type)
+let useValue = setUseValue(parentType, type)
 
 function createChildren(src, type)
 {
@@ -103,15 +126,65 @@ function onChangeValue(e)
   }))
 }
 
-onMount(() => {
-  console.log(children)
-})
+function setUseValue(parentType, type)
+{
+  if (parentType !== 'object') return false
+  switch (type)
+  {
+    case 'string':
+    case 'number':
+    case 'boolean':
+      return true
+    default:
+      return false
+  }
+}
 </script>
 
 <style lang="scss">
-@use '../../assets/mixins';
-.item {}
-.tree {
-  @include mixins.tree()
+dl {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0 6px;
+  dt {
+    box-sizing: border-box;
+  }
+  dd {
+    display: flex;
+    align-items: center;
+    gap: 0 3px;
+    margin: 0;
+    box-sizing: border-box;
+    font-size: 13px;
+    --label-min-width: 72px;
+    &:before {
+      content: ':';
+    }
+  }
+}
+ul {
+  position: relative;
+  display: none;
+  margin: 10px 0 0;
+  padding: 0 0 0 32px;
+  list-style: none;
+  gap: 6px 0;
+  &:before {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 11px;
+    top: 0;
+    bottom: 11px;
+    width: 8px;
+    border-width: 0 0 1px 1px;
+    border-style: double;
+    border-color: hsla(0 0% 82% / 100%);
+    border-bottom-left-radius: 4px;
+  }
+  &.show {
+    display: grid;
+  }
 }
 </style>
