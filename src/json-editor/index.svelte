@@ -1,32 +1,114 @@
 <svelte:options customElement={{
   tag: null,
   shadow: 'none',
-  props: {},
+  props: {
+    data: { reflect: true, type: 'String', attribute: 'data' },
+  },
 }}/>
 
-<div class="json-editor">
-  <Body/>
+<div bind:this={root} class="json-editor">
+  {#if error}
+    <div>.error</div>
+  {:else}
+    <div class="item-root">
+      <ItemKey
+        type={type}
+        fold={fold}
+        count={children?.length || 0}
+        useFold={true}
+        useLabel={false}
+        useCount={true}
+        useSort={false}
+        on:fold={onChangeFold}
+        on:context={onOpenContext}/>
+    </div>
+    {#if children?.length > 0}
+      <ul
+        class="tree"
+        class:show={fold}>
+        {#each children as { key, value }}
+          <Item
+            root={root}
+            parentType={type}
+            keyName={key}
+            data={value}/>
+        {/each}
+      </ul>
+    {/if}
+  {/if}
 </div>
 
 <script>
-import Body from './components/body.svelte'
+import { onMount, onDestroy } from 'svelte'
+import { getTypeName } from './libs/object.js'
+import ItemKey from './components/item/assets/item-key.svelte'
+import Item from './components/item/index.svelte'
+
+export let data
+let root
+let fold = true
+let type
+let children
+let error = undefined
+
+$: {
+  try
+  {
+    // convert data string to object
+    if (typeof data === 'string') data = JSON.parse(data)
+    // set type root item
+    type = getTypeName(data)
+    // set children items
+    switch (type)
+    {
+      case 'object':
+        children = Object.entries(data).map(([ key, value ]) => ({
+          key,
+          value,
+        }))
+        break
+      case 'array':
+        children = data.map((value, key) => ({
+          key,
+          value,
+        }))
+        break
+    }
+  }
+  catch (e)
+  {
+    // TODO: ERROR
+    console.error('ERROR =>', e)
+    error = {
+      message: e.message,
+    }
+  }
+}
+
+function onChangeFold({ detail })
+{
+  fold = detail
+}
+function onOpenContext()
+{
+  console.log('onClickOpenContext()')
+}
+function onRootEvent({ detail })
+{
+  const { foo } = detail
+  console.log('onRootEvent', detail, foo)
+}
+
+onMount(() => {
+  root.addEventListener('json-editor', onRootEvent)
+})
+onDestroy(() => {
+  // TODO
+  console.log('on destroy json-editor')
+  root.removeEventListener('json-editor', onRootEvent)
+})
 </script>
 
 <style lang="scss">
-.json-editor {
-  --json-editor-font-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-  --json-editor-font-eng: 'Helvetica Neue', sans-serif;
-  --json-editor-color-base: hsl(0 0% 13%);
-  --json-editor-color-blur: hsl(0 0% 67%);
-  --json-editor-color-object: hsl(174 66% 39%);
-  --json-editor-color-array: hsl(191 75% 53%);
-  --json-editor-color-string: hsl(5 87% 59%);
-  --json-editor-color-number: hsl(33 89% 55%);
-  --json-editor-color-boolean: hsl(45 89% 54%);
-
-  font-family: var(--json-editor-font-base);
-  color: var(--json-editor-color-base);
-  font-size: 16px;
-  line-height: 1.15;
-}
+@import './index';
 </style>

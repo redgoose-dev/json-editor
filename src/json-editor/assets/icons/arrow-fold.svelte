@@ -28,7 +28,7 @@ button {
   display: block;
   width: 32px;
   height: 32px;
-  margin: -8px -4px -8px 2px;
+  margin: -8px;
   padding: 0;
   background: none;
   border: none;
@@ -42,7 +42,7 @@ svg {
   display: block;
   margin: 0 auto;
   width: var(--fold-arrow-size, 20px);
-  rotate: 0;
+  rotate: 0deg;
   box-sizing: border-box;
   transition: rotate, 160ms ease-out;
   &.open {
