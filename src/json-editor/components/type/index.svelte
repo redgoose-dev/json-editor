@@ -3,7 +3,8 @@
   class:array={name === 'array'}
   class:string={name === 'string'}
   class:number={name === 'number'}
-  class:boolean={name === 'boolean'}>
+  class:boolean={name === 'boolean'}
+  class:null={name === 'null'}>
   <Icon name={name}/>
 </i>
 
@@ -35,6 +36,9 @@ i {
   }
   &.boolean {
     background: var(--json-editor-color-boolean);
+  }
+  &.null {
+    background: var(--json-editor-color-null);
   }
 }
 </style>

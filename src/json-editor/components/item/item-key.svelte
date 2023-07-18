@@ -16,9 +16,13 @@
     </p>
   {/if}
   {#if useLabel}
-    <div class="label">
-      <Label bind:value={label}/>
-    </div>
+    {#if labelType === 'null'}
+      <Null/>
+    {:else}
+      <div class="label">
+        <Label type={labelType} bind:value={label}/>
+      </div>
+    {/if}
   {/if}
   {#if useCount}
     <p class="count">
@@ -37,12 +41,14 @@ import Type from '../type/index.svelte'
 import IconArrowFold from '../../assets/icons/arrow-fold.svelte'
 import IconSort from '../../assets/icons/sort.svelte'
 import Label from './label.svelte'
+import Null from './null.svelte'
 
 const dispatch = createEventDispatcher()
 export let type = 'object'
 export let fold = false
 export let count = 0
 export let label = ''
+export let labelType = 'key'
 export let useFold = false
 export let useSort = false
 export let useLabel = false
@@ -76,7 +82,7 @@ function onClickOpenContext()
   cursor: move;
 }
 .fold {
-  margin: 0 0 0 6px;
+  margin: 0 0 0 4px;
 }
 .type {
   display: block;
@@ -87,6 +93,7 @@ function onClickOpenContext()
   background: none;
   outline: none;
   cursor: pointer;
+  transition: opacity 120ms ease-out;
   &:active {
     opacity: .5;
   }

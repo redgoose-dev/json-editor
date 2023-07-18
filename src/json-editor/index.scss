@@ -10,7 +10,9 @@
   --json-editor-color-string: hsl(5 87% 59%);
   --json-editor-color-number: hsl(33 89% 55%);
   --json-editor-color-boolean: hsl(45 89% 54%);
+  --json-editor-color-null: hsl(0 0% 58%);
   --json-editor-color-active: hsla(0 0% 0% / 6%);
+  --json-editor-font-size: 13px;
 
   font-family: var(--json-editor-font-base);
   color: var(--json-editor-color-base);

@@ -1,11 +1,11 @@
 /**
  * get type name
  * @param {any} src
- * @return {null|array|string|number|boolean|object}
+ * @return {'null'|'array'|'string'|'number'|'boolean'|'object'}
  */
 export function getTypeName(src)
 {
-  if (src === undefined || src === null) return null
+  if (src === undefined || src === null) return 'null'
   else if (Array.isArray(src)) return 'array'
   else if (typeof src === 'string') return 'string'
   else if (typeof src === 'number') return 'number'

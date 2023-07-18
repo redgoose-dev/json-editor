@@ -32,6 +32,7 @@ const config = defineConfig(({ mode }) => {
           'public/*',
         ],
       },
+      // minify: 'terser',
     },
     plugins: [
       svelte({

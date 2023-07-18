@@ -10,6 +10,7 @@
           fold={fold}
           count={children.length}
           label={keyName}
+          labelType="key"
           useFold={true}
           useLabel={parentType === 'object'}
           useCount={true}
@@ -22,17 +23,19 @@
           fold={fold}
           count={children.length}
           label={keyName}
+          labelType="key"
           useFold={true}
           useLabel={parentType === 'object'}
           useCount={true}
           useSort={!isRoot}
           on:fold={onChangeFold}
           on:context={onOpenContext}/>
-      {:else if (type === 'string' || type === 'number' || type === 'boolean')}
+      {:else if (type === 'string' || type === 'number' || type === 'boolean' || type === 'null')}
         {#if parentType === 'array'}
           <ItemKey
             type={type}
             label={data}
+            labelType={type === 'null' ? 'null' : 'value'}
             useFold={false}
             useLabel={true}
             useCount={false}
@@ -43,6 +46,7 @@
           <ItemKey
             type={type}
             label={keyName}
+            labelType="key"
             useFold={false}
             useLabel={true}
             useCount={false}
@@ -54,7 +58,11 @@
     </dt>
     {#if useValue}
       <dd>
-        <Label bind:value={data}/>
+        {#if type === 'null'}
+          <Null/>
+        {:else}
+          <Label type="value" bind:value={data}/>
+        {/if}
       </dd>
     {/if}
   </dl>
@@ -77,6 +85,7 @@ import ItemKey from './item-key.svelte'
 import Label from './label.svelte'
 import Item from './index.svelte'
 import Context from '../context/index.svelte'
+import Null from './null.svelte'
 
 export let root
 export let data
@@ -134,6 +143,7 @@ function setUseValue(parentType, type)
     case 'string':
     case 'number':
     case 'boolean':
+    case 'null':
       return true
     default:
       return false
@@ -156,7 +166,7 @@ dl {
     gap: 0 3px;
     margin: 0;
     box-sizing: border-box;
-    font-size: 13px;
+    font-size: var(--json-editor-font-size);
     --label-min-width: 72px;
     &:before {
       content: ':';
@@ -166,8 +176,8 @@ dl {
 ul {
   position: relative;
   display: none;
-  margin: 10px 0 0;
-  padding: 0 0 0 32px;
+  margin: 6px 0 0;
+  padding: 0 0 0 30px;
   list-style: none;
   gap: 6px 0;
   &:before {
@@ -175,12 +185,12 @@ ul {
     display: block;
     position: absolute;
     left: 11px;
-    top: 0;
+    top: 4px;
     bottom: 11px;
-    width: 8px;
+    width: 6px;
     border-width: 0 0 1px 1px;
-    border-style: double;
-    border-color: hsla(0 0% 82% / 100%);
+    border-style: dashed;
+    border-color: hsla(0 0% 72% / 100%);
     border-bottom-left-radius: 4px;
   }
   &.show {

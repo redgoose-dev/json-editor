@@ -1,0 +1,42 @@
+:global(:root) {
+  --dev-padding: 24px;
+}
+:global(body) {
+  margin: 0;
+  padding: var(--dev-padding);
+}
+
+header {
+  margin: 0;
+  h1 {
+    margin: 0;
+    font-family: 'Pretendard', 'Helvetica Neue', sans-serif;
+    font-size: 32px;
+    font-weight: 900;
+    letter-spacing: -1.25px;
+    line-height: 1.05;
+    color: hsl(5 87% 59%);
+    user-select: none;
+  }
+}
+
+.controller {
+  position: sticky;
+  z-index: 10;
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: 0 calc(var(--dev-padding) * -1) 0;
+  padding: 16px var(--dev-padding);
+  background: hsla(0 0% 100% / 95%);
+  &__wrap {
+    margin: 0 0;
+  }
+}
+
+.container {
+  margin: 0;
+  padding: 24px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+}
