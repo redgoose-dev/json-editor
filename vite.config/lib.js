@@ -10,8 +10,8 @@ const config = defineConfig(({ mode }) => {
     build: {
       lib: {
         entry: './src/json-editor/index.svelte',
-        formats: [ 'es' ],
-        name: 'JsonEditor',
+        name: 'JSONEditor',
+        formats: [ 'es', 'cjs', 'umd', 'iife' ],
       },
       outDir: './lib',
       rollupOptions: {
@@ -32,7 +32,7 @@ const config = defineConfig(({ mode }) => {
           'public/*',
         ],
       },
-      // minify: 'terser',
+      // minify: false,
     },
     plugins: [
       svelte({
@@ -42,6 +42,16 @@ const config = defineConfig(({ mode }) => {
           customElement: true,
         },
         emitCss: true,
+        onwarn(warning, defaultHandler)
+        {
+          switch (warning.code)
+          {
+            case 'a11y-no-static-element-interactions':
+            case 'a11y-click-events-have-key-events':
+              return
+          }
+          defaultHandler(warning)
+        },
       }),
     ],
   }
