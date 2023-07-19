@@ -4,22 +4,9 @@
   data-type={type}>
   <dl>
     <dt>
-      {#if type === 'object'}
+      {#if type === 'object' || type === 'array'}
         <ItemKey
-          type="object"
-          fold={fold}
-          count={children.length}
-          label={keyName}
-          labelType="key"
-          useFold={true}
-          useLabel={parentType === 'object'}
-          useCount={true}
-          useSort={!isRoot}
-          on:fold={onChangeFold}
-          on:context={onOpenContext}/>
-      {:else if type === 'array'}
-        <ItemKey
-          type="array"
+          type={type}
           fold={fold}
           count={children.length}
           label={keyName}
@@ -34,10 +21,8 @@
         {#if parentType === 'array'}
           <ItemKey
             type={type}
-            label={data}
-            labelType={type === 'null' ? 'null' : 'value'}
             useFold={false}
-            useLabel={true}
+            useLabel={false}
             useCount={false}
             useSort={true}
             on:fold={onChangeFold}
@@ -60,8 +45,13 @@
       <dd>
         {#if type === 'null'}
           <Null/>
+        {:else if type === 'boolean'}
+          <Switch bind:value={data}/>
         {:else}
-          <Label type="value" bind:value={data}/>
+          <Label
+            bind:value={data}
+            mode="value"
+            type={type}/>
         {/if}
       </dd>
     {/if}
@@ -85,6 +75,7 @@ import ItemKey from './item-key.svelte'
 import Label from './label.svelte'
 import Item from './index.svelte'
 import Context from '../context/index.svelte'
+import Switch from './switch.svelte'
 import Null from './null.svelte'
 
 export let root
@@ -121,6 +112,20 @@ function onChangeFold({ detail })
   fold = detail
 }
 
+function setUseValue(parentType, type)
+{
+  switch (type)
+  {
+    case 'string':
+    case 'number':
+    case 'boolean':
+    case 'null':
+      return true
+    default:
+      return false
+  }
+}
+
 function onOpenContext()
 {
   console.log('onClickOpenContext()')
@@ -134,67 +139,8 @@ function onChangeValue(e)
     },
   }))
 }
-
-function setUseValue(parentType, type)
-{
-  if (parentType !== 'object') return false
-  switch (type)
-  {
-    case 'string':
-    case 'number':
-    case 'boolean':
-    case 'null':
-      return true
-    default:
-      return false
-  }
-}
 </script>
 
 <style lang="scss">
-dl {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  gap: 0 6px;
-  dt {
-    box-sizing: border-box;
-  }
-  dd {
-    display: flex;
-    align-items: center;
-    gap: 0 3px;
-    margin: 0;
-    box-sizing: border-box;
-    font-size: var(--json-editor-font-size);
-    --label-min-width: 72px;
-    &:before {
-      content: ':';
-    }
-  }
-}
-ul {
-  position: relative;
-  display: none;
-  margin: 6px 0 0;
-  padding: 0 0 0 30px;
-  list-style: none;
-  gap: 6px 0;
-  &:before {
-    content: '';
-    display: block;
-    position: absolute;
-    left: 11px;
-    top: 4px;
-    bottom: 11px;
-    width: 6px;
-    border-width: 0 0 1px 1px;
-    border-style: dashed;
-    border-color: hsla(0 0% 72% / 100%);
-    border-bottom-left-radius: 4px;
-  }
-  &.show {
-    display: grid;
-  }
-}
+@import 'index';
 </style>

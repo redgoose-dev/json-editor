@@ -1,8 +1,8 @@
 <div class="item-key">
   {#if useSort}
-    <button type="button" class="sort">
+    <div class="sort">
       <IconSort/>
-    </button>
+    </div>
   {/if}
   <button
     type="button"
@@ -20,7 +20,10 @@
       <Null/>
     {:else}
       <div class="label">
-        <Label type={labelType} bind:value={label}/>
+        <Label
+          bind:value={label}
+          mode={labelType}
+          type={type}/>
       </div>
     {/if}
   {/if}
@@ -65,53 +68,5 @@ function onClickOpenContext()
 </script>
 
 <style lang="scss">
-.item-key {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0 6px;
-}
-.sort {
-  display: block;
-  margin: 0;
-  padding: 0;
-  border: none;
-  background: none;
-  box-sizing: border-box;
-  outline: none;
-  cursor: move;
-}
-.fold {
-  margin: 0 0 0 4px;
-}
-.type {
-  display: block;
-  margin: -2px;
-  padding: 2px;
-  box-sizing: border-box;
-  border: none;
-  background: none;
-  outline: none;
-  cursor: pointer;
-  transition: opacity 120ms ease-out;
-  &:active {
-    opacity: .5;
-  }
-}
-.label {
-  --label-min-width: 42px;
-}
-.count {
-  display: block;
-  margin: 0;
-  pointer-events: none;
-  em {
-    display: block;
-    //font-family: var(--json-editor-font-eng);
-    color: var(--json-editor-color-blur);
-    font-style: normal;
-    user-select: none;
-    font-size: 14px;
-  }
-}
+@import './item-key';
 </style>

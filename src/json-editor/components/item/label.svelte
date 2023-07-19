@@ -2,37 +2,57 @@
   bind:innerText={value}
   contenteditable="true"
   data-placeholder={placeholder}
-  class:value={type === 'value'}
-  class:key={type === 'key'}
-  on:keydown={onInput}/>
+  class:value={mode === 'value'}
+  class:key={mode === 'key'}
+  on:keydown={onKeydown}
+  on:keypress={onKeypress}/>
 
 <script>
-export let type = 'value'
+export let mode = 'value'
 export let value = ''
 export let placeholder = 'empty'
+export let type = ''
 
-function onInput(e)
+function onKeydown(e)
 {
-  switch (e.keyCode)
+  // enter
+  if (mode === 'key' && e.keyCode === 13)
   {
-    case 13:
-      if (type === 'key') return e.preventDefault()
-      break
-    default:
-      break
+    return e.preventDefault()
   }
-  if (!(e.ctrlKey || e.metaKey)) return
-  switch(e.keyCode)
+  // shortcut
+  if (e.ctrlKey || e.metaKey)
   {
-    case 66: case 98: // ctrl+B or ctrl+b
-      e.preventDefault()
-      break
-    case 73: case 105: // ctrl+I or ctrl+i
-      e.preventDefault()
-      break
-    case 85: case 117: // ctrl+U or ctrl+u
-      e.preventDefault()
-      break
+    switch(e.keyCode)
+    {
+      // ctrl+b
+      case 66:
+      case 98:
+        e.preventDefault()
+        break
+      // ctrl+i
+      case 73:
+      case 105:
+        e.preventDefault()
+        break
+      // ctrl+u
+      case 85:
+      case 117:
+        e.preventDefault()
+        break
+    }
+  }
+}
+function onKeypress(e)
+{
+  if (type === 'number')
+  {
+    if (e.code === 'Period')
+    {
+      if (value.indexOf('.') > -1) return e.preventDefault()
+      return
+    }
+    if (isNaN(String.fromCharCode(e.which))) return e.preventDefault()
   }
 }
 </script>
@@ -54,7 +74,7 @@ div {
   transition: background-color 160ms ease-out, box-shadow 200ms ease-out;
   cursor: text;
   &.key {
-    //display: flex;
+    display: flex;
   }
   &.value {}
   &:hover,
