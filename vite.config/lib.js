@@ -40,6 +40,9 @@ const config = defineConfig(({ mode }) => {
         // include: 'src/components/**/*.svelte',
         compilerOptions: {
           customElement: true,
+          cssHash: ({ hash, name, filename, css }) => {
+            return `sv-${hash(css)}`;
+          },
         },
         emitCss: true,
         onwarn(warning, defaultHandler)

@@ -40,6 +40,9 @@
             on:context={onOpenContext}/>
         {/if}
       {/if}
+      {#if context}
+        <Context on:close={onCloseContext}/>
+      {/if}
     </dt>
     {#if useValue}
       <dd>
@@ -84,6 +87,7 @@ export let parentType
 export let keyName = ''
 let isRoot = !parentType
 let fold = true
+let context
 let type = getTypeName(data)
 let children = createChildren(data, type)
 let useValue = setUseValue(parentType, type)
@@ -126,9 +130,19 @@ function setUseValue(parentType, type)
   }
 }
 
-function onOpenContext()
+function onOpenContext(e)
 {
-  console.log('onClickOpenContext()')
+  const { element } = e.detail
+  if (context !== undefined)
+  {
+    onCloseContext()
+    return
+  }
+  context = {}
+}
+function onCloseContext(e)
+{
+  context = undefined
 }
 
 function onChangeValue(e)

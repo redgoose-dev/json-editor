@@ -37,7 +37,7 @@ button {
   &:active {
     opacity: .5;
   }
-  &:focus {
+  &:focus-visible {
     outline: 2px solid var(--json-editor-color-focus);
     outline-offset: -6px;
   }

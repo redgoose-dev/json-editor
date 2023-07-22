@@ -61,9 +61,9 @@ function onClickFold()
 {
   dispatch('fold', !fold)
 }
-function onClickOpenContext()
+function onClickOpenContext(e)
 {
-  dispatch('context')
+  dispatch('context', { element: e.currentTarget })
 }
 </script>
 

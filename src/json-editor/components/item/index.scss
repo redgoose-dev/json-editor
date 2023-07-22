@@ -4,6 +4,7 @@ dl {
   align-items: center;
   gap: 0 6px;
   dt {
+    position: relative;
     box-sizing: border-box;
   }
   dd {
@@ -32,13 +33,23 @@ ul {
     display: block;
     position: absolute;
     left: 11px;
-    top: 4px;
+    top: 0;
     bottom: 11px;
-    width: 6px;
-    border-width: 0 0 1px 1px;
+    width: 4px;
+    border-width: 0 0 0 1px;
     border-style: dashed;
     border-color: hsla(0 0% 72% / 100%);
-    border-bottom-left-radius: 4px;
+  }
+  &:after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 9px;
+    bottom: 10px;
+    width: 5px;
+    height: 5px;
+    background: hsla(0 0% 72% / 100%);
+    border-radius: 50%;
   }
   &.show {
     display: grid;
