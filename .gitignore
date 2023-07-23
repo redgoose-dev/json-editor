@@ -1,18 +1,5 @@
-# directories
-.idea/
-.vscode/
-node_modules/
-dist/
-!docs/dist/
-
-# files
+resource/
 .DS_Store
-yarn.lock
-package-lock.json
-bun.lockb
-.env.local
-
-
-# TODO: 나중에 삭제할거
-docs2/
-lib/
+css/.sass-cache/
+node_modules/
+.idea
