@@ -8,13 +8,7 @@
 
 <script>
 export let value
-
 $: _value = value.toString()
-
-function onClickToggle(e)
-{
-  value = !value
-}
 </script>
 
 <style lang="scss">
@@ -22,7 +16,7 @@ button {
   --switch-width: 36px;
   --switch-height: 18px;
   --switch-offset: 3px;
-  --switch-speed: 80ms;
+  --switch-speed: 100ms;
   --switch-unit-size: calc(var(--switch-height) - (var(--switch-offset) * 2));
   display: block;
   margin: 0 0 0 6px;
@@ -31,32 +25,14 @@ button {
   border: none;
   font-size: 0;
   cursor: pointer;
-  span {
-    display: block;
-    position: relative;
-    padding: var(--switch-offset);
-    width: var(--switch-width);
-    height: var(--switch-height);
-    border-radius: calc(var(--switch-height) * .5);
-    box-shadow: inset 0 0 0 1px var(--json-editor-color-blur);
-    transition: box-shadow 160ms ease-out;
-    box-sizing: border-box;
-  }
-  i {
-    display: block;
-    width: var(--switch-unit-size);
-    height: var(--switch-unit-size);
-    background: var(--json-editor-color-blur);
-    border-radius: var(--switch-unit-size);
-    pointer-events: none;
-    transform: translateX(var(--switch-unit-x));
-    transition: transform var(--switch-speed) ease-out, width var(--switch-speed) ease-out;
-  }
   &.off {
     --switch-unit-x: 0;
   }
   &.on {
     --switch-unit-x: calc(var(--switch-width) - (var(--switch-offset) * 2) - var(--switch-unit-size));
+    i {
+      background-color: var(--json-editor-color-focus);
+    }
   }
   &:active {
     span {
@@ -77,5 +53,29 @@ button {
       outline-offset: 1px;
     }
   }
+}
+span {
+  display: block;
+  position: relative;
+  padding: var(--switch-offset);
+  width: var(--switch-width);
+  height: var(--switch-height);
+  border-radius: calc(var(--switch-height) * .5);
+  box-shadow: inset 0 0 0 1px var(--json-editor-color-blur);
+  transition: box-shadow 160ms ease-out;
+  box-sizing: border-box;
+}
+i {
+  display: block;
+  width: var(--switch-unit-size);
+  height: var(--switch-unit-size);
+  background-color: var(--json-editor-color-blur);
+  border-radius: var(--switch-unit-size);
+  pointer-events: none;
+  transform: translateX(var(--switch-unit-x));
+  transition:
+    transform var(--switch-speed) ease-out,
+    width var(--switch-speed) ease-out,
+    background-color 240ms ease-out;
 }
 </style>

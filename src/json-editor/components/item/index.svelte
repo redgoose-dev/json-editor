@@ -15,33 +15,28 @@
           useLabel={parentType === 'object'}
           useCount={true}
           useSort={!isRoot}
+          openContext={!!context}
           on:fold={onChangeFold}
           on:context={onOpenContext}/>
       {:else if (type === 'string' || type === 'number' || type === 'boolean' || type === 'null')}
-        {#if parentType === 'array'}
-          <ItemKey
-            type={type}
-            useFold={false}
-            useLabel={false}
-            useCount={false}
-            useSort={true}
-            on:fold={onChangeFold}
-            on:context={onOpenContext}/>
-        {:else}
-          <ItemKey
-            type={type}
-            label={keyName}
-            labelType="key"
-            useFold={false}
-            useLabel={true}
-            useCount={false}
-            useSort={true}
-            on:fold={onChangeFold}
-            on:context={onOpenContext}/>
-        {/if}
+        <ItemKey
+          type={type}
+          label={parentType === 'array' ? '' : keyName}
+          labelType={parentType === 'array' ? '' : 'key'}
+          useFold={false}
+          useLabel={parentType !== 'array'}
+          useCount={false}
+          useSort={true}
+          openContext={!!context}
+          on:fold={onChangeFold}
+          on:context={onOpenContext}/>
       {/if}
       {#if context}
-        <Context on:close={onCloseContext}/>
+        <Context
+          isRoot={isRoot}
+          type={type}
+          on:close={onCloseContext}
+          on:select={onSelectContextItem}/>
       {/if}
     </dt>
     {#if useValue}
@@ -140,7 +135,28 @@ function onOpenContext(e)
   }
   context = {}
 }
-function onCloseContext(e)
+function onSelectContextItem(e)
+{
+  const { action, type } = e.detail
+  switch (action)
+  {
+    case 'change-type':
+      console.log('onSelectContextItem()', action, type)
+      break
+    case 'insert':
+      console.log(data)
+      console.log('onSelectContextItem()', action, type)
+      break
+    case 'duplicate':
+      console.log('onSelectContextItem()', action)
+      break
+    case 'remove':
+      console.log('onSelectContextItem()', action)
+      break
+  }
+  onCloseContext()
+}
+function onCloseContext()
 {
   context = undefined
 }

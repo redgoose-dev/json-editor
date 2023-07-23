@@ -2,22 +2,23 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 0 6px;
+  gap: 0;
 }
 
 .sort {
   display: block;
   box-sizing: border-box;
   cursor: move;
+  padding: 0 4px 0 0;
 }
 
 .fold {
-  margin: 0 0 0 4px;
+  margin: 0 0 0 6px;
 }
 
 .type {
   display: block;
-  margin: -2px;
+  margin: -2px -2px -2px -4px;
   padding: 2px;
   box-sizing: border-box;
   border: none;
@@ -33,9 +34,13 @@
     outline: 2px solid var(--json-editor-color-focus);
     outline-offset: -1px;
   }
+  &.open {
+    opacity: .25;
+  }
 }
 
 .label {
+  margin: 0 0 0 6px;
   --label-min-width: 42px;
 }
 
@@ -43,6 +48,7 @@
   display: block;
   margin: 0;
   pointer-events: none;
+  padding: 0 0 0 6px;
   em {
     display: block;
     //font-family: var(--json-editor-font-eng);

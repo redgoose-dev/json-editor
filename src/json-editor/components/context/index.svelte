@@ -2,33 +2,93 @@
   bind:this={self}
   tabindex="-1"
   class="context"
+  class:is-root={isRoot}
   on:click|stopPropagation>
   <ul>
-    <li>
-      <button type="button">
-        <span>Change type</span>
-        <i><IconArrowRight/></i>
-      </button>
-    </li>
-    <li>
-      <button type="button">
-        <span>Duplicate item</span>
-      </button>
-    </li>
-    <li>
-      <button type="button">
-        <span>Remove item</span>
-      </button>
-    </li>
+    <Item
+      mode="dropdown"
+      label="Change Type"
+      disabled={true}>
+      <div class="context">
+        <ul>
+          {#each chnageTypes as {key,label}}
+            <Item
+              mode="type"
+              type={key}
+              label={label}
+              disabled={key === type}
+              on:select={() => onClickItem('change-type', key)}/>
+          {/each}
+        </ul>
+      </div>
+    </Item>
+    {#if useItemInsert}
+      <Item
+        mode="dropdown"
+        label="Insert Item"
+        disabled={true}>
+        <div class="context">
+          <ul>
+            {#each types as {key,label}}
+              <Item
+                mode="type"
+                type={key}
+                label={label}
+                on:select={() => onClickItem('insert', key)}/>
+            {/each}
+          </ul>
+        </div>
+      </Item>
+    {/if}
+    {#if useItemDuplicate}
+      <Item
+        label="Duplicate"
+        on:select={() => onClickItem('duplicate')}/>
+    {/if}
+    {#if useItemRemove}
+      <Item
+        mode="remove"
+        label="Remove"
+        on:select={() => onClickItem('remove')}/>
+    {/if}
   </ul>
 </div>
 
 <script>
 import { createEventDispatcher, onMount, onDestroy } from 'svelte'
 import IconArrowRight from '../../assets/icons/arrow-right.svelte'
+import Type from '../type/index.svelte'
+import Item from './item.svelte'
 
 const dispatch = createEventDispatcher()
+export let type
+export let isRoot = false
 let self
+
+const types = [
+  { key: 'object', label: 'Object' },
+  { key: 'array', label: 'Array' },
+  { key: 'string', label: 'String' },
+  { key: 'number', label: 'Number' },
+  { key: 'boolean', label: 'Boolean' },
+  { key: 'null', label: 'Null' },
+]
+
+$: useItemInsert = (() => {
+  if (type === 'object' || type === 'array') return true
+  return false
+})()
+$: useItemDuplicate = (() => {
+  if (isRoot) return false
+  return true
+})()
+$: useItemRemove = (() => {
+  if (isRoot) return false
+  return true
+})()
+$: chnageTypes = (() => {
+  return isRoot ? Object.assign([], types).splice(0,2) : types
+})()
 
 function onClick(e)
 {
@@ -37,6 +97,11 @@ function onClick(e)
 function onKeyup(e)
 {
   if (e.code === 'Escape') return dispatch('close')
+}
+
+function onClickItem(action, type)
+{
+  dispatch('select', { action, type })
 }
 
 onMount(() => {
@@ -53,61 +118,5 @@ onDestroy(() => {
 </script>
 
 <style lang="scss">
-.context {
-  --context-border-radius: 4px;
-  position: absolute;
-  left: 20px;
-  margin: 4px 0 0 0;
-  z-index: 2;
-  background: #fff;
-  border-radius: var(--context-border-radius);
-  box-shadow: 0 4px 32px 0 hsla(0 0% 0% / 10%), 0 2px 8px 0 hsla(0 0% 0% / 20%);
-}
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-li {
-  &:not(:first-child) {
-    border-top: 1px solid hsl(0 0% 88%);
-  }
-}
-button {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: center;
-  margin: 0;
-  padding: 8px 12px;
-  min-width: 150px;
-  text-align: left;
-  box-sizing: border-box;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 12px;
-  border-radius: 0;
-  transition: background-color 120ms ease-out;
-  &:first-child {
-    border-top-left-radius: var(--context-border-radius);
-    border-top-right-radius: var(--context-border-radius);
-  }
-  &:last-child {
-    border-bottom-left-radius: var(--context-border-radius);
-    border-bottom-right-radius: var(--context-border-radius);
-  }
-  &:hover,
-  &:active {
-    background-color: hsl(0 0% 96%);
-  }
-  span {
-    pointer-events: none;
-    user-select: none;
-  }
-  i {
-    display: block;
-    margin: 0 -4px 0 0;
-    pointer-events: none;
-  }
-}
+@import 'index';
 </style>

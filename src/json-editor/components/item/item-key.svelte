@@ -7,6 +7,7 @@
   <button
     type="button"
     class="type"
+    class:open={openContext}
     on:click={onClickOpenContext}>
     <Type name={type}/>
   </button>
@@ -56,6 +57,7 @@ export let useFold = false
 export let useSort = false
 export let useLabel = false
 export let useCount = false
+export let openContext = false
 
 function onClickFold()
 {

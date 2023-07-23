@@ -10,7 +10,7 @@ dl {
   dd {
     display: flex;
     align-items: center;
-    gap: 0 3px;
+    gap: 0 5px;
     margin: 0;
     box-sizing: border-box;
     font-size: var(--json-editor-font-size);
@@ -25,7 +25,7 @@ ul {
   position: relative;
   display: none;
   margin: 6px 0 0;
-  padding: 0 0 0 30px;
+  padding: 0 0 0 20px;
   list-style: none;
   gap: 6px 0;
   &:before {

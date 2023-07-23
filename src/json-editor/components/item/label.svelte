@@ -76,7 +76,6 @@ div {
   &.key {
     display: flex;
   }
-  &.value {}
   &:hover,
   &:focus {
     background-color: var(--json-editor-color-active);

@@ -41,7 +41,7 @@ const config = defineConfig(({ mode }) => {
         compilerOptions: {
           customElement: true,
           cssHash: ({ hash, name, filename, css }) => {
-            return `sv-${hash(css)}`;
+            return `je-${hash(css)}`;
           },
         },
         emitCss: true,
