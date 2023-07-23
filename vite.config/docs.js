@@ -14,7 +14,7 @@ const config = defineConfig(({ mode }) => {
       open: false,
     },
     build: {
-      outDir: path + '/docs2',
+      outDir: path + '/docs',
       assetsDir: 'assets',
     },
     plugins: [
