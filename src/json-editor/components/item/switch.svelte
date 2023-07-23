@@ -31,7 +31,7 @@ button {
   &.on {
     --switch-unit-x: calc(var(--switch-width) - (var(--switch-offset) * 2) - var(--switch-unit-size));
     i {
-      background-color: var(--json-editor-color-focus);
+      background-color: var(--json-editor-color-object);
     }
   }
   &:active {
