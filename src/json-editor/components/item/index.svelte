@@ -61,7 +61,7 @@
           root={root}
           parentType={type}
           keyName={key}
-          bind:data={value}/>
+          data={value}/>
       {/each}
     </ul>
   {/if}

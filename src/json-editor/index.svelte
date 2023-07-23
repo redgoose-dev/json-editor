@@ -14,7 +14,7 @@
       root={root}
       parentType={undefined}
       keyName={undefined}
-      bind:data={_data}/>
+      data={_data}/>
   {/if}
 </div>
 <pre class="preview">{JSON.stringify(_data, null, 2)}</pre>
