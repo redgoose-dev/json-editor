@@ -15,14 +15,7 @@
   "bugs": {
     "url": "https://github.com/redgoose-dev/json-editor/issues"
   },
-  "homepage": "",
-  "engines": {
-    "node": "20"
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions"
-  ],
+  "homepage": "https://redgoose-dev.github.io/json-editor",
   "main": "",
   "module": "",
   "type": "module",
@@ -32,6 +25,13 @@
     "docs": "vite --config vite.config/docs.js",
     "prebuild": "rm -rf docs && rm -rf lib",
     "build": "vite build --config vite.config/lib.js && vite build --config vite.config/docs.js"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "engines": {
+    "node": "20"
   },
   "dependencies": {},
   "devDependencies": {
