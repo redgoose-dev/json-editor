@@ -45,6 +45,7 @@ function onKeydown(e)
 }
 function onKeypress(e)
 {
+  if (mode === 'key') return
   if (type === 'number')
   {
     if (e.code === 'Period')

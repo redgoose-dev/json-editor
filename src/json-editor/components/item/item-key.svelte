@@ -59,6 +59,12 @@ export let useLabel = false
 export let useCount = false
 export let openContext = false
 
+// $: if (label) {
+//   dispatch('update-label', label)
+// } else {
+//   dispatch('update-label', null)
+// }
+
 function onClickFold()
 {
   dispatch('fold', !fold)
