@@ -9,9 +9,9 @@ const config = defineConfig(({ mode }) => {
     publicDir: false,
     build: {
       lib: {
-        entry: './src/json-editor/index.svelte',
-        name: 'JSONEditor',
-        formats: [ 'es', 'cjs', 'umd', 'iife' ],
+        entry: './src/json-editor/index.js',
+        name: 'JsonEditor',
+        formats: [ 'es' ],
       },
       outDir: './lib',
       rollupOptions: {
@@ -20,6 +20,7 @@ const config = defineConfig(({ mode }) => {
           preserveModules: false,
           // manualChunks: {
           //   'svelte': [ 'svelte' ],
+          //   'cash-dom': [ 'cash-dom' ],
           // },
           // entryFileNames: o => {
           //   return '[name].js'

@@ -1,0 +1,11 @@
+:host {
+  --fooo: red;
+}
+
+.json-editor {
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border: 3px solid var(--fooo);
+}

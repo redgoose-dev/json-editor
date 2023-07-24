@@ -11,12 +11,17 @@
 </nav>
 
 <div class="container">
-  <JSONEditor data={data}/>
+  <json-editor
+    bind:this={self}
+    src={_data}/>
 </div>
 
 <script>
-import JSONEditor from '../json-editor/index.svelte'
+import { onMount } from 'svelte'
+import JsonEditor from '../json-editor/index.js'
 
+let self
+const elementName = 'json-editor'
 const data1 = {
   foo: 1,
   foo2: '111',
@@ -46,6 +51,7 @@ const data2 = [
   ...(new Array(72).fill('apple')),
 ]
 let data = data1
+$: _data = JSON.stringify(data, null)
 
 function toktok(key)
 {
@@ -58,6 +64,19 @@ function toktok(key)
       break
   }
 }
+
+onMount(() => {
+  // define custom element
+  // console.log(JsonEditor)
+  if (customElements.get(elementName))
+  {
+    customElements.upgrade(self)
+  }
+  else
+  {
+    customElements.define(elementName, JsonEditor)
+  }
+})
 </script>
 
 <style lang="scss">
