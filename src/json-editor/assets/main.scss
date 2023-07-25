@@ -1,11 +1,34 @@
-:host {
-  --fooo: red;
-}
+:host {}
 
 .json-editor {
-  display: block;
+  --json-editor-font-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --json-editor-font-eng: 'Helvetica Neue', sans-serif;
+  --json-editor-color-bg: hsl(0 0% 100%);
+  --json-editor-color-base: hsl(0 0% 13%);
+  --json-editor-color-blur: hsl(0 0% 67%);
+  --json-editor-color-object: hsl(174 66% 39%);
+  --json-editor-color-array: hsl(191 75% 53%);
+  --json-editor-color-string: hsl(5 87% 59%);
+  --json-editor-color-number: hsl(33 89% 55%);
+  --json-editor-color-boolean: hsl(45 89% 54%);
+  --json-editor-color-null: hsl(0 0% 58%);
+  --json-editor-color-active: hsla(0 0% 0% / 6%);
+  --json-editor-color-focus: hsl(5 87% 59%);
+  --json-editor-color-error: hsl(0 96% 52%);
+  --json-editor-font-size: 13px;
+
+  font-family: var(--json-editor-font-base);
+  color: var(--json-editor-color-base);
+  font-size: 16px;
+  line-height: 1.15;
+}
+
+.root {
+  position: relative;
   margin: 0;
   padding: 0;
   list-style: none;
-  border: 3px solid var(--fooo);
 }
+
+@import 'node';
+@import 'context';

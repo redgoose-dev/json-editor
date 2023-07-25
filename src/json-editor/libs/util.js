@@ -1,5 +1,10 @@
 import $ from 'cash-dom'
 
+/**
+ * get type name
+ * @params {any} src
+ * @return {string}
+ */
 export function getTypeName(src)
 {
   if (src === undefined || src === null) return 'null'
@@ -10,6 +15,11 @@ export function getTypeName(src)
   else return 'object'
 }
 
+/**
+ * check data
+ * @params {any} src
+ * @return {object|array}
+ */
 export function checkData(src)
 {
   try
@@ -26,13 +36,28 @@ export function checkData(src)
     {
       return Object.assign({}, src)
     }
-    else
-    {
-      return {}
-    }
+    return {}
   }
   catch (e)
   {
     console.error('error', e.message)
   }
+}
+
+/**
+ * get count properties
+ * @params {object|array} obj
+ * @return {number}
+ */
+export function getCountProperty(obj)
+{
+  if (Array.isArray(obj))
+  {
+    return obj.length
+  }
+  else if ($.isPlainObject(obj))
+  {
+    return Object.keys(obj).length
+  }
+  return NaN
 }

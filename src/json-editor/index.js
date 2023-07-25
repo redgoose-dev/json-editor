@@ -26,13 +26,14 @@ class JsonEditor extends HTMLElement {
 
   static get observedAttributes()
   {
-    return [ 'src' ]
+    return [ 'src', 'theme' ]
   }
 
   get props()
   {
     return {
       src: this.getAttribute('src'),
+      theme: this.getAttribute('theme'),
     }
   }
 
@@ -50,6 +51,9 @@ class JsonEditor extends HTMLElement {
         {
           this.core.replace(this.data)
         }
+        break
+      case 'theme':
+        // TODO
         break
     }
   }
