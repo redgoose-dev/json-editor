@@ -11,6 +11,7 @@ const config = defineConfig(({ mode }) => {
       host: env.VITE_HOST,
       port: Number(env.VITE_PORT),
       open: false,
+      usePolling: true,
     },
     plugins: [
       svelte({

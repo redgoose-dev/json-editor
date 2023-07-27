@@ -1,4 +1,3 @@
-import $ from 'cash-dom'
 import { checkData } from './libs/util.js'
 import Core from './core.js'
 import css from './assets/main.scss?inline'

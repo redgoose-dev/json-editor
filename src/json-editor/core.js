@@ -32,9 +32,9 @@ class JSONEditorCore {
     if (!isRoot) str += `<span class="sort">${iconSort}</span>`
     str += `<button type="button" class="type"></button>`
     str += `<button type="button" class="fold">${iconFold}</button>`
-    if (!isRoot) str += `<div class="field-label key" contenteditable="true"></div>`
+    if (!isRoot) str += `<div class="key"></div>`
     str += `<em class="count"></em>`
-    if (!isRoot) str += `<div class="value"><div class="field-label" contenteditable="true" data-placeholder="empty"></div></div>`
+    if (!isRoot) str += `<div class="value"></div>`
     str += `</div>`
     str += `<div class="node__children"><ul class="tree"/></div>`
     str += `</li>`
@@ -71,9 +71,12 @@ class JSONEditorCore {
   {
     const $type = $node.find('.type')
     $type.html(`<i class="type-icon type-icon--${type}">${iconType[type]}</i>`)
+    $type.on('click', e => {
+      console.log($(e.currentTarget))
+    })
   }
 
-  #setEventSort()
+  #setSort($node)
   {}
 
   #setFold($node, open)
@@ -90,13 +93,73 @@ class JSONEditorCore {
   #setKeyName($node, keyName)
   {
     const $key = $node.find('.key')
-    $key.text(keyName)
+    let $item
+    function onKeydown(e)
+    {
+      if (e.keyCode === 13) return e.preventDefault()
+    }
+    $item = $(`<div class="label-field" contenteditable="true" data-placeholder="empty">${keyName}</div>`)
+    $item.on('keydown', onKeydown)
+    if (!$item) return
+    $key.empty().append($item)
   }
 
-  #setValue($node, value)
+  #setValue($node, type, value)
   {
-    const $key = $node.find('.value > div')
-    $key.text(value)
+    const $key = $node.find('.value')
+    let $item
+    function onKeydown(e)
+    {
+      const $el = $(this)
+      if (e.ctrlKey || e.metaKey)
+      {
+        switch(e.keyCode)
+        {
+          // ctrl+b
+          case 66:
+          case 98:
+            e.preventDefault()
+            break
+          // ctrl+i
+          case 73:
+          case 105:
+            e.preventDefault()
+            break
+          // ctrl+u
+          case 85:
+          case 117:
+            e.preventDefault()
+            break
+        }
+      }
+    }
+    function onChangeSwitch(e)
+    {
+      const $this = $(e.currentTarget)
+      const newValue = !$this.data('value')
+      $this
+        .data('value', newValue)
+        .find('i').text(newValue.toString().toUpperCase())
+    }
+    switch (type)
+    {
+      case 'string':
+        $item = $(`<div class="label-field" contenteditable="true" data-placeholder="empty">${value}</div>`)
+        $item.on('keydown', onKeydown)
+        break
+      case 'number':
+        $item = $(`<input type="number" value="${value}" placeholder="0" class="label-field"/>`)
+        break
+      case 'boolean':
+        $item = $(`<button type="button" data-value="${value}" class="label-switch"><span><i>${value.toString().toUpperCase()}</i></span></button>`)
+        $item.on('click', onChangeSwitch)
+        break
+      case 'null':
+        $item = $(`<em class="label-null">NULL</em>`)
+        break
+    }
+    if (!$item) return
+    $key.empty().append($item)
   }
 
   #setCount($node, src)
@@ -145,12 +208,6 @@ class JSONEditorCore {
     })
   }
 
-  changeType(node, type)
-  {
-    const $node = $(node)
-    $node.attr('data-type', type)
-  }
-
   /**
    * add node
    * @param {HTMLElement} target
@@ -166,18 +223,12 @@ class JSONEditorCore {
     const { key, value, type } = data
     // set node item
     const $node = this.#template(type)
+    this.#setSort($node)
     this.#setFold($node, open)
     this.#setType($node, type)
     this.#setKeyName($node, key)
     this.#setCount($node, value)
-    this.#setValue($node, value)
-
-    // put texts
-    // TODO
-    $node.find('h3').text(`${type} = ${key} / ${value}`)
-    // TODO: 값을 집어넣고 이벤트를 초기화한다.
-    // TODO: ul에서 아이템을 추가한다.
-
+    this.#setValue($node, type, value)
     // add node
     this.#addNodeElement($target.find('& > .node__children > ul'), $node, between)
     // callback
@@ -188,6 +239,13 @@ class JSONEditorCore {
         callback($node.get(0), value)
       }
     }
+  }
+
+  changeNodeType(node, type)
+  {
+    const $node = $(node)
+    $node.attr('data-type', type)
+    // TODO: 버튼 아이콘도 바꿔줘야한다.
   }
 
   duplicateNode()

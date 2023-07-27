@@ -18,7 +18,7 @@
 
 <script>
 import { onMount } from 'svelte'
-import JsonEditor from '../json-editor/index.js'
+import JsonEditor from '../json-editor/web-component.js'
 
 let self
 const elementName = 'json-editor'

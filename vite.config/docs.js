@@ -16,6 +16,7 @@ const config = defineConfig(({ mode }) => {
     build: {
       outDir: path + '/docs',
       assetsDir: 'assets',
+      emptyOutDir: false,
     },
     plugins: [
       svelte({
