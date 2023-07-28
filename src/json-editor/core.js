@@ -16,12 +16,11 @@ class JSONEditorCore {
     wrap: null,
     tree: null,
   }
-  #context
+  context
 
   constructor(wrap, src)
   {
     this.#el.wrap = $(wrap)
-    this.#context = new Context()
     this.replace(src)
   }
 
@@ -30,7 +29,7 @@ class JSONEditorCore {
     let str = `<li data-type="${type}" class="node">`
     str += `<div class="node__body">`
     if (!isRoot) str += `<span class="sort">${iconSort}</span>`
-    str += `<button type="button" class="type"></button>`
+    str += `<div class="type"><button type="button"></button></div>`
     str += `<button type="button" class="fold">${iconFold}</button>`
     if (!isRoot) str += `<div class="key"></div>`
     str += `<em class="count"></em>`
@@ -46,7 +45,7 @@ class JSONEditorCore {
     const type = getTypeName(data)
     const $node = this.#template(type, true)
     this.#setFold($node, true)
-    this.#setType($node, type)
+    this.#setType($node, type, true)
     this.#setCount($node, data)
     this.#el.tree = $('<ul class="root"/>')
     this.#el.tree.append($node)
@@ -67,12 +66,23 @@ class JSONEditorCore {
     }
   }
 
-  #setType($node, type)
+  #setType($node, type, isRoot = false)
   {
     const $type = $node.find('.type')
-    $type.html(`<i class="type-icon type-icon--${type}">${iconType[type]}</i>`)
-    $type.on('click', e => {
-      console.log($(e.currentTarget))
+    const $button = $type.children('button')
+    $button.html(`<i class="type-icon type-icon--${type}">${iconType[type]}</i>`)
+    $button.on('click', async e => {
+      const $this = $(e.currentTarget)
+      e.stopPropagation()
+      if ($this.hasClass('open'))
+      {
+        if (this.context) this.context.close()
+      }
+      else
+      {
+        if (this.context) this.context.close()
+        this.context = new Context(this, $this.closest('.node'), isRoot)
+      }
     })
   }
 

@@ -1,0 +1,136 @@
+.context {
+  --context-border-radius: 4px;
+  --context-color-line: hsl(0 0% 88%);
+  --context-color-item-active: hsl(0 0% 92%);
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  z-index: 2;
+  border: 1px solid red;
+  &.is-root {
+    left: 28px;
+  }
+  ol {
+    position: absolute;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--context-color-line);
+    border-radius: var(--context-border-radius);
+    box-shadow:
+      0 4px 32px 0 hsla(0 0% 0% / 10%),
+      0 2px 8px 0 hsla(0 0% 0% / 20%),
+      0 0 0 1px hsla(0 0% 0% / 5%);
+  }
+  li {
+    position: relative;
+    &:not(:first-child) {
+      margin-top: 1px;
+    }
+    &:first-child > button {
+      border-top-left-radius: var(--context-border-radius);
+      border-top-right-radius: var(--context-border-radius);
+    }
+    &:last-child > button {
+      border-bottom-left-radius: var(--context-border-radius);
+      border-bottom-right-radius: var(--context-border-radius);
+    }
+    > div {
+      > ol {}
+    }
+    &.type {
+      > button {
+        grid-template-columns: auto 1fr;
+        gap: 8px;
+        &:disabled {
+          > * {
+            opacity: .25;
+          }
+        }
+      }
+    }
+    &.dropdown {
+      &:hover,
+      &:focus-within {
+        > button {
+          background-color: var(--context-color-item-active);
+        }
+        > .children {
+          opacity: 1;
+          pointer-events: auto;
+        }
+      }
+      > button {
+        grid-template-columns: 1fr auto;
+      }
+    }
+    &.remove {
+      .label {
+        color: var(--json-editor-color-error);
+      }
+    }
+  }
+  button {
+    display: grid;
+    align-items: center;
+    margin: 0;
+    padding: 8px 12px;
+    min-width: 150px;
+    text-align: left;
+    box-sizing: border-box;
+    background-color: var(--json-editor-color-bg);
+    border: none;
+    cursor: pointer;
+    border-radius: 0;
+    transition: background-color 120ms ease-out;
+    font-family: var(--json-editor-font-base);
+    font-size: 12px;
+    letter-spacing: -.25px;
+    outline: none;
+    color: var(--json-editor-color-base);
+    &:hover,
+    &:active {
+      background-color: var(--context-color-item-active);
+    }
+    &:not(.parent):focus-visible {
+      outline: 2px solid var(--json-editor-color-focus);
+      outline-offset: -2px;
+    }
+    &:disabled {
+      cursor: default;
+    }
+  }
+  .label {
+    display: block;
+    font-style: normal;
+    pointer-events: none;
+    user-select: none;
+  }
+  .type-icon {
+    --type-size: 16px;
+    --type-icon-size: 8px;
+  }
+  .arrow {
+    display: block;
+    margin: 0 -4px 0 0;
+    pointer-events: none;
+    svg {
+      display: block;
+      width: 16px;
+    }
+  }
+  .children {
+    position: absolute;
+    top: -12px;
+    right: 4px;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 240ms ease-out;
+    ol {
+      top: 0;
+      left: 0;
+    }
+  }
+}
