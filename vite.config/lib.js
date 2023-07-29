@@ -8,7 +8,7 @@ const config = defineConfig(({ mode, command }) => {
     build: {
       lib: {
         entry: {
-          'json-editor.component': './src/json-editor/web-component.js',
+          'json-editor': './src/json-editor/web-component.js',
         },
         name: 'JsonEditor',
         formats: [ 'es' ],

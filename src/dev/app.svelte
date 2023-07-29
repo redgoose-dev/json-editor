@@ -27,11 +27,11 @@ const data1 = {
   foo2: '111',
   foo3: false,
   foo4: [
-    1, 2, null, true,
+    1, '2', null, true,
   ],
   foo5: {
     1: 11,
-    22: 22,
+    22: '22',
     3: 33,
     44: null,
   },

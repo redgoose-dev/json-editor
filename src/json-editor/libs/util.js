@@ -61,3 +61,23 @@ export function getCountProperty(obj)
   }
   return NaN
 }
+
+/**
+ * check font shortcut key
+ * @param {KeyboardEvent} e
+ * @return {boolean}
+ */
+export function checkFontShortcut(e)
+{
+  if (e.ctrlKey || e.metaKey)
+  {
+    switch (e.keyCode)
+    {
+      case 66: case 98: // ctrl+b
+      case 73: case 105: // ctrl+i
+      case 85: case 117: // ctrl+u
+        return true
+    }
+  }
+  return false
+}

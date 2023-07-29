@@ -283,7 +283,12 @@
         .fold svg { rotate: 90deg; }
       }
       &__children {
-        > .tree { display: grid; }
+        > .tree {
+          display: grid;
+          &:empty {
+            display: none;
+          }
+        }
       }
     }
   }

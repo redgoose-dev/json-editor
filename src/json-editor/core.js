@@ -1,7 +1,7 @@
 import $ from 'cash-dom'
 import Context from './context.js'
-import { getTypeName, checkData, getCountProperty } from './libs/util.js'
-import { defaultAddNodeOptions } from './libs/assets.js'
+import { getTypeName, checkData, getCountProperty, checkFontShortcut } from './libs/util.js'
+import { defaultAddNodeOptions, TYPES } from './libs/assets.js'
 import { iconSort, iconFold, iconType } from './assets/icons.js'
 
 /**
@@ -26,11 +26,14 @@ class JSONEditorCore {
 
   #template(type, isRoot = false)
   {
-    let str = `<li data-type="${type}" class="node">`
+    let str = `<li data-type="${type}" class="node${isRoot ? ' root' : ''}">`
     str += `<div class="node__body">`
     if (!isRoot) str += `<span class="sort">${iconSort}</span>`
     str += `<div class="type"><button type="button"></button></div>`
-    str += `<button type="button" class="fold">${iconFold}</button>`
+    if (type === TYPES.OBJECT || type === TYPES.ARRAY)
+    {
+      str += `<button type="button" class="fold">${iconFold}</button>`
+    }
     if (!isRoot) str += `<div class="key"></div>`
     str += `<em class="count"></em>`
     if (!isRoot) str += `<div class="value"></div>`
@@ -44,139 +47,40 @@ class JSONEditorCore {
   {
     const type = getTypeName(data)
     const $node = this.#template(type, true)
-    this.#setFold($node, true)
-    this.#setType($node, type, true)
-    this.#setCount($node, data)
-    this.#el.tree = $('<ul class="root"/>')
+    this.#setResourceFromNode($node, {
+      key: undefined,
+      value: data,
+      type,
+      open: true,
+    })
+    this.#setEventFromNode($node)
+    this.#el.tree = $('<ul/>')
     this.#el.tree.append($node)
     this.#el.wrap.append(this.#el.tree)
     return $node
   }
 
-  #addNodeElement($target, $item, between)
+  #selectContextMenu($node, mode, type)
   {
-    switch (between)
+    switch (mode)
     {
-      case 'before':
-        $target.prepend($item)
+      case 'change-type':
+        this.changeNodeType($node, type)
         break
-      default:
-        $target.append($item)
+      case 'insert':
+        this.controlFold($node, true)
+        this.addNode({
+          target: $node,
+          data: { key: '', value: '', type },
+        })
+        break
+      case 'duplicate':
+        this.duplicateNode($node)
+        break
+      case 'remove':
+        this.removeNode($node)
         break
     }
-  }
-
-  #setType($node, type, isRoot = false)
-  {
-    const $type = $node.find('.type')
-    const $button = $type.children('button')
-    $button.html(`<i class="type-icon type-icon--${type}">${iconType[type]}</i>`)
-    $button.on('click', async e => {
-      const $this = $(e.currentTarget)
-      e.stopPropagation()
-      if ($this.hasClass('open'))
-      {
-        if (this.context) this.context.close()
-      }
-      else
-      {
-        if (this.context) this.context.close()
-        this.context = new Context(this, $this.closest('.node'), isRoot)
-      }
-    })
-  }
-
-  #setSort($node)
-  {}
-
-  #setFold($node, open)
-  {
-    const $fold = $node.find('.fold')
-    this.controlFold($node, open)
-    $fold.on('click', e => {
-      const $this = $(e.currentTarget)
-      const $node = $this.closest('.node')
-      this.controlFold($node)
-    })
-  }
-
-  #setKeyName($node, keyName)
-  {
-    const $key = $node.find('.key')
-    let $item
-    function onKeydown(e)
-    {
-      if (e.keyCode === 13) return e.preventDefault()
-    }
-    $item = $(`<div class="label-field" contenteditable="true" data-placeholder="empty">${keyName}</div>`)
-    $item.on('keydown', onKeydown)
-    if (!$item) return
-    $key.empty().append($item)
-  }
-
-  #setValue($node, type, value)
-  {
-    const $key = $node.find('.value')
-    let $item
-    function onKeydown(e)
-    {
-      const $el = $(this)
-      if (e.ctrlKey || e.metaKey)
-      {
-        switch(e.keyCode)
-        {
-          // ctrl+b
-          case 66:
-          case 98:
-            e.preventDefault()
-            break
-          // ctrl+i
-          case 73:
-          case 105:
-            e.preventDefault()
-            break
-          // ctrl+u
-          case 85:
-          case 117:
-            e.preventDefault()
-            break
-        }
-      }
-    }
-    function onChangeSwitch(e)
-    {
-      const $this = $(e.currentTarget)
-      const newValue = !$this.data('value')
-      $this
-        .data('value', newValue)
-        .find('i').text(newValue.toString().toUpperCase())
-    }
-    switch (type)
-    {
-      case 'string':
-        $item = $(`<div class="label-field" contenteditable="true" data-placeholder="empty">${value}</div>`)
-        $item.on('keydown', onKeydown)
-        break
-      case 'number':
-        $item = $(`<input type="number" value="${value}" placeholder="0" class="label-field"/>`)
-        break
-      case 'boolean':
-        $item = $(`<button type="button" data-value="${value}" class="label-switch"><span><i>${value.toString().toUpperCase()}</i></span></button>`)
-        $item.on('click', onChangeSwitch)
-        break
-      case 'null':
-        $item = $(`<em class="label-null">NULL</em>`)
-        break
-    }
-    if (!$item) return
-    $key.empty().append($item)
-  }
-
-  #setCount($node, src)
-  {
-    const $count = $node.find('.count')
-    const count = getCountProperty(src)
-    if (!isNaN(count)) $count.text(count)
   }
 
   clear()
@@ -204,43 +108,132 @@ class JSONEditorCore {
    */
   import(target, src)
   {
-    const $target = $(target)
     $.each(src, (key, value) => {
       const type = getTypeName(value)
       const data = { key, value, type }
       this.addNode({
         target,
         data,
-        between: 'after',
         open: false,
         callback: (node, value) => this.import(node, value),
       })
     })
   }
 
+  #setResourceFromNode($node, opt)
+  {
+    const { key, value, type, open } = opt
+    const isRoot = $node.hasClass('root')
+    // type
+    $node.find('.type > button').html(`<i class="type-icon type-icon--${type}">${iconType[type]}</i>`)
+    // fold
+    if (type === TYPES.OBJECT || type === TYPES.ARRAY)
+    {
+      this.controlFold($node, open)
+    }
+    if (!isRoot)
+    {
+      // key name
+      $node.find('.key').html(`<div class="label-field" contenteditable="true" data-placeholder="empty">${key}</div>`)
+      // value
+      const $value = $node.find('.value')
+      switch (type)
+      {
+        case 'string':
+          $value.html(`<div contenteditable="true" data-placeholder="empty" class="label-field type-string">${value}</div>`)
+          break
+        case 'number':
+          $value.html(`<input type="number" value="${value}" placeholder="0" class="label-field type-number"/>`)
+          break
+        case 'boolean':
+          $value.html(`<button type="button" data-value="${value}" class="label-switch type-boolean"><span><i>${value.toString().toUpperCase()}</i></span></button>`)
+          break
+        case 'null':
+          $value.html(`<em class="label-null type-null">NULL</em>`)
+          break
+      }
+    }
+    // count
+    if (type === TYPES.OBJECT || type === TYPES.ARRAY)
+    {
+      const count = getCountProperty(value)
+      if (!isNaN(count)) $node.find('.count').text(count)
+    }
+  }
+
+  #setEventFromNode($node)
+  {
+    const isRoot = $node.hasClass('root')
+    // sort
+    // type
+    $node.find('.type > button').on('click', async e => {
+      const $this = $(e.currentTarget)
+      e.stopPropagation()
+      if ($this.parent().hasClass('open'))
+      {
+        if (this.context) this.context.close()
+      }
+      else
+      {
+        if (this.context) this.context.close()
+        this.context = new Context(this, $this.closest('.node'), isRoot)
+        this.context.selectItem = ($node, mode, type) => this.#selectContextMenu($node, mode, type)
+      }
+    })
+    // fold
+    $node.find('.fold').on('click', e => {
+      const $this = $(e.currentTarget)
+      const $node = $this.closest('.node')
+      this.controlFold($node)
+    })
+    // key name
+    const $key = $node.find('.key > .label-field')
+    if (!!$key.length)
+    {
+      $key.on('keydown', e => {
+        if (e.keyCode === 13) return e.preventDefault()
+        if (checkFontShortcut(e)) e.preventDefault()
+      })
+    }
+    // value
+    const $valueString = $node.find('.value > .type-string')
+    if (!!$valueString.length)
+    {
+      $valueString.on('keydown', e => {
+        if (checkFontShortcut(e)) e.preventDefault()
+      })
+    }
+    const $valueSwitch = $node.find('.value > .type-boolean')
+    if (!!$valueSwitch.length)
+    {
+      $valueSwitch.on('click', e => {
+        const $this = $(e.currentTarget)
+        const newValue = !$this.data('value')
+        $this
+          .data('value', newValue)
+          .find('i').text(newValue.toString().toUpperCase())
+      })
+    }
+  }
+
   /**
    * add node
-   * @param {HTMLElement} target
-   * @param {object} data
-   * @param {'before'|'after'} between
-   * @param {function} callback
+   * @param {object} options
    */
   addNode(options)
   {
-    options = Object.assign({}, defaultAddNodeOptions, options)
+    options = { ...defaultAddNodeOptions, ...options }
     const { target, data, between, open, callback } = options
     const $target = $(target)
     const { key, value, type } = data
     // set node item
     const $node = this.#template(type)
-    this.#setSort($node)
-    this.#setFold($node, open)
-    this.#setType($node, type)
-    this.#setKeyName($node, key)
-    this.#setCount($node, value)
-    this.#setValue($node, type, value)
-    // add node
-    this.#addNodeElement($target.find('& > .node__children > ul'), $node, between)
+    this.#setResourceFromNode($node, { ...data, open })
+    this.#setEventFromNode($node)
+    // add element
+    const $ul = $target.find('& > .node__children > ul')
+    if (between === 'before') $ul.prepend($node)
+    else $ul.append($node)
     // callback
     if (type === 'array' || type === 'object')
     {
@@ -254,15 +247,23 @@ class JSONEditorCore {
   changeNodeType(node, type)
   {
     const $node = $(node)
-    $node.attr('data-type', type)
+    // $node.attr('data-type', type)
+    console.log('changeNodeType()', node, type)
     // TODO: 버튼 아이콘도 바꿔줘야한다.
   }
 
-  duplicateNode()
-  {}
+  duplicateNode($target)
+  {
+    $target = $($target)
+    const $node = $($target.get(0).outerHTML)
+    this.#setEventFromNode($node)
+    $target.after($node)
+  }
 
-  removeNode()
-  {}
+  removeNode($node)
+  {
+    $node.remove()
+  }
 
   controlFold(node, sw)
   {

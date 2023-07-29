@@ -57,79 +57,92 @@ class Context {
 
   #template(src, type, isRoot = false)
   {
-    function item(obj, parentType = undefined)
+    function item(obj, parentType)
     {
-      let str = `<ol>`
-      for (let o in obj)
+      let str = ''
+      const { key, label, children } = obj
+      if (isRoot)
       {
-        if (isRoot && parentType === 'change-type')
+        switch (key)
         {
-          switch (obj[o].key)
-          {
-            case 'string':
-            case 'number':
-            case 'boolean':
-            case 'null':
-              continue
-          }
-        }
-        let attr = ''
-        let typeIcon = ''
-        let buttonAttr = ''
-        switch (obj[o].key)
-        {
-          case 'change-type':
-            attr = ` class="dropdown"`
-            buttonAttr = ' disabled'
-            break
-          case 'insert':
-            attr = ` class="dropdown"`
-            buttonAttr = ' disabled'
-            break
-          case 'duplicate':
-            attr = ` class="duplicate"`
-            if (isRoot) continue
-            break
-          case 'remove':
-            attr = ` class="remove"`
-            if (isRoot) continue
-            break
-          case 'object':
-          case 'array':
           case 'string':
           case 'number':
           case 'boolean':
           case 'null':
-            attr = ` class="type"`
-            typeIcon = `<i class="type-icon type-icon--${obj[o].key}">${iconType[obj[o].key]}</i>`
-            if (parentType === 'change-type')
-            {
-              if (obj[o].key === type) buttonAttr = ' disabled'
-            }
+            if (parentType === 'change-type') return ''
             break
+          case 'duplicate':
+          case 'remove':
+            return ''
         }
-        str += `<li${attr}>`
-        str += `<button type="button"${buttonAttr}>`
-        str += typeIcon
-        str += `<em class="label">${obj[o].label}</em>`
-        if (obj[o].key === 'change-type' || obj[o].key === 'insert')
-        {
-          str += `<span class="arrow">${iconArrow}</span>`
-        }
-        str += `</button>`
-        if (obj[o].children?.length > 0)
-        {
-          str += `<div class="children">`
-          str += item(obj[o].children, obj[o].key)
-          str += `</div>`
-        }
-        str += `</li>`
+      }
+      let attr = ''
+      let typeIcon = ''
+      let buttonAttr = ''
+      switch (key)
+      {
+        case 'change-type':
+          attr = ` class="dropdown"`
+          buttonAttr = ' disabled'
+          break
+        case 'insert':
+          if (['string', 'number', 'boolean', 'null'].indexOf(type) > -1) return ''
+          attr = ` class="dropdown"`
+          buttonAttr = ' disabled'
+          break
+        case 'duplicate':
+          attr = ` class="duplicate"`
+          buttonAttr = ' data-mode="duplicate"'
+          break
+        case 'remove':
+          attr = ` class="remove"`
+          buttonAttr = ' data-mode="remove"'
+          break
+        case 'object':
+        case 'array':
+        case 'string':
+        case 'number':
+        case 'boolean':
+        case 'null':
+          attr = ` class="type"`
+          typeIcon = `<i class="type-icon type-icon--${key}">${iconType[key]}</i>`
+          buttonAttr = ` data-mode="${parentType}" data-type="${key}"`
+          if (parentType === 'change-type')
+          {
+            if (key === type) buttonAttr = ' disabled'
+          }
+          break
+      }
+      str += `<li${attr}>`
+      str += `<button type="button"${buttonAttr}>`
+      str += typeIcon
+      str += `<em class="label">${label}</em>`
+      if (key === 'change-type' || key === 'insert')
+      {
+        str += `<span class="arrow">${iconArrow}</span>`
+      }
+      str += `</button>`
+      if (children?.length > 0)
+      {
+        str += `<div class="children">`
+        str += items(children, key)
+        str += `</div>`
+      }
+      str += `</li>`
+      return str
+    }
+    function items(obj, parentType = undefined)
+    {
+      let str = `<ol>`
+      for (let o in obj)
+      {
+        str += item(obj[o], parentType)
       }
       str += `</ol>`
       return str
     }
     let str = `<nav class="context${isRoot ? ' is-root' : ''}">`
-    str += item(src)
+    str += items(src)
     str += `</nav>`
     return $(str)
   }
@@ -137,9 +150,14 @@ class Context {
   #onClickItem(e)
   {
     const $this = $(e.currentTarget)
-    // TODO
-    console.log('#onClickItem()', $this)
+    const mode = $this.data('mode')
+    let type = String($this.data('type'))
+    type = type === 'undefined' ? '' : type
     this.close()
+    if (this.selectItem && typeof this.selectItem === 'function')
+    {
+      this.selectItem(this.#el.node, mode, type)
+    }
   }
 
   #onKeyupWindow(e)
@@ -153,7 +171,7 @@ class Context {
     this.#el.dialog.remove()
     $(window).off('click.json-editor-context')
     $(window).off('keyup.json-editor-context')
-    this.#parent.context = undefined
+    delete this.#parent.context
   }
 
 }

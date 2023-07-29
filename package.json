@@ -24,7 +24,7 @@
     "dev": "vite --config vite.config/dev.js",
     "docs": "vite --config vite.config/docs.js",
     "prebuild": "rm -rf docs && rm -rf lib",
-    "build": "vite build -c vite.config/lib-core.js && vite build -c vite.config/lib-wc.js && vite build -c vite.config/docs.js"
+    "build": "vite build -c vite.config/lib.js && vite build -c vite.config/docs.js"
   },
   "browserslist": [
     "> 1%",

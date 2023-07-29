@@ -21,13 +21,12 @@
   color: var(--json-editor-color-base);
   font-size: 16px;
   line-height: 1.15;
-}
-
-.root {
-  position: relative;
-  margin: 0;
-  padding: 0;
-  list-style: none;
+  > ul {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 }
 
 @import 'node';

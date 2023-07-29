@@ -5,3 +5,12 @@ export const defaultAddNodeOptions = {
   open: true,
   callback: undefined,
 }
+
+export const TYPES = {
+  OBJECT: 'object',
+  ARRAY: 'array',
+  STRING: 'string',
+  NUMBER: 'number',
+  BOOLEAN: 'boolean',
+  NULL: 'null',
+}
