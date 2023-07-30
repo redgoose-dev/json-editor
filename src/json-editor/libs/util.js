@@ -59,7 +59,7 @@ export function getCountProperty(obj)
   {
     return Object.keys(obj).length
   }
-  return NaN
+  return 0
 }
 
 /**

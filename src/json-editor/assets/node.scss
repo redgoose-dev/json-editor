@@ -276,7 +276,6 @@
       }
     }
   }
-
   &.open {
     > .node {
       &__body {
@@ -292,7 +291,12 @@
       }
     }
   }
-
+  &.drag-ghost {
+    padding: 8px 0;
+    margin: -8px 0;
+    background: var(--json-editor-color-bg);
+    opacity: .25;
+  }
   &[data-type='object'] {
     > .node {
       &__body {
@@ -313,33 +317,25 @@
         }
         .value { display: none; }
       }
-    }
-  }
-  &[data-type='string'] {
-    > .node {
-      &__body {
-        .fold { display: none; }
+      &__children {
+        > .tree > .node > .node__body > .key {
+          display: none;
+        }
       }
     }
   }
-  &[data-type='number'] {
-    > .node {
-      &__body {
-        .fold { display: none; }
-      }
-    }
-  }
-  &[data-type='boolean'] {
-    > .node {
-      &__body {
-        .fold { display: none; }
-      }
-    }
-  }
+  &[data-type='string'],
+  &[data-type='number'],
+  &[data-type='boolean'],
   &[data-type='null'] {
     > .node {
       &__body {
         .fold { display: none; }
+      }
+      &__children {
+        > .tree {
+          display: none;
+        }
       }
     }
   }

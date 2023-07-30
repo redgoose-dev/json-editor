@@ -28,7 +28,7 @@ class JSONEditorCore {
   {
     let str = `<li data-type="${type}" class="node${isRoot ? ' root' : ''}">`
     str += `<div class="node__body">`
-    if (!isRoot) str += `<span class="sort">${iconSort}</span>`
+    if (!isRoot) str += `<span draggable="true" class="sort">${iconSort}</span>`
     str += `<div class="type"><button type="button"></button></div>`
     if (type === TYPES.OBJECT || type === TYPES.ARRAY)
     {
@@ -83,49 +83,13 @@ class JSONEditorCore {
     }
   }
 
-  clear()
-  {
-    if (!this.#el.tree) return
-    this.#el.wrap.empty()
-  }
-
-  /**
-   * replace
-   * @param {object|array} src
-   */
-  replace(src)
-  {
-    this.clear()
-    src = checkData(src)
-    const $item = this.#createRoot(src)
-    this.import($item, src)
-  }
-
-  /**
-   * import data
-   * @param {HTMLElement} target
-   * @param {object|array} src
-   */
-  import(target, src)
-  {
-    $.each(src, (key, value) => {
-      const type = getTypeName(value)
-      const data = { key, value, type }
-      this.addNode({
-        target,
-        data,
-        open: false,
-        callback: (node, value) => this.import(node, value),
-      })
-    })
-  }
-
   #setResourceFromNode($node, opt)
   {
     const { key, value, type, open } = opt
     const isRoot = $node.hasClass('root')
+    const $body = $node.children('.node__body')
     // type
-    $node.find('.type > button').html(`<i class="type-icon type-icon--${type}">${iconType[type]}</i>`)
+    $body.find('.type > button').html(`<i class="type-icon type-icon--${type}">${iconType[type]}</i>`)
     // fold
     if (type === TYPES.OBJECT || type === TYPES.ARRAY)
     {
@@ -134,21 +98,25 @@ class JSONEditorCore {
     if (!isRoot)
     {
       // key name
-      $node.find('.key').html(`<div class="label-field" contenteditable="true" data-placeholder="empty">${key}</div>`)
+      $body.find('.key').html(`<div class="label-field" contenteditable="true" data-placeholder="empty">${key}</div>`)
       // value
-      const $value = $node.find('.value')
+      const $value = $body.find('.value')
+      let newValue
       switch (type)
       {
-        case 'string':
-          $value.html(`<div contenteditable="true" data-placeholder="empty" class="label-field type-string">${value}</div>`)
+        case TYPES.STRING:
+          $value.html(`<div contenteditable="true" data-placeholder="empty" class="label-field type-string">${String(value)}</div>`)
           break
-        case 'number':
-          $value.html(`<input type="number" value="${value}" placeholder="0" class="label-field type-number"/>`)
+        case TYPES.NUMBER:
+          newValue = Number(value)
+          if (isNaN(newValue)) newValue = 0
+          $value.html(`<input type="number" value="${newValue}" placeholder="0" class="label-field type-number"/>`)
           break
-        case 'boolean':
-          $value.html(`<button type="button" data-value="${value}" class="label-switch type-boolean"><span><i>${value.toString().toUpperCase()}</i></span></button>`)
+        case TYPES.BOOLEAN:
+          newValue = value === 'false' ? false : Boolean(value)
+          $value.html(`<button type="button" data-value="${newValue}" class="label-switch type-boolean"><span><i>${newValue.toString().toUpperCase()}</i></span></button>`)
           break
-        case 'null':
+        case TYPES.NULL:
           $value.html(`<em class="label-null type-null">NULL</em>`)
           break
       }
@@ -157,7 +125,7 @@ class JSONEditorCore {
     if (type === TYPES.OBJECT || type === TYPES.ARRAY)
     {
       const count = getCountProperty(value)
-      if (!isNaN(count)) $node.find('.count').text(count)
+      if (!isNaN(count)) $body.find('.count').text(count)
     }
   }
 
@@ -165,6 +133,11 @@ class JSONEditorCore {
   {
     const isRoot = $node.hasClass('root')
     // sort
+    const $sort = $node.find('.sort')
+    if (!!$sort.length)
+    {
+      $sort.on('dragstart', (e) => this.#onDragStart(e))
+    }
     // type
     $node.find('.type > button').on('click', async e => {
       const $this = $(e.currentTarget)
@@ -215,6 +188,77 @@ class JSONEditorCore {
       })
     }
   }
+  #onDragStart(e)
+  {
+    const $handle = $(e.currentTarget)
+    const $node = $handle.closest('.node')
+    $node.addClass('drag-ghost')
+    e.dataTransfer.setDragImage($node.get(0), 0, 0)
+    console.log('#onDragStart()', e)
+    // $node.on('dragmove', (e) => this.#onDragMove(e))
+    // $handle.on('dragend', (e) => this.#onDragEnd(e))
+  }
+  #onDragMove(e)
+  {
+    console.log('#onDragMove()', e)
+  }
+  #onDragEnd(e)
+  {
+    const $node = $(e.currentTarget).closest('.node')
+    $node.removeClass('drag-ghost')
+    console.log('#onDragEnd()', e)
+  }
+
+  #getValue($node)
+  {
+    const type = String($node.data('type'))
+    const $value = $node.find('& > .node__body > .value')
+    switch (type)
+    {
+      case TYPES.OBJECT:
+      case TYPES.ARRAY:
+        return ''
+      case TYPES.STRING:
+        return $value.children('.type-string').text() || ''
+      case TYPES.NUMBER:
+        return Number($value.children('.type-number').val())
+      case TYPES.BOOLEAN:
+        return $value.children('.type-boolean').data('value')
+      case TYPES.NULL:
+        return null
+    }
+  }
+
+  /**
+   * replace
+   * @param {object|array} src
+   */
+  replace(src)
+  {
+    this.clear()
+    src = checkData(src)
+    const $item = this.#createRoot(src)
+    this.import($item, src)
+  }
+
+  /**
+   * import data
+   * @param {HTMLElement} target
+   * @param {object|array} src
+   */
+  import(target, src)
+  {
+    $.each(src, (key, value) => {
+      const type = getTypeName(value)
+      const data = { key, value, type }
+      this.addNode({
+        target,
+        data,
+        open: false,
+        callback: (node, value) => this.import(node, value),
+      })
+    })
+  }
 
   /**
    * add node
@@ -227,7 +271,7 @@ class JSONEditorCore {
     const $target = $(target)
     const { key, value, type } = data
     // set node item
-    const $node = this.#template(type)
+    const $node = this.#template(type, false)
     this.#setResourceFromNode($node, { ...data, open })
     this.#setEventFromNode($node)
     // add element
@@ -247,9 +291,26 @@ class JSONEditorCore {
   changeNodeType(node, type)
   {
     const $node = $(node)
-    // $node.attr('data-type', type)
-    console.log('changeNodeType()', node, type)
-    // TODO: 버튼 아이콘도 바꿔줘야한다.
+    // backup data
+    const src = {
+      key: $node.find(`& > .node__body .key`).text(),
+      value: this.#getValue($node),
+      type,
+      open: $node.hasClass('open'),
+    }
+    const children = $node.find(`& > .node__children > .tree`).html()
+    // clear
+    $node.empty()
+    // reset node
+    $node.html(this.#template(type, false).html())
+    if (children)
+    {
+      // console.log(children)
+      $node.find(`& > .node__children > .tree`).html(children)
+    }
+    this.#setResourceFromNode($node, src)
+    this.#setEventFromNode($node)
+    $node.attr('data-type', type)
   }
 
   duplicateNode($target)
@@ -280,6 +341,12 @@ class JSONEditorCore {
     {
       $node.removeClass('open')
     }
+  }
+
+  clear()
+  {
+    if (!this.#el.tree) return
+    this.#el.wrap.empty()
   }
 
   destroy()

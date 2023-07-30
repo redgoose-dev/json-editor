@@ -24,8 +24,9 @@ let self
 const elementName = 'json-editor'
 const data1 = {
   foo: 1,
-  foo2: '111',
+  foo2: '1a1b1',
   foo3: false,
+  foo44: [],
   foo4: [
     1, '2', null, true,
   ],
