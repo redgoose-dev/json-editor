@@ -32,11 +32,9 @@ class JsonEditorCore {
 
   #setOptions(obj, prop, value)
   {
-    // console.log('setOptions', prop, value)
+    obj[prop] = value
     switch (prop)
     {
-      case 'live':
-        break
       case 'theme':
         this.#changeTheme(value)
         break
@@ -250,11 +248,12 @@ class JsonEditorCore {
       return
     }
     // on events
-    this.#drag.$nodes.on(DRAG_EVENT.MOVE, this.#onDragOverNode.bind(this))
+    this.#drag.$nodes.on(DRAG_EVENT.MOVE, this.#onDragMove.bind(this))
     $(window).on(DRAG_EVENT.END, this.#onDragEnd.bind(this))
   }
-  #onDragOverNode(e)
+  #onDragMove(e)
   {
+    console.log(this.options)
     const $node = $(e.currentTarget)
     const $body = $node.children('.node__body')
     if (!($body.length > 0)) return

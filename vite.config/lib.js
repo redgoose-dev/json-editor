@@ -1,43 +1,84 @@
-import { defineConfig, loadEnv } from 'vite'
+import { build } from 'vite'
+import { svelte } from '@sveltejs/vite-plugin-svelte'
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
 
-const config = defineConfig(({ mode, command }) => {
-  const path = process.cwd()
-  const env = loadEnv(mode, path)
-  return {
-    publicDir: false,
-    build: {
-      lib: {
-        entry: {
-          'json-editor': './src/json-editor/web-component.js',
-        },
-        name: 'JsonEditor',
-        formats: [ 'es' ],
-      },
-      outDir: './lib',
-      rollupOptions: {
-        output: {
-          inlineDynamicImports: true,
-          preserveModules: false,
-          // manualChunks: {
-          //   'svelte': [ 'svelte' ],
-          //   'cash-dom': [ 'cash-dom' ],
-          // },
-          // entryFileNames: o => {
-          //   return '[name].js'
-          // },
-          // chunkFileNames: (o) => {
-          //   return 'vendor/[name].js'
-          // },
-        },
-        external: [
-          'public/*',
-        ],
-      },
-      // minify: false,
-      emptyOutDir: false,
+const path = process.cwd()
+const minify = true
+
+/**
+ * core
+ */
+export const core = {
+  publicDir: false,
+  build: {
+    lib: {
+      entry: { 'json-editor': './src/lib.js' },
+      name: 'JsonEditor',
+      formats: [ 'es', 'umd' ],
     },
-    plugins: [],
-  }
-})
+    outDir: './lib',
+    rollupOptions: {
+      output: {
+        inlineDynamicImports: true,
+        preserveModules: false,
+        assetFileNames: (assetInfo) => {
+          const info = assetInfo.name.split('.')
+          let ext = info[info.length - 1]
+          if (/css/.test(ext)) return `json-editor[extname]`
+          return `[name][extname]`
+        },
+      },
+    },
+    emptyOutDir: false,
+    minify,
+  },
+  configFile: false,
+}
+await build(core)
 
-export default config
+/**
+ * web component
+ */
+export const webComponent = {
+  publicDir: false,
+  build: {
+    lib: {
+      entry: { 'web-component': './src/web-component.js' },
+      name: 'JsonEditor',
+      formats: [ 'es' ],
+    },
+    outDir: './lib',
+    rollupOptions: {
+      output: {
+        inlineDynamicImports: true,
+        preserveModules: false,
+      },
+    },
+    emptyOutDir: false,
+    minify,
+  },
+  configFile: false,
+}
+await build(webComponent)
+
+/**
+ * docs
+ */
+export const docs = {
+  configFile: false,
+  root: path + '/src/docs',
+  base: './',
+  build: {
+    outDir: path + '/docs',
+    assetsDir: 'assets',
+    emptyOutDir: false,
+    minify,
+  },
+  plugins: [
+    svelte({
+      preprocess: vitePreprocess(),
+      extensions: [ '.svelte' ],
+    }),
+  ],
+}
+await build(docs)

@@ -1,6 +1,6 @@
-import { checkData } from './libs/util.js'
-import Core from './core.js'
-import css from './assets/main.scss?inline'
+import { checkData } from './json-editor/libs/util.js'
+import Core from './json-editor/core.js'
+import css from './json-editor/assets/main.scss?inline'
 
 class JsonEditor extends HTMLElement {
 
