@@ -1,10 +1,9 @@
 export const defaultOptions = {
   live: false, // live update
-  theme: 'system',
+  theme: 'system', // system,light,dark
 }
 
 export const defaultAddNodeOptions = {
-  target: undefined,
   data: undefined,
   between: 'after',
   open: true,

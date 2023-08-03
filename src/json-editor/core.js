@@ -12,13 +12,14 @@ import { iconSort, iconFold, iconType } from './assets/icons.js'
 
 class JsonEditorCore {
 
-  options
   #el = {
     wrap: null,
     tree: null,
   }
+  options
   context
   #drag
+  #interval
 
   constructor(wrap, options = {})
   {
@@ -93,8 +94,7 @@ class JsonEditorCore {
         break
       case 'insert':
         this.fold($node, true)
-        this.addNode({
-          target: $node,
+        this.addNode($node, {
           data: { key: '', value: '', type },
         })
         break
@@ -153,9 +153,14 @@ class JsonEditorCore {
     }
   }
 
+  #getType($node)
+  {
+    return String($node.data('type'))
+  }
+
   #getValue($node)
   {
-    const type = String($node.data('type'))
+    const type = this.#getType($node)
     const $value = $node.find('& > .node__body > .value')
     switch (type)
     {
@@ -173,13 +178,70 @@ class JsonEditorCore {
     }
   }
 
+  #update()
+  {
+    if (!this.options.live) return
+    if (this.preview && typeof this.preview === 'function')
+    {
+      this.preview(this.#output())
+    }
+  }
+
+  #output()
+  {
+    const nest = ($node, nodeType) => {
+      let obj = nodeType === 'array' ? [] : {}
+      const $nodes = $node.find('& > .node__children > ul > li')
+      $nodes.each((idx, $node) => {
+        if (!(nodeType === 'array' || nodeType === 'object')) return true
+        $node = $($node)
+        const type = this.#getType($node)
+        switch (type)
+        {
+          case 'object':
+          case 'array':
+            switch (nodeType)
+            {
+              case 'array':
+                obj.push(nest($node, type))
+                break
+              case 'object':
+                const key = $node.find('& > .node__body > .key').text()
+                if (key) obj[key] = nest($node, type)
+                break
+            }
+            break
+          case 'string':
+          case 'number':
+          case 'boolean':
+          case 'null':
+            const value = this.#getValue($node)
+            switch (nodeType)
+            {
+              case 'array':
+                obj.push(value)
+                break
+              case 'object':
+                const key = $node.find('& > .node__body > .key').text()
+                if (key) obj[key] = value
+                break
+            }
+            break
+        }
+      })
+      return obj
+    }
+    const $rootNode = this.#el.tree.children('.node')
+    const type = this.#getType($rootNode)
+    return nest($rootNode, type)
+  }
+
   /**
    * NODE EVENTS
    */
 
   #setEventFromNode($node)
   {
-    const isRoot = $node.hasClass('root')
     // sort
     const $sort = $node.find('.sort')
     if (!!$sort.length)
@@ -197,6 +259,7 @@ class JsonEditorCore {
       else
       {
         if (this.context) this.context.close()
+        const isRoot = $this.closest('.node').hasClass('root')
         this.context = new Context(this, $this.closest('.node'), isRoot)
         this.context.selectItem = ($node, mode, type) => this.#selectContextMenu($node, mode, type)
       }
@@ -211,18 +274,27 @@ class JsonEditorCore {
     const $key = $node.find('.key > .label-field')
     if (!!$key.length)
     {
-      $key.on('keydown', e => {
-        if (e.keyCode === 13) return e.preventDefault()
-        if (checkFontShortcut(e)) e.preventDefault()
-      })
+      $key
+        .on('keydown', e => {
+          if (e.keyCode === 13) return e.preventDefault()
+          if (checkFontShortcut(e)) return e.preventDefault()
+        })
+        .on('input', e => this.#onInputTextField(e))
     }
     // value
     const $valueString = $node.find('.value > .type-string')
     if (!!$valueString.length)
     {
-      $valueString.on('keydown', e => {
-        if (checkFontShortcut(e)) e.preventDefault()
-      })
+      $valueString
+        .on('keydown', e => {
+          if (checkFontShortcut(e)) return e.preventDefault()
+        })
+        .on('input', e => this.#onInputTextField(e))
+    }
+    const $valueNumber = $node.find('.value > .type-number')
+    if (!!$valueNumber.length)
+    {
+      $valueNumber.on('input', e => this.#onInputTextField(e))
     }
     const $valueSwitch = $node.find('.value > .type-boolean')
     if (!!$valueSwitch.length)
@@ -233,8 +305,18 @@ class JsonEditorCore {
         $this
           .data('value', newValue)
           .find('i').text(newValue.toString().toUpperCase())
+        this.#update()
       })
     }
+  }
+  #onInputTextField(e)
+  {
+    if (this.#interval)
+    {
+      clearInterval(this.#interval)
+      this.#interval = undefined
+    }
+    this.#interval = setTimeout(() => this.#update(), 600)
   }
   #onDragStart(e)
   {
@@ -253,7 +335,6 @@ class JsonEditorCore {
   }
   #onDragMove(e)
   {
-    console.log(this.options)
     const $node = $(e.currentTarget)
     const $body = $node.children('.node__body')
     if (!($body.length > 0)) return
@@ -295,8 +376,11 @@ class JsonEditorCore {
     // off events
     this.#drag.$nodes.off(DRAG_EVENT.MOVE)
     $(window).off(DRAG_EVENT.END)
+    // TODO: 데이터 이동하기
     // clear properties
     this.#drag = undefined
+    // call update
+    this.#update()
   }
 
   /**
@@ -304,45 +388,16 @@ class JsonEditorCore {
    */
 
   /**
-   * replace
-   * @param {object|array} src
-   */
-  replace(src)
-  {
-    this.clear()
-    src = checkData(src)
-    const $item = this.#createRoot(src)
-    this.import($item, src)
-  }
-
-  /**
-   * import data
-   * @param {HTMLElement} target
-   * @param {object|array} src
-   */
-  import(target, src)
-  {
-    $.each(src, (key, value) => {
-      const type = getTypeName(value)
-      const data = { key, value, type }
-      this.addNode({
-        target,
-        data,
-        open: false,
-        callback: (node, value) => this.import(node, value),
-      })
-    })
-  }
-
-  /**
    * add node
+   * @param {HTMLElement} $target
    * @param {object} options
+   * @param {boolean} useUpdate
    */
-  addNode(options)
+  addNode($target, options, useUpdate = true)
   {
     options = { ...defaultAddNodeOptions, ...options }
-    const { target, data, between, open, callback } = options
-    const $target = $(target)
+    const { data, between, open, callback } = options
+    $target = $($target)
     const { key, value, type } = data
     // set node item
     const $node = this.#template(type, false)
@@ -360,9 +415,16 @@ class JsonEditorCore {
         callback($node.get(0), value)
       }
     }
+    if (useUpdate) this.#update()
   }
 
-  changeType(node, type)
+  /**
+   * change type
+   * @param {HTMLElement} node
+   * @param {string} type
+   * @param {boolean} useUpdate
+   */
+  changeType(node, type, useUpdate = true)
   {
     const $node = $(node)
     // backup data
@@ -373,36 +435,45 @@ class JsonEditorCore {
       open: $node.hasClass('open'),
     }
     const children = $node.find(`& > .node__children > .tree`).html()
+    const isRoot = $node.hasClass('root')
+    // const isRoot =
     // clear
     $node.empty()
     // reset node
-    $node.html(this.#template(type, false).html())
+    $node.html(this.#template(type, isRoot).html())
     if (children)
     {
-      // console.log(children)
       $node.find(`& > .node__children > .tree`).html(children)
     }
     this.#setResourceFromNode($node, src)
     this.#setEventFromNode($node)
     $node.attr('data-type', type)
+    if (useUpdate) this.#update()
   }
 
-  duplicate($target)
+  /**
+   * duplicate
+   * @param {HTMLElement} $target
+   * @param {boolean} useUpdate
+   */
+  duplicate($target, useUpdate = true)
   {
     $target = $($target)
     const $node = $($target.get(0).outerHTML)
     this.#setEventFromNode($node)
     $target.after($node)
+    if (useUpdate) this.#update()
   }
 
-  removeNode($node)
+  removeNode($node, useUpdate = true)
   {
     $node.remove()
+    if (useUpdate) this.#update()
   }
 
-  fold(node, sw)
+  fold($node, sw)
   {
-    const $node = $(node)
+    $node = $($node)
     if (sw === undefined)
     {
       $node.toggleClass('open')
@@ -421,15 +492,73 @@ class JsonEditorCore {
   {
     if (!this.#el.tree) return
     this.#el.wrap.empty()
-  }
-
-  update()
-  {
-    // TODO: 업데이트될때마다 호출된다.
-    // TODO: 이것은 외부에서 오버라이딩 하면서 호출할 수 있다.
+    this.#update()
   }
 
   destroy()
+  {}
+
+  /**
+   * replace
+   * @param {object|array} src
+   * @param {boolean} useUpdate
+   */
+  replace(src, useUpdate = true)
+  {
+    this.#el.wrap.empty()
+    src = checkData(src)
+    const $item = this.#createRoot(src)
+    this.import($item, src, false)
+    if (useUpdate) this.#update()
+  }
+
+  /**
+   * import data
+   * @param {HTMLElement} target
+   * @param {object|array} src
+   * @param {boolean} useUpdate
+   */
+  import(target, src, useUpdate = true)
+  {
+    $.each(src, (key, value) => {
+      const type = getTypeName(value)
+      const data = { key, value, type }
+      this.addNode(target, {
+        data,
+        open: false,
+        callback: (node, value) => this.import(node, value, false),
+      }, false)
+    })
+    if (useUpdate) this.#update()
+  }
+
+  /**
+   * export
+   * @param {boolean} json
+   * @param {number|boolean} space (number: space count, true: tab, false: 0)
+   * @return {array|object}
+   */
+  export(json = false, space = 2)
+  {
+    let data = this.#output()
+    if (json)
+    {
+      let useSpace = 2
+      if (space === true) useSpace = '\t'
+      else if (typeof space === 'number') useSpace = space
+      return JSON.stringify(data, null, useSpace)
+    }
+    else
+    {
+      return data
+    }
+  }
+
+  /**
+   * preview
+   * @param {array|object} src
+   */
+  preview(src)
   {}
 
 }

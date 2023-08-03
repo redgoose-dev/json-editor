@@ -45,7 +45,7 @@ export const webComponent = {
     lib: {
       entry: { 'web-component': './src/web-component.js' },
       name: 'JsonEditor',
-      formats: [ 'es' ],
+      formats: [ 'es', 'umd' ],
     },
     outDir: './lib',
     rollupOptions: {

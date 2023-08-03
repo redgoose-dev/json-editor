@@ -369,7 +369,7 @@
     display: block;
   }
 }
-.dragging {
+&.dragging {
   .node:not(.root) > .node__body {
     opacity: .25;
   }

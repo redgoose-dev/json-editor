@@ -7,6 +7,7 @@
     <button type="button" on:click={() => toktok(1)}>button #1</button>
     <button type="button" on:click={() => toktok(2)}>button #2</button>
     <button type="button" on:click={() => toktok(3)}>{theme}</button>
+    <button type="button" on:click={exportData}>Export</button>
   </div>
 </nav>
 
@@ -83,6 +84,12 @@ function toktok(key)
   }
 }
 
+function exportData()
+{
+  const data = self.core.export(true, 2)
+  console.log('exportData()', data)
+}
+
 onMount(() => {
   // define custom element
   if (customElements.get(elementName))
@@ -92,6 +99,10 @@ onMount(() => {
   else
   {
     customElements.define(elementName, JsonEditor)
+    self.addEventListener('update', (e) => {
+      console.log('update json-editor', e.detail.data)
+      data = e.detail.data
+    })
   }
 })
 </script>

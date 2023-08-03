@@ -47,10 +47,13 @@ class JsonEditor extends HTMLElement {
     {
       case 'src':
         this.data = checkData(newValue)
-        if (this.core) this.core.replace(this.data)
+        if (this.core)
+        {
+          this.core.replace(this.data, false)
+        }
         break
       case 'theme':
-        this.options.theme = [ 'system', 'light', 'dark' ].indexOf(newValue) > -1 ? newValue : 'system'
+        this.options.theme = newValue
         if (this.core) this.core.options.theme = this.options.theme
         break
       case 'live':
@@ -65,9 +68,12 @@ class JsonEditor extends HTMLElement {
    */
   connectedCallback()
   {
-    this.root.addEventListener('json-editor', this.#onRootEvent)
     this.core = new Core(this.root, this.options)
-    this.core.replace(this.data)
+    this.core.replace(this.data, true)
+    this.core.preview = (src) => {
+      this.data = src
+      this.#event('update', { data: src })
+    }
   }
 
   /**
@@ -76,8 +82,6 @@ class JsonEditor extends HTMLElement {
   disconnectedCallback()
   {
     console.warn('disconnectedCallback()')
-    // remove event
-    this.root.removeEventListener('json-editor', this.#onRootEvent)
     // destroy core
     if (!this.core) return
     this.core.destroy()
@@ -91,9 +95,11 @@ class JsonEditor extends HTMLElement {
     console.warn('adoptedCallback()')
   }
 
-  #onRootEvent(e)
+  #event(name, src)
   {
-    console.log('#onRootEvent', e)
+    this.dispatchEvent(new CustomEvent(name, {
+      detail: src,
+    }))
   }
 
 }
