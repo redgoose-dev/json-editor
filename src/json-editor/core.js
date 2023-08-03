@@ -1,7 +1,7 @@
 import $ from 'cash-dom'
 import Context from './context.js'
 import { getTypeName, checkData, getCountProperty, checkFontShortcut } from './libs/util.js'
-import { defaultAddNodeOptions, TYPES } from './libs/assets.js'
+import { defaultOptions, defaultAddNodeOptions, TYPES, DRAG_EVENT, DRAG_HOVER_NODE_CLASS } from './libs/assets.js'
 import { iconSort, iconFold, iconType } from './assets/icons.js'
 
 /**
@@ -10,25 +10,51 @@ import { iconSort, iconFold, iconType } from './assets/icons.js'
  * @param {object|array|string} src
  */
 
-class JSONEditorCore {
+class JsonEditorCore {
 
+  options
   #el = {
     wrap: null,
     tree: null,
   }
   context
+  #drag
 
-  constructor(wrap, src)
+  constructor(wrap, options = {})
   {
     this.#el.wrap = $(wrap)
-    this.replace(src)
+    this.options = new Proxy(Object.assign({}, defaultOptions, options), {
+      get: (obj, prop) => (obj[prop]),
+      set: this.#setOptions.bind(this),
+    })
+    this.#changeTheme(this.options.theme)
+  }
+
+  #setOptions(obj, prop, value)
+  {
+    // console.log('setOptions', prop, value)
+    switch (prop)
+    {
+      case 'live':
+        break
+      case 'theme':
+        this.#changeTheme(value)
+        break
+    }
+    return true
+  }
+
+  #changeTheme(theme)
+  {
+    theme = ([ 'system', 'light', 'dark' ].indexOf(theme) > -1) ? theme : 'system'
+    this.#el.wrap.attr('data-theme', theme)
   }
 
   #template(type, isRoot = false)
   {
     let str = `<li data-type="${type}" class="node${isRoot ? ' root' : ''}">`
     str += `<div class="node__body">`
-    if (!isRoot) str += `<span draggable="true" class="sort">${iconSort}</span>`
+    if (!isRoot) str += `<div class="sort">${iconSort}</div>`
     str += `<div class="type"><button type="button"></button></div>`
     if (type === TYPES.OBJECT || type === TYPES.ARRAY)
     {
@@ -65,17 +91,17 @@ class JSONEditorCore {
     switch (mode)
     {
       case 'change-type':
-        this.changeNodeType($node, type)
+        this.changeType($node, type)
         break
       case 'insert':
-        this.controlFold($node, true)
+        this.fold($node, true)
         this.addNode({
           target: $node,
           data: { key: '', value: '', type },
         })
         break
       case 'duplicate':
-        this.duplicateNode($node)
+        this.duplicate($node)
         break
       case 'remove':
         this.removeNode($node)
@@ -93,7 +119,7 @@ class JSONEditorCore {
     // fold
     if (type === TYPES.OBJECT || type === TYPES.ARRAY)
     {
-      this.controlFold($node, open)
+      this.fold($node, open)
     }
     if (!isRoot)
     {
@@ -129,6 +155,30 @@ class JSONEditorCore {
     }
   }
 
+  #getValue($node)
+  {
+    const type = String($node.data('type'))
+    const $value = $node.find('& > .node__body > .value')
+    switch (type)
+    {
+      case TYPES.OBJECT:
+      case TYPES.ARRAY:
+        return ''
+      case TYPES.STRING:
+        return $value.children('.type-string').text() || ''
+      case TYPES.NUMBER:
+        return Number($value.children('.type-number').val())
+      case TYPES.BOOLEAN:
+        return $value.children('.type-boolean').data('value')
+      case TYPES.NULL:
+        return null
+    }
+  }
+
+  /**
+   * NODE EVENTS
+   */
+
   #setEventFromNode($node)
   {
     const isRoot = $node.hasClass('root')
@@ -136,7 +186,7 @@ class JSONEditorCore {
     const $sort = $node.find('.sort')
     if (!!$sort.length)
     {
-      $sort.on('dragstart', (e) => this.#onDragStart(e))
+      $sort.on(DRAG_EVENT.START, this.#onDragStart.bind(this))
     }
     // type
     $node.find('.type > button').on('click', async e => {
@@ -157,7 +207,7 @@ class JSONEditorCore {
     $node.find('.fold').on('click', e => {
       const $this = $(e.currentTarget)
       const $node = $this.closest('.node')
-      this.controlFold($node)
+      this.fold($node)
     })
     // key name
     const $key = $node.find('.key > .label-field')
@@ -190,44 +240,69 @@ class JSONEditorCore {
   }
   #onDragStart(e)
   {
-    const $handle = $(e.currentTarget)
-    const $node = $handle.closest('.node')
-    $node.addClass('drag-ghost')
-    e.dataTransfer.setDragImage($node.get(0), 0, 0)
-    console.log('#onDragStart()', e)
-    // $node.on('dragmove', (e) => this.#onDragMove(e))
-    // $handle.on('dragend', (e) => this.#onDragEnd(e))
+    this.#drag = {}
+    this.#drag.$node = $(e.currentTarget).closest('.node')
+    this.#drag.$area = this.#drag.$node.parent()
+    this.#drag.$nodes = this.#drag.$area.children('.node')
+    if (this.#drag.$nodes.length < 2)
+    {
+      this.#drag = undefined
+      return
+    }
+    // on events
+    this.#drag.$nodes.on(DRAG_EVENT.MOVE, this.#onDragOverNode.bind(this))
+    $(window).on(DRAG_EVENT.END, this.#onDragEnd.bind(this))
   }
-  #onDragMove(e)
+  #onDragOverNode(e)
   {
-    console.log('#onDragMove()', e)
+    const $node = $(e.currentTarget)
+    const $body = $node.children('.node__body')
+    if (!($body.length > 0)) return
+    // check half
+    const { y, height } = $body.get(0).getBoundingClientRect()
+    const checkHalf = height * .5 < e.y - y
+    if (!this.#drag.activeNode)
+    {
+      // set class
+      this.#el.wrap.addClass('dragging')
+      this.#drag.$area.addClass('drag-area')
+      this.#drag.$node.addClass('drag-select')
+    }
+    if (this.#drag.activeNode !== $node.get(0))
+    {
+      // remove class
+      if (this.#drag.activeNode)
+      {
+        $(this.#drag.activeNode).removeClass(DRAG_HOVER_NODE_CLASS.ALL)
+      }
+      this.#drag.activeNode = $node.get(0)
+    }
+    else if (this.#drag.half === checkHalf)
+    {
+      return
+    }
+    this.#drag.half = checkHalf
+    $node
+      .removeClass(DRAG_HOVER_NODE_CLASS.ALL)
+      .addClass(checkHalf ? DRAG_HOVER_NODE_CLASS.END : DRAG_HOVER_NODE_CLASS.START)
   }
   #onDragEnd(e)
   {
-    const $node = $(e.currentTarget).closest('.node')
-    $node.removeClass('drag-ghost')
-    console.log('#onDragEnd()', e)
+    // remove class
+    this.#el.wrap.removeClass('dragging')
+    this.#drag.$area.removeClass('drag-area')
+    this.#drag.$node.removeClass('drag-select')
+    this.#drag.$nodes.removeClass(DRAG_HOVER_NODE_CLASS.ALL)
+    // off events
+    this.#drag.$nodes.off(DRAG_EVENT.MOVE)
+    $(window).off(DRAG_EVENT.END)
+    // clear properties
+    this.#drag = undefined
   }
 
-  #getValue($node)
-  {
-    const type = String($node.data('type'))
-    const $value = $node.find('& > .node__body > .value')
-    switch (type)
-    {
-      case TYPES.OBJECT:
-      case TYPES.ARRAY:
-        return ''
-      case TYPES.STRING:
-        return $value.children('.type-string').text() || ''
-      case TYPES.NUMBER:
-        return Number($value.children('.type-number').val())
-      case TYPES.BOOLEAN:
-        return $value.children('.type-boolean').data('value')
-      case TYPES.NULL:
-        return null
-    }
-  }
+  /**
+   * PUBLIC METHODS
+   */
 
   /**
    * replace
@@ -288,7 +363,7 @@ class JSONEditorCore {
     }
   }
 
-  changeNodeType(node, type)
+  changeType(node, type)
   {
     const $node = $(node)
     // backup data
@@ -313,7 +388,7 @@ class JSONEditorCore {
     $node.attr('data-type', type)
   }
 
-  duplicateNode($target)
+  duplicate($target)
   {
     $target = $($target)
     const $node = $($target.get(0).outerHTML)
@@ -326,7 +401,7 @@ class JSONEditorCore {
     $node.remove()
   }
 
-  controlFold(node, sw)
+  fold(node, sw)
   {
     const $node = $(node)
     if (sw === undefined)
@@ -349,9 +424,15 @@ class JSONEditorCore {
     this.#el.wrap.empty()
   }
 
+  update()
+  {
+    // TODO: 업데이트될때마다 호출된다.
+    // TODO: 이것은 외부에서 오버라이딩 하면서 호출할 수 있다.
+  }
+
   destroy()
   {}
 
 }
 
-export default JSONEditorCore
+export default JsonEditorCore

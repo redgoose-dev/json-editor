@@ -7,25 +7,25 @@ class JsonEditor extends HTMLElement {
   constructor()
   {
     super()
-    this.attachShadow({
-      mode: 'open',
-    })
-
+    this.attachShadow({ mode: 'open' })
     const template = document.createElement('template')
     template.innerHTML = `<div class="json-editor"></div>`
     const style = new CSSStyleSheet()
     style.replaceSync(css)
-
     this.shadowRoot.appendChild(template.content.cloneNode(true))
     this.shadowRoot.adoptedStyleSheets = [ style ]
     this.root = this.shadowRoot.childNodes[0]
     this.ready = false
     this.data = {}
+    this.options = {
+      live: false,
+      theme: 'system', // system,light,dark
+    }
   }
 
   static get observedAttributes()
   {
-    return [ 'src', 'theme' ]
+    return [ 'src', 'theme', 'live' ]
   }
 
   get props()
@@ -33,6 +33,7 @@ class JsonEditor extends HTMLElement {
     return {
       src: this.getAttribute('src'),
       theme: this.getAttribute('theme'),
+      live: this.getAttribute('live'),
     }
   }
 
@@ -46,13 +47,15 @@ class JsonEditor extends HTMLElement {
     {
       case 'src':
         this.data = checkData(newValue)
-        if (this.core)
-        {
-          this.core.replace(this.data)
-        }
+        if (this.core) this.core.replace(this.data)
         break
       case 'theme':
-        // TODO
+        this.options.theme = [ 'system', 'light', 'dark' ].indexOf(newValue) > -1 ? newValue : 'system'
+        if (this.core) this.core.options.theme = this.options.theme
+        break
+      case 'live':
+        this.options.live = [ 'true', '1' ].indexOf(newValue) > -1
+        if (this.core) this.core.options.live = this.options.live
         break
     }
   }
@@ -63,7 +66,8 @@ class JsonEditor extends HTMLElement {
   connectedCallback()
   {
     this.root.addEventListener('json-editor', this.#onRootEvent)
-    this.core = new Core(this.root, this.data)
+    this.core = new Core(this.root, this.options)
+    this.core.replace(this.data)
   }
 
   /**

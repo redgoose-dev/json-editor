@@ -1,3 +1,4 @@
+// node
 
 .type-icon {
   display: grid;
@@ -143,31 +144,38 @@
   }
   &[data-value='true'] {
     --switch-unit-x: calc(var(--switch-width) - (var(--switch-offset) * 2) - var(--switch-unit-size));
-    --switch-unit-color: var(--json-editor-color-object);
+    --switch-unit-color: var(--json-editor-color-focus);
   }
 }
 
 .node {
+  position: relative;
   &__body {
     position: relative;
     display: flex;
     align-items: center;
     box-sizing: border-box;
+    padding: 4px 0;
+    transition: opacity 120ms ease-out;
     > .sort {
       display: block;
       box-sizing: border-box;
       cursor: move;
-      padding: 0 4px 0 0;
+      margin: -4px 4px -4px 0;
+      padding: 4px 0;
       svg {
         display: block;
         width: 24px;
+      }
+      &:active {
+        opacity: .5;
       }
     }
     > .type {
       position: relative;
       > button {
         display: block;
-        margin: -2px -2px -2px -4px;
+        margin: -2px;
         padding: 2px;
         box-sizing: border-box;
         border: none;
@@ -245,18 +253,18 @@
     > .tree {
       position: relative;
       display: none;
-      gap: 6px 0;
-      margin: 6px 0 0;
-      padding: 0 0 0 24px;
+      margin: 0px 0 0;
+      padding: 0 0 0 26px;
       list-style: none;
+      box-sizing: border-box;
       &:not(:empty) {
         &:before {
           content: '';
           display: block;
           position: absolute;
-          left: 10px;
-          top: 0;
-          bottom: 11px;
+          left: 11px;
+          top: 6px;
+          bottom: 14px;
           width: 4px;
           border-width: 0 0 0 1px;
           border-style: dashed;
@@ -266,8 +274,8 @@
           content: '';
           display: block;
           position: absolute;
-          left: 8px;
-          bottom: 10px;
+          left: 9px;
+          bottom: 13px;
           width: 5px;
           height: 5px;
           background: hsla(0 0% 72% / 100%);
@@ -290,12 +298,6 @@
         }
       }
     }
-  }
-  &.drag-ghost {
-    padding: 8px 0;
-    margin: -8px 0;
-    background: var(--json-editor-color-bg);
-    opacity: .25;
   }
   &[data-type='object'] {
     > .node {
@@ -339,4 +341,42 @@
       }
     }
   }
+}
+
+// drag and drop
+.node {
+  &:before,
+  &:after {
+    display: none;
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background-color: var(--json-editor-color-focus);
+    border-radius: 4px;
+  }
+  &:before {
+    top: -2px;
+  }
+  &:after {
+    bottom: -2px;
+  }
+  &.drag-over-start:before {
+    display: block;
+  }
+  &.drag-over-end:after {
+    display: block;
+  }
+}
+.dragging {
+  .node:not(.root) > .node__body {
+    opacity: .25;
+  }
+  .drag-area > .node > .node__body {
+    opacity: unset;
+  }
+}
+.drag-select {
+  background-color: hsla(0 0% 0% / 5%);
 }

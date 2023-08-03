@@ -6,14 +6,16 @@
   <div class="controller__wrap">
     <button type="button" on:click={() => toktok(1)}>button #1</button>
     <button type="button" on:click={() => toktok(2)}>button #2</button>
-    <button type="button">button #3</button>
+    <button type="button" on:click={() => toktok(3)}>{theme}</button>
   </div>
 </nav>
 
 <div class="container">
   <json-editor
     bind:this={self}
-    src={_data}/>
+    src={_data}
+    live="true"
+    theme={theme}/>
 </div>
 
 <script>
@@ -22,6 +24,7 @@ import JsonEditor from '../json-editor/web-component.js'
 
 let self
 const elementName = 'json-editor'
+let theme = 'system'
 const data1 = {
   foo: 1,
   foo2: '1a1b1',
@@ -63,12 +66,25 @@ function toktok(key)
     case 2:
       data = data2
       break
+    case 3:
+      switch (theme)
+      {
+        case 'system':
+          theme = 'light'
+          break
+        case 'light':
+          theme = 'dark'
+          break
+        case 'dark':
+          theme = 'system'
+          break
+      }
+      break
   }
 }
 
 onMount(() => {
   // define custom element
-  // console.log(JsonEditor)
   if (customElements.get(elementName))
   {
     customElements.upgrade(self)
