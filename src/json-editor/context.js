@@ -1,4 +1,5 @@
 import $ from 'cash-dom'
+import { TYPES, CONTEXT_EVENT } from './libs/assets.js'
 import { iconArrow, iconType } from './assets/icons.js'
 
 const tree = [
@@ -6,24 +7,24 @@ const tree = [
     key : 'change-type',
     label: 'Change Type',
     children : [
-      { key: 'object', label: 'Object' },
-      { key: 'array', label : 'Array' },
-      { key: 'string', label : 'String' },
-      { key: 'number', label : 'Number' },
-      { key: 'boolean', label : 'Boolean' },
-      { key: 'null', label : 'Null' },
+      { key: TYPES.OBJECT, label: 'Object' },
+      { key: TYPES.ARRAY, label : 'Array' },
+      { key: TYPES.STRING, label : 'String' },
+      { key: TYPES.NUMBER, label : 'Number' },
+      { key: TYPES.BOOLEAN, label : 'Boolean' },
+      { key: TYPES.NULL, label : 'Null' },
     ]
   },
   {
     key: 'insert',
     label : 'Insert',
     children : [
-      { key : 'object', label : 'Object' },
-      { key : 'array', label : 'Array' },
-      { key : 'string', label : 'String' },
-      { key : 'number', label : 'Number' },
-      { key : 'boolean', label : 'Boolean' },
-      { key : 'null', label : 'Null' },
+      { key: TYPES.OBJECT, label: 'Object' },
+      { key: TYPES.ARRAY, label : 'Array' },
+      { key: TYPES.STRING, label : 'String' },
+      { key: TYPES.NUMBER, label : 'Number' },
+      { key: TYPES.BOOLEAN, label : 'Boolean' },
+      { key: TYPES.NULL, label : 'Null' },
     ]
   },
   { key: 'duplicate', label : 'Duplicate' },
@@ -50,9 +51,17 @@ class Context {
     this.#el.dialog = this.#template(tree, this.#type, isRoot)
     this.#el.dialog.on('click', e => e.stopPropagation())
     this.#el.dialog.find('button').on('click', e => this.#onClickItem(e))
+    // custom context
+    this.#parent.customContext(this.#el.dialog.get(0), {
+      node: this.#el.node.get(0),
+      type: this.#type,
+      isRoot,
+    }, $)
+    // append
     this.#el.type.append(this.#el.dialog)
-    $(window).on('click.json-editor-context', e => this.close(e))
-    $(window).on('keyup.json-editor-context', e => this.#onKeyupWindow(e))
+    // set events
+    $(window).on(CONTEXT_EVENT.CLICK, e => this.close(e))
+    $(window).on(CONTEXT_EVENT.KEYUP, e => this.#onKeyupWindow(e))
   }
 
   #template(src, type, isRoot = false)
@@ -65,10 +74,10 @@ class Context {
       {
         switch (key)
         {
-          case 'string':
-          case 'number':
-          case 'boolean':
-          case 'null':
+          case TYPES.STRING:
+          case TYPES.NUMBER:
+          case TYPES.BOOLEAN:
+          case TYPES.NULL:
             if (parentType === 'change-type') return ''
             break
           case 'duplicate':
@@ -86,7 +95,7 @@ class Context {
           buttonAttr = ' disabled'
           break
         case 'insert':
-          if (['string', 'number', 'boolean', 'null'].indexOf(type) > -1) return ''
+          if ([TYPES.STRING, TYPES.NUMBER, TYPES.BOOLEAN, TYPES.NULL].indexOf(type) > -1) return ''
           attr = ` class="dropdown"`
           buttonAttr = ' disabled'
           break
@@ -98,12 +107,12 @@ class Context {
           attr = ` class="remove"`
           buttonAttr = ' data-mode="remove"'
           break
-        case 'object':
-        case 'array':
-        case 'string':
-        case 'number':
-        case 'boolean':
-        case 'null':
+        case TYPES.OBJECT:
+        case TYPES.ARRAY:
+        case TYPES.STRING:
+        case TYPES.NUMBER:
+        case TYPES.BOOLEAN:
+        case TYPES.NULL:
           attr = ` class="type"`
           typeIcon = `<i class="type-icon type-icon--${key}">${iconType[key]}</i>`
           buttonAttr = ` data-mode="${parentType}" data-type="${key}"`
@@ -169,8 +178,8 @@ class Context {
   {
     this.#el.type.removeClass('open')
     this.#el.dialog.remove()
-    $(window).off('click.json-editor-context')
-    $(window).off('keyup.json-editor-context')
+    $(window).off(CONTEXT_EVENT.CLICK)
+    $(window).off(CONTEXT_EVENT.KEYUP)
     delete this.#parent.context
   }
 

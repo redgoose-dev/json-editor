@@ -1,5 +1,5 @@
 <header>
-  <h1>JSONEditor Development</h1>
+  <h1>JSONEditor Development33</h1>
 </header>
 
 <nav class="controller">
@@ -20,52 +20,24 @@
 </div>
 
 <script>
-import { onMount } from 'svelte'
+import { onMount, onDestroy } from 'svelte'
 import JsonEditor from '../web-component.js'
+import { sampleObject, sampleArray } from './resource.js'
 
 let self
 const elementName = 'json-editor'
 let theme = 'system'
-const data1 = {
-  foo: 1,
-  foo2: '1a1b1',
-  foo3: false,
-  foo44: [],
-  foo4: [
-    1, '2', null, true,
-  ],
-  foo5: {
-    1: 11,
-    22: '22',
-    3: 33,
-    44: null,
-  },
-}
-const data2 = [
-  'apple',
-  'banana',
-  123123,
-  false,
-  'mango',
-  [ 1, 2, 3 ],
-  {
-    foo: 'bar',
-    colors: { apple: 'red', banana: 'yellow', mango: 'green' },
-    empty: null,
-  },
-  ...(new Array(72).fill('apple')),
-]
-let data = data1
+let data = sampleObject
 $: _data = JSON.stringify(data, null)
 
 function toktok(key)
 {
   switch (key) {
     case 1:
-      data = data1
+      data = sampleObject
       break
     case 2:
-      data = data2
+      data = sampleArray
       break
     case 3:
       switch (theme)
@@ -90,6 +62,12 @@ function exportData()
   console.log('exportData()', data)
 }
 
+function onUpdateJsonEditor(e)
+{
+  console.warn('UPDATE:', e.detail.data)
+  // data = e.detail.data
+}
+
 onMount(() => {
   // define custom element
   if (customElements.get(elementName))
@@ -99,12 +77,26 @@ onMount(() => {
   else
   {
     customElements.define(elementName, JsonEditor)
-    self.addEventListener('update', (e) => {
-      console.log('update json-editor', e.detail.data)
-      data = e.detail.data
+  }
+  self.addEventListener('update', onUpdateJsonEditor)
+  self.core.customContext = (body, { node, type, isRoot }, $) => {
+    if (isRoot) return
+    const $ul = $(body).children()
+    const $items = $(`
+      <li><button type="button" data-key="#1">custom #1</button></li>
+      <li><button type="button" data-key="#2">custom #2</button></li>
+    `)
+    $ul.append($items)
+    $items.find('button').on('click', (e) => {
+      console.log('click item-key:', e.currentTarget.dataset.key)
+      self.core.context.close()
     })
   }
 })
+onDestroy(() => {
+  self.removeEventListener('update', onUpdateJsonEditor)
+})
+
 </script>
 
 <style lang="scss">

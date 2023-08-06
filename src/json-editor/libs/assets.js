@@ -25,6 +25,11 @@ export const DRAG_EVENT = {
   END: 'pointerup.json-editor pointercancel.json-editor',
 }
 
+export const CONTEXT_EVENT = {
+  CLICK: 'click.json-editor-context',
+  KEYUP: 'keyup.json-editor-context',
+}
+
 export const DRAG_HOVER_NODE_CLASS = {
   START: 'drag-over-start',
   END: 'drag-over-end',

@@ -1,7 +1,14 @@
 import $ from 'cash-dom'
 import Context from './context.js'
 import { getTypeName, checkData, getCountProperty, checkFontShortcut } from './libs/util.js'
-import { defaultOptions, defaultAddNodeOptions, TYPES, DRAG_EVENT, DRAG_HOVER_NODE_CLASS } from './libs/assets.js'
+import {
+  defaultOptions,
+  defaultAddNodeOptions,
+  TYPES,
+  DRAG_EVENT,
+  DRAG_HOVER_NODE_CLASS,
+  CONTEXT_EVENT
+} from './libs/assets.js'
 import { iconSort, iconFold, iconType } from './assets/icons.js'
 
 /**
@@ -12,14 +19,12 @@ import { iconSort, iconFold, iconType } from './assets/icons.js'
 
 class JsonEditorCore {
 
-  #el = {
-    wrap: null,
-    tree: null,
-  }
+  #el = { wrap: null, tree: null }
   options
   context
   #drag
   #interval
+  #changeInput = false
 
   constructor(wrap, options = {})
   {
@@ -190,38 +195,38 @@ class JsonEditorCore {
   #output()
   {
     const nest = ($node, nodeType) => {
-      let obj = nodeType === 'array' ? [] : {}
+      let obj = nodeType === TYPES.ARRAY ? [] : {}
       const $nodes = $node.find('& > .node__children > ul > li')
       $nodes.each((idx, $node) => {
-        if (!(nodeType === 'array' || nodeType === 'object')) return true
+        if (!(nodeType === TYPES.ARRAY || nodeType === TYPES.OBJECT)) return true
         $node = $($node)
         const type = this.#getType($node)
         switch (type)
         {
-          case 'object':
-          case 'array':
+          case TYPES.OBJECT:
+          case TYPES.ARRAY:
             switch (nodeType)
             {
-              case 'array':
+              case TYPES.ARRAY:
                 obj.push(nest($node, type))
                 break
-              case 'object':
+              case TYPES.OBJECT:
                 const key = $node.find('& > .node__body > .key').text()
                 if (key) obj[key] = nest($node, type)
                 break
             }
             break
-          case 'string':
-          case 'number':
-          case 'boolean':
-          case 'null':
+          case TYPES.STRING:
+          case TYPES.NUMBER:
+          case TYPES.BOOLEAN:
+          case TYPES.NULL:
             const value = this.#getValue($node)
             switch (nodeType)
             {
-              case 'array':
+              case TYPES.ARRAY:
                 obj.push(value)
                 break
-              case 'object':
+              case TYPES.OBJECT:
                 const key = $node.find('& > .node__body > .key').text()
                 if (key) obj[key] = value
                 break
@@ -280,6 +285,7 @@ class JsonEditorCore {
           if (checkFontShortcut(e)) return e.preventDefault()
         })
         .on('input', e => this.#onInputTextField(e))
+        .on('blur', e => this.#onBlurTextField(e))
     }
     // value
     const $valueString = $node.find('.value > .type-string')
@@ -290,11 +296,14 @@ class JsonEditorCore {
           if (checkFontShortcut(e)) return e.preventDefault()
         })
         .on('input', e => this.#onInputTextField(e))
+        .on('blur', e => this.#onBlurTextField(e))
     }
     const $valueNumber = $node.find('.value > .type-number')
     if (!!$valueNumber.length)
     {
-      $valueNumber.on('input', e => this.#onInputTextField(e))
+      $valueNumber
+        .on('input', e => this.#onInputTextField(e))
+        .on('blur', e => this.#onBlurTextField(e))
     }
     const $valueSwitch = $node.find('.value > .type-boolean')
     if (!!$valueSwitch.length)
@@ -309,14 +318,17 @@ class JsonEditorCore {
       })
     }
   }
-  #onInputTextField(e)
+  #onInputTextField()
   {
-    if (this.#interval)
+    this.#changeInput = true
+  }
+  #onBlurTextField()
+  {
+    if (this.#changeInput)
     {
-      clearInterval(this.#interval)
-      this.#interval = undefined
+      this.#update()
+      this.#changeInput = false
     }
-    this.#interval = setTimeout(() => this.#update(), 600)
   }
   #onDragStart(e)
   {
@@ -376,7 +388,15 @@ class JsonEditorCore {
     // off events
     this.#drag.$nodes.off(DRAG_EVENT.MOVE)
     $(window).off(DRAG_EVENT.END)
-    // TODO: 데이터 이동하기
+    // transfer data
+    if (this.#drag.half)
+    {
+      this.#drag.$node.insertAfter(this.#drag.activeNode)
+    }
+    else
+    {
+      this.#drag.$node.insertBefore(this.#drag.activeNode)
+    }
     // clear properties
     this.#drag = undefined
     // call update
@@ -408,13 +428,25 @@ class JsonEditorCore {
     if (between === 'before') $ul.prepend($node)
     else $ul.append($node)
     // callback
-    if (type === 'array' || type === 'object')
+    if (type === TYPES.ARRAY || type === TYPES.OBJECT)
     {
       if (callback && typeof callback === 'function')
       {
         callback($node.get(0), value)
       }
     }
+    if (useUpdate) this.#update()
+  }
+
+  /**
+   * remove node
+   * @param {HTMLElement} $node
+   * @param {boolean} useUpdate
+   */
+  removeNode($node, useUpdate = true)
+  {
+    $node = $($node)
+    $node.remove()
     if (useUpdate) this.#update()
   }
 
@@ -465,12 +497,6 @@ class JsonEditorCore {
     if (useUpdate) this.#update()
   }
 
-  removeNode($node, useUpdate = true)
-  {
-    $node.remove()
-    if (useUpdate) this.#update()
-  }
-
   fold($node, sw)
   {
     $node = $($node)
@@ -492,11 +518,18 @@ class JsonEditorCore {
   {
     if (!this.#el.tree) return
     this.#el.wrap.empty()
+    this.replace({}, false)
     this.#update()
   }
 
   destroy()
-  {}
+  {
+    $(window)
+      .off(DRAG_EVENT.END)
+      .off(CONTEXT_EVENT.CLICK)
+      .off(CONTEXT_EVENT.KEYUP)
+    this.#el.wrap.empty()
+  }
 
   /**
    * replace
@@ -545,7 +578,7 @@ class JsonEditorCore {
     {
       let useSpace = 2
       if (space === true) useSpace = '\t'
-      else if (typeof space === 'number') useSpace = space
+      else if (typeof space === TYPES.NUMBER) useSpace = space
       return JSON.stringify(data, null, useSpace)
     }
     else
@@ -559,6 +592,9 @@ class JsonEditorCore {
    * @param {array|object} src
    */
   preview(src)
+  {}
+
+  customContext(body, { node, type, isRoot }, $)
   {}
 
 }

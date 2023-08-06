@@ -90,11 +90,6 @@ class JsonEditor extends HTMLElement {
     this.root.innerHTML = ''
   }
 
-  adoptedCallback()
-  {
-    console.warn('adoptedCallback()')
-  }
-
   #event(name, src)
   {
     this.dispatchEvent(new CustomEvent(name, {
