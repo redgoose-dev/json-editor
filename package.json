@@ -35,10 +35,10 @@
   },
   "dependencies": {},
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^2.4.2",
+    "@sveltejs/vite-plugin-svelte": "^2.4.4",
     "cash-dom": "^8.1.5",
-    "sass": "^1.63.6",
-    "svelte": "^4.0.5",
-    "vite": "^4.4.4"
+    "sass": "^1.64.2",
+    "svelte": "^4.1.2",
+    "vite": "^4.4.8"
   }
 }
