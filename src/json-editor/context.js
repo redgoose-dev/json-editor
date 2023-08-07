@@ -41,10 +41,10 @@ class Context {
   }
   #type
 
-  constructor(parent, $node, isRoot)
+  constructor(parent, $node, isRoot = false)
   {
     this.#parent = parent
-    this.#el.node = $node
+    this.#el.node = $($node)
     this.#type = String(this.#el.node.data('type'))
     this.#el.type = this.#el.node.find('& > .node__body > .type')
     this.#el.type.addClass('open')

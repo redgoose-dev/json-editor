@@ -9,7 +9,7 @@ class JsonEditor extends HTMLElement {
     super()
     this.attachShadow({ mode: 'open' })
     const template = document.createElement('template')
-    template.innerHTML = `<div class="json-editor"></div>`
+    template.innerHTML = `<div id="json-editor"></div>`
     const style = new CSSStyleSheet()
     style.replaceSync(css)
     this.shadowRoot.appendChild(template.content.cloneNode(true))

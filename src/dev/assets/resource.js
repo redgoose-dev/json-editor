@@ -1,7 +1,7 @@
 export const sampleObject = {
   foo: 1,
   foo2: '1a1b1',
-  foo3: false,
+  foo3: true,
   foo44: [],
   foo4: [
     1, '2', null, true,
@@ -26,5 +26,5 @@ export const sampleArray = [
     colors: { apple: 'red', banana: 'yellow', mango: 'green' },
     empty: null,
   },
-  ...(new Array(72).fill('apple')),
+  ...(new Array(10).fill('apple')),
 ]

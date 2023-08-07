@@ -1,3 +1,4 @@
+import fs from 'fs'
 import { build } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
@@ -35,6 +36,7 @@ export const core = {
   configFile: false,
 }
 await build(core)
+fs.copyFileSync(`${path}/src/json-editor/core.d.ts`, `${path}/lib/json-editor.d.ts`)
 
 /**
  * web component

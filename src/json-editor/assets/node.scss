@@ -1,5 +1,7 @@
 // node
 
+@use 'mixins';
+
 .type-icon {
   display: grid;
   width: var(--type-size, 24px);
@@ -47,6 +49,7 @@
   min-height: 24px;
   outline: none;
   font-size: var(--json-editor-font-size);
+  color: var(--json-editor-color-base);
   line-height: 1.42;
   box-sizing: border-box;
   border-radius: 2px;
@@ -54,12 +57,10 @@
   box-shadow: 0 0 0 .5px hsla(0 0% 0% / 0%);
   transition: background-color 160ms ease-out, box-shadow 200ms ease-out;
   cursor: text;
+  word-break: break-all;
   &:hover,
   &:focus {
     background-color: var(--json-editor-color-active);
-  }
-  &:focus {
-    box-shadow: 0 0 0 .5px hsla(0 0% 0% / 25%);
   }
   &:empty:before {
     content: attr(data-placeholder);
@@ -67,7 +68,7 @@
   }
   &[type=number] {
     border: none;
-    width: 100px;
+    width: 120px;
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
       appearance: none;
@@ -166,6 +167,7 @@
       svg {
         display: block;
         width: 24px;
+        color: var(--json-editor-color-base);
       }
       &:active {
         opacity: .5;
@@ -194,7 +196,7 @@
       }
       &.open {
         > button {
-          opacity: .25;
+          opacity: .5;
         }
       }
     }
@@ -219,18 +221,18 @@
         rotate: 0deg;
         box-sizing: border-box;
         transition: rotate, 160ms ease-out;
+        color: var(--json-editor-color-base);
       }
     }
     > .key {
       margin-left: 6px;
-      --label-min-width: 42px;
+      --label-min-width: 48px;
     }
     > .count {
       display: block;
       margin: 0;
       pointer-events: none;
       padding: 0 0 0 8px;
-      //font-family: var(--json-editor-font-eng);
       color: var(--json-editor-color-blur);
       font-style: normal;
       user-select: none;
@@ -243,7 +245,7 @@
       gap: 0 6px;
       font-size: var(--json-editor-font-size);
       line-height: 1.42;
-      --label-min-width: 72px;
+      --label-min-width: 78px;
       &:before {
         content: ':';
       }
@@ -251,6 +253,7 @@
   }
   &__children {
     > .tree {
+      --color-line: hsla(0 0% 72% / 100%);
       position: relative;
       display: none;
       margin: 0px 0 0;
@@ -268,7 +271,7 @@
           width: 4px;
           border-width: 0 0 0 1px;
           border-style: dashed;
-          border-color: hsla(0 0% 72% / 100%);
+          border-color: var(--color-line);
         }
         &:after {
           content: '';
@@ -278,7 +281,7 @@
           bottom: 13px;
           width: 5px;
           height: 5px;
-          background: hsla(0 0% 72% / 100%);
+          background: var(--color-line);
           border-radius: 50%;
         }
       }
@@ -378,5 +381,20 @@
   }
 }
 .drag-select {
-  background-color: hsla(0 0% 0% / 5%);
+  background-color: hsla(0 0% 0% / 8%);
+}
+
+
+// dark mode
+@include mixins.dark-mode() {
+  .node {
+    &__children {
+      > .tree {
+        --color-line: hsla(0 0% 36% / 100%);
+      }
+    }
+  }
+  .drag-select {
+    background-color: hsla(0 0% 100% / 8%);
+  }
 }

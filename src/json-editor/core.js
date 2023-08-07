@@ -1,14 +1,7 @@
 import $ from 'cash-dom'
 import Context from './context.js'
 import { getTypeName, checkData, getCountProperty, checkFontShortcut } from './libs/util.js'
-import {
-  defaultOptions,
-  defaultAddNodeOptions,
-  TYPES,
-  DRAG_EVENT,
-  DRAG_HOVER_NODE_CLASS,
-  CONTEXT_EVENT
-} from './libs/assets.js'
+import { defaultOptions, defaultAddNodeOptions, TYPES, DRAG_EVENT, DRAG_HOVER_NODE_CLASS, CONTEXT_EVENT } from './libs/assets.js'
 import { iconSort, iconFold, iconType } from './assets/icons.js'
 
 /**
@@ -19,21 +12,23 @@ import { iconSort, iconFold, iconType } from './assets/icons.js'
 
 class JsonEditorCore {
 
-  #el = { wrap: null, tree: null }
+  #el = { wrap: null, body: null, tree: null }
   options
   context
   #drag
-  #interval
   #changeInput = false
 
   constructor(wrap, options = {})
   {
     this.#el.wrap = $(wrap)
+    this.#el.body = $(`<div class="json-editor"></div>`)
     this.options = new Proxy(Object.assign({}, defaultOptions, options), {
       get: (obj, prop) => (obj[prop]),
       set: this.#setOptions.bind(this),
     })
+    this.#el.wrap.append(this.#el.body)
     this.#changeTheme(this.options.theme)
+    this.replace({})
   }
 
   #setOptions(obj, prop, value)
@@ -51,7 +46,7 @@ class JsonEditorCore {
   #changeTheme(theme)
   {
     theme = ([ 'system', 'light', 'dark' ].indexOf(theme) > -1) ? theme : 'system'
-    this.#el.wrap.attr('data-theme', theme)
+    this.#el.body.attr('data-theme', theme)
   }
 
   #template(type, isRoot = false)
@@ -86,7 +81,7 @@ class JsonEditorCore {
     this.#setEventFromNode($node)
     this.#el.tree = $('<ul/>')
     this.#el.tree.append($node)
-    this.#el.wrap.append(this.#el.tree)
+    this.#el.body.append(this.#el.tree)
     return $node
   }
 
@@ -173,7 +168,7 @@ class JsonEditorCore {
       case TYPES.ARRAY:
         return ''
       case TYPES.STRING:
-        return $value.children('.type-string').text() || ''
+        return $value.children('.type-string').get(0).innerText || ''
       case TYPES.NUMBER:
         return Number($value.children('.type-number').val())
       case TYPES.BOOLEAN:
@@ -356,7 +351,7 @@ class JsonEditorCore {
     if (!this.#drag.activeNode)
     {
       // set class
-      this.#el.wrap.addClass('dragging')
+      this.#el.body.addClass('dragging')
       this.#drag.$area.addClass('drag-area')
       this.#drag.$node.addClass('drag-select')
     }
@@ -381,7 +376,7 @@ class JsonEditorCore {
   #onDragEnd(e)
   {
     // remove class
-    this.#el.wrap.removeClass('dragging')
+    this.#el.body.removeClass('dragging')
     this.#drag.$area.removeClass('drag-area')
     this.#drag.$node.removeClass('drag-select')
     this.#drag.$nodes.removeClass(DRAG_HOVER_NODE_CLASS.ALL)
@@ -425,8 +420,14 @@ class JsonEditorCore {
     this.#setEventFromNode($node)
     // add element
     const $ul = $target.find('& > .node__children > ul')
-    if (between === 'before') $ul.prepend($node)
-    else $ul.append($node)
+    if (between === 'before')
+    {
+      $ul.prepend($node)
+    }
+    else
+    {
+      $ul.append($node)
+    }
     // callback
     if (type === TYPES.ARRAY || type === TYPES.OBJECT)
     {
@@ -453,7 +454,7 @@ class JsonEditorCore {
   /**
    * change type
    * @param {HTMLElement} node
-   * @param {string} type
+   * @param {'object'|'array'|'string'|'number'|'boolean'|'null'} type
    * @param {boolean} useUpdate
    */
   changeType(node, type, useUpdate = true)
@@ -517,7 +518,7 @@ class JsonEditorCore {
   clear()
   {
     if (!this.#el.tree) return
-    this.#el.wrap.empty()
+    this.#el.body.empty()
     this.replace({}, false)
     this.#update()
   }
@@ -533,27 +534,27 @@ class JsonEditorCore {
 
   /**
    * replace
-   * @param {object|array} src
+   * @param {object|array} data
    * @param {boolean} useUpdate
    */
-  replace(src, useUpdate = true)
+  replace(data, useUpdate = true)
   {
-    this.#el.wrap.empty()
-    src = checkData(src)
-    const $item = this.#createRoot(src)
-    this.import($item, src, false)
+    this.#el.body.empty()
+    data = checkData(data)
+    const $item = this.#createRoot(data)
+    this.import($item, data, false)
     if (useUpdate) this.#update()
   }
 
   /**
    * import data
    * @param {HTMLElement} target
-   * @param {object|array} src
+   * @param {object|array} data
    * @param {boolean} useUpdate
    */
-  import(target, src, useUpdate = true)
+  import(target, data, useUpdate = true)
   {
-    $.each(src, (key, value) => {
+    $.each(data, (key, value) => {
       const type = getTypeName(value)
       const data = { key, value, type }
       this.addNode(target, {

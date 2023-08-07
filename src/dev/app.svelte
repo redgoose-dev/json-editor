@@ -1,104 +1,84 @@
 <header>
-  <h1>JSONEditor Development33</h1>
+  <h1>JsonEditor #dev</h1>
+  <nav>
+    <button
+      type="button"
+      disabled={mode === 'script'}
+      on:click={() => onClickPage('script')}>
+      script
+    </button>
+    <button
+      type="button"
+      disabled={mode === 'component'}
+      on:click={() => onClickPage('component')}>
+      component
+    </button>
+  </nav>
 </header>
 
-<nav class="controller">
-  <div class="controller__wrap">
-    <button type="button" on:click={() => toktok(1)}>button #1</button>
-    <button type="button" on:click={() => toktok(2)}>button #2</button>
-    <button type="button" on:click={() => toktok(3)}>{theme}</button>
-    <button type="button" on:click={exportData}>Export</button>
-  </div>
-</nav>
-
-<div class="container">
-  <json-editor
-    bind:this={self}
-    src={_data}
-    live="true"
-    theme={theme}/>
-</div>
+<svelte:component this="{pages[mode].component}"/>
 
 <script>
-import { onMount, onDestroy } from 'svelte'
-import JsonEditor from '../web-component.js'
-import { sampleObject, sampleArray } from './resource.js'
+import Component from './pages/component.svelte'
+import Script from './pages/script.svelte'
 
-let self
-const elementName = 'json-editor'
-let theme = 'system'
-let data = sampleObject
-$: _data = JSON.stringify(data, null)
-
-function toktok(key)
-{
-  switch (key) {
-    case 1:
-      data = sampleObject
-      break
-    case 2:
-      data = sampleArray
-      break
-    case 3:
-      switch (theme)
-      {
-        case 'system':
-          theme = 'light'
-          break
-        case 'light':
-          theme = 'dark'
-          break
-        case 'dark':
-          theme = 'system'
-          break
-      }
-      break
-  }
+const uri = new URLSearchParams(window.location.search)
+const pages = {
+  component: { label: 'Component', component: Component },
+  script: { label: 'Script', component: Script },
 }
+let mode = Object.keys(pages).indexOf(uri.get('page')) > -1 ? uri.get('page') : 'script'
 
-function exportData()
+function onClickPage(value)
 {
-  const data = self.core.export(true, 2)
-  console.log('exportData()', data)
+  mode = value
+  history.replaceState({}, '', `/?page=${mode}`)
 }
-
-function onUpdateJsonEditor(e)
-{
-  console.warn('UPDATE:', e.detail.data)
-  // data = e.detail.data
-}
-
-onMount(() => {
-  // define custom element
-  if (customElements.get(elementName))
-  {
-    customElements.upgrade(self)
-  }
-  else
-  {
-    customElements.define(elementName, JsonEditor)
-  }
-  self.addEventListener('update', onUpdateJsonEditor)
-  self.core.customContext = (body, { node, type, isRoot }, $) => {
-    if (isRoot) return
-    const $ul = $(body).children()
-    const $items = $(`
-      <li><button type="button" data-key="#1">custom #1</button></li>
-      <li><button type="button" data-key="#2">custom #2</button></li>
-    `)
-    $ul.append($items)
-    $items.find('button').on('click', (e) => {
-      console.log('click item-key:', e.currentTarget.dataset.key)
-      self.core.context.close()
-    })
-  }
-})
-onDestroy(() => {
-  self.removeEventListener('update', onUpdateJsonEditor)
-})
-
 </script>
 
 <style lang="scss">
-@import './app';
+header {
+  --padding: calc(var(--dev-padding) * -1);
+  display: flex;
+  margin: var(--padding) var(--padding) 0;
+  padding: 12px var(--dev-padding);
+  background: var(--dev-color-key);
+  box-sizing: border-box;
+  h1 {
+    flex: 1;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -1.25px;
+    line-height: 1.05;
+    color: hsl(0 0% 100%);
+    user-select: none;
+  }
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 0;
+    button {
+      display: block;
+      padding: 4px 6px;
+      cursor: pointer;
+      border-radius: 2px;
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.15;
+      color: hsl(0 0% 100%);
+      opacity: 1;
+      user-select: none;
+      &:disabled {
+        cursor: default;
+        text-decoration: underline;
+      }
+    }
+  }
+}
 </style>
