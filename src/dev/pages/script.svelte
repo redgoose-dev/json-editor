@@ -67,7 +67,7 @@ function changeTheme(value)
 
 function exportData()
 {
-  const data = jsonEditor.export(true, 2)
+  const data = jsonEditor.export(undefined, true, 2)
   console.log('exportData()', data)
 }
 
@@ -80,6 +80,21 @@ onMount(() => {
   jsonEditor.replace(data)
   jsonEditor.preview = src => {
     console.warn('PREVIEW =>', src)
+  }
+  jsonEditor.customContext = (body, { node, type, isRoot }, $) => {
+    const ul = $(body).children()
+    let item
+    // export node
+    if ([ 'object', 'array' ].includes(type))
+    {
+      item = $(`<li><button type="button" data-key="export-node">Export Node</button></li>`)
+      item.find('button').on('click', e => {
+        const data = jsonEditor.export(node, false, 2)
+        jsonEditor.context.close()
+        console.log('export-node:', data)
+      })
+      ul.append(item)
+    }
   }
 })
 onDestroy(() => {

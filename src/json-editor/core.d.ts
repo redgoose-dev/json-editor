@@ -34,7 +34,7 @@ declare module 'json-editor' {
     destroy(): void
     replace(data: typeData, useUpdate?: boolean): void
     import(target: HTMLElement, data: typeData, useUpdate?: boolean): void
-    export(json?: boolean, space?: number): any[]|object
+    export(node: HTMLElement, json?: boolean, space?: number): any[]|object
     preview(src?: typeData): void
     customContext(body?: HTMLElement, options?: typeCustomContextOptions, $?: unknown): void
   }

@@ -70,7 +70,7 @@ function changeTheme(value)
 
 function exportData()
 {
-  const data = self.core.export(true, 2)
+  const data = self.core.export(undefined, true, 2)
   console.log('exportData()', data)
 }
 
@@ -91,19 +91,6 @@ onMount(() => {
     customElements.define(elementName, JsonEditor)
   }
   self.addEventListener('update', onUpdateJsonEditor)
-  self.core.customContext = (body, { node, type, isRoot }, $) => {
-    if (isRoot) return
-    const $ul = $(body).children()
-    const $items = $(`
-    <li><button type="button" data-key="#1">custom #1</button></li>
-    <li><button type="button" data-key="#2">custom #2</button></li>
-  `)
-    $ul.append($items)
-    $items.find('button').on('click', (e) => {
-      console.log('click item-key:', e.currentTarget.dataset.key)
-      self.core.context.close()
-    })
-  }
 })
 onDestroy(() => {
   self.removeEventListener('update', onUpdateJsonEditor)

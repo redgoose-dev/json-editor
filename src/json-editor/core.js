@@ -28,7 +28,7 @@ class JsonEditorCore {
     })
     this.#el.wrap.append(this.#el.body)
     this.#changeTheme(this.options.theme)
-    this.replace({})
+    this.replace({}, false)
   }
 
   #setOptions(obj, prop, value)
@@ -187,7 +187,7 @@ class JsonEditorCore {
     }
   }
 
-  #output()
+  #output($node)
   {
     const nest = ($node, nodeType) => {
       let obj = nodeType === TYPES.ARRAY ? [] : {}
@@ -231,9 +231,10 @@ class JsonEditorCore {
       })
       return obj
     }
-    const $rootNode = this.#el.tree.children('.node')
+    $node = $($node)
+    const $rootNode = ($node?.length > 0) ? $node : this.#el.tree.children('.node')
     const type = this.#getType($rootNode)
-    return nest($rootNode, type)
+    return [ TYPES.OBJECT, TYPES.ARRAY ].includes(type) ? nest($rootNode, type) : undefined
   }
 
   /**
@@ -568,13 +569,14 @@ class JsonEditorCore {
 
   /**
    * export
+   * @param {HTMLElement} $node
    * @param {boolean} json
    * @param {number|boolean} space (number: space count, true: tab, false: 0)
    * @return {array|object}
    */
-  export(json = false, space = 2)
+  export($node = undefined, json, space = 2)
   {
-    let data = this.#output()
+    let data = this.#output($node)
     if (json)
     {
       let useSpace = 2
