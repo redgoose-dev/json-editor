@@ -7,6 +7,10 @@
   --context-color-line: hsl(0 0% 88%);
   --context-color-item-active: hsl(0 0% 92%);
   --context-color-bg: hsl(0 0% 100%);
+  --context-shadow:
+    0 4px 36px 0 hsla(0 0% 0% / 12%),
+    0 2px 12px 0 hsla(0 0% 0% / 20%),
+    0 0 0 1px hsla(0 0% 0% / 8%);
   position: absolute;
   top: -8px;
   right: -8px;
@@ -22,10 +26,7 @@
     list-style: none;
     background: var(--context-color-line);
     border-radius: var(--context-border-radius);
-    box-shadow:
-      0 4px 32px 0 hsla(0 0% 0% / 10%),
-      0 2px 8px 0 hsla(0 0% 0% / 20%),
-      0 0 0 1px hsla(0 0% 0% / 5%);
+    box-shadow: var(--context-shadow);
   }
   li {
     position: relative;
@@ -142,8 +143,12 @@
 // dark mode
 @include mixins.dark-mode() {
   .context {
-    --context-color-line: hsl(0 0% 24%);
+    --context-color-line: hsl(0 0% 0%);
     --context-color-bg: hsl(0 0% 16%);
     --context-color-item-active: hsl(0 0% 24%);
+    --context-shadow:
+      0 4px 36px 0 hsla(0 0% 0% / 24%),
+      0 2px 8px 0 hsla(0 0% 0% / 32%),
+      0 0 0 1px hsla(0 0% 0% / 20%);
   }
 }
