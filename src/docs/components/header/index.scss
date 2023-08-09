@@ -1,0 +1,107 @@
+@use '../../assets/scss/mixins';
+
+.header {
+  --layout-header-height: 44px;
+  position: sticky;
+  top: 0;
+  height: var(--layout-header-height);
+  background: hsl(0 0% 100% / 75%);
+  box-shadow:
+    0 2px 16px hsla(0 0% 0% / 20%),
+    0 1px 0 0 hsla(0 0% 0% / 8%);
+  &__wrap {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    height: 100%;
+  }
+  &__logo {
+    display: grid;
+    place-content: center;
+    margin: 0 0 0 8px;
+    width: 60px;
+    --logo-symbol-wdith: 36px;
+  }
+  &__body {}
+  &__side {}
+}
+
+.gnb {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  height: 100%;
+  gap: 0;
+  &__item {
+    position: relative;
+    transition: background-color 120ms ease-out;
+    @include mixins.hover() {
+      background-color: hsl(0 0% 92%);
+      .gnb__sub {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+    &:focus-within {
+      background-color: hsl(0 0% 92%);
+      .gnb__sub {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+  }
+  &__button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0 12px;
+    height: 100%;
+    box-sizing: border-box;
+    user-select: none;
+    transition: opacity 120ms ease-out;
+    &[type=button] {
+      border: none;
+      border-radius: 0;
+      background: none;
+      cursor: pointer;
+      &:active {
+        opacity: .5;
+      }
+    }
+  }
+  &__sub {
+    position: absolute;
+    left: -10px;
+    top: calc(100% - 4px);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 160ms ease-out;
+  }
+}
+
+.toggle-preview {
+  display: grid;
+  place-content: center;
+  width: var(--layout-header-height);
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  --icon-size: 20px;
+  --icon-stroke: 2;
+  transition: opacity 120ms ease-out;
+  @include mixins.hover() {
+    background: hsl(0 0% 92%);
+  }
+  &:active {
+    opacity: .5;
+  }
+  &.on {
+    background: var(--color-key);
+    --icon-color: hsl(0 0% 100%)
+  }
+}

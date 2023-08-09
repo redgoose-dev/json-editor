@@ -1,6 +1,9 @@
 # JSON Editor
 
-`JSON`데이터를 편집하는 UI 에디터입니다.
+“JSON EDITOR”는 웹브라우저에서 JSON 데이터를 편집하는 에디터입니다.
+텍스트 편집툴을 사용할 수 없거나 JSON 데이터를 손쉽게 다루기 위하여 만들어진 프로그램 입니다.
+
+이 에디터는 자바스크립트 클래스로 사용할 수 있으며 다른 웹 프로그램 속에 `web component`, `vue`, `react` 컴포넌트로 만들어 삽입할 수 있습니다.
 
 
 ## Using core
@@ -16,8 +19,10 @@ const jsonEditor = new JsonEditor(document.getElementById('target'), {
 
 ## Options
 
-- `live`: ..
-- `theme`: ..
+- `live` / (boolean)
+  이 값을 사용하면 데이터가 업데이트 될때마다 `preview` 메서드가 호출되면서 업데이트 이벤트를 호출합니다.
+- `theme` / ('system'|'light'|'dark')
+  다크모드를 사용하는지에 대한 값입니다.
 
 
 ## Public methods

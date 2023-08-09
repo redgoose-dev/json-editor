@@ -1,0 +1,15 @@
+.layout {
+  display: grid;
+  grid-template-areas: var(--layout-area, 'header header' 'editor preview');
+  grid-template-columns: 1fr 1fr;
+  container: layout / inline-size;
+  &__header {
+    grid-area: header;
+  }
+  &__editor {
+    grid-area: editor;
+  }
+  &__preview {
+    grid-area: preview;
+  }
+}
