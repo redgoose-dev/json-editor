@@ -1,5 +1,5 @@
 <article class="editor">
-  editor
+  <p>editor</p>
 </article>
 
 <script>

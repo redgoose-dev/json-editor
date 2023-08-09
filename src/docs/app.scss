@@ -1,8 +1,11 @@
 .layout {
   display: grid;
-  grid-template-areas: var(--layout-area, 'header header' 'editor preview');
-  grid-template-columns: 1fr 1fr;
+  grid-template-areas: var(--layout-area, 'header' 'editor');
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
   container: layout / inline-size;
+  width: 100vw;
+  height: 100vh;
   &__header {
     grid-area: header;
   }
@@ -12,4 +15,18 @@
   &__preview {
     grid-area: preview;
   }
+  &--preview {
+    grid-template-areas: var(--layout-area, 'header header' 'editor preview');
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.modal-manage-json {
+  --modal-width: 640px;
+  --modal-height: 480px;
+}
+
+.modal-about {
+  --modal-width: 640px;
+  --modal-height: 480px;
 }

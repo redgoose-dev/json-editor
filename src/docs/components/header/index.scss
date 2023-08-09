@@ -68,6 +68,10 @@
       &:active {
         opacity: .5;
       }
+      &:focus-visible {
+        outline: 2px solid var(--color-key);
+        outline-offset: -2px;
+      }
     }
   }
   &__sub {
@@ -99,6 +103,10 @@
   }
   &:active {
     opacity: .5;
+  }
+  &:focus-visible {
+    outline: 2px solid var(--color-key);
+    outline-offset: -2px;
   }
   &.on {
     background: var(--color-key);

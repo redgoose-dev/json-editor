@@ -1,0 +1,71 @@
+@use '../../assets/scss/mixins';
+
+.modal {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: grid;
+  place-content: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: hsla(0 0% 100% / 75%);
+  cursor: zoom-out;
+  @include mixins.background-blur(8px);
+  container: modal-window / size;
+  &__wrap {
+    width: var(--modal-width, 640px);
+    height: var(--modal-height, 480px);
+    position: relative;
+    box-sizing: border-box;
+    background: hsl(0 0% 100%);
+    border-radius: 8px;
+    cursor: default;
+    padding: 30px;
+    margin: 0 auto;
+    box-shadow:
+      0 1px 3px 0 hsla(0 0% 0% / 4%),
+      0 3px 8px 0 hsla(0 0% 0% / 6%),
+      0 6px 16px 0 hsla(0 0% 0% / 8%),
+      0 12px 32px 0 hsla(0 0% 0% / 10%),
+      0 32px 86px 0 hsla(0 0% 0% / 14%);
+  }
+  &__close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    display: grid;
+    place-content: center;
+    margin: -6px;
+    padding: 6px;
+    font-size: 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: opacity 120ms ease-out;
+    border-radius: 4px;
+    --icon-size: 24px;
+    --icon-color: var(--color-base);
+    --icon-stroke: 2px;
+    &:focus-visible {
+      outline: 2px solid var(--color-key);
+      outline-offset: -2px;
+    }
+    &:active {
+      opacity: .5;
+    }
+  }
+}
+
+@media (max-height: 768px) {
+  .modal {
+    display: block;
+    padding: 40px 0;
+    &__wrap {
+      height: auto;
+      min-height: var(--modal-height, 480px);
+    }
+  }
+}

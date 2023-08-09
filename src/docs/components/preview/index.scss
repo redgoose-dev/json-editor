@@ -1,3 +1,42 @@
+@use '../../assets/scss/mixins';
+
 .preview {
-  border: 1px solid #000;
+  display: grid;
+  grid-template-rows: 36px 1fr;
+  height: 100%;
+  background: hsl(0 0% 93%);
+  box-sizing: border-box;
+  box-shadow:
+    4px 0 16px 0 hsla(0 0% 0% / 10%) inset,
+    1px 0 0 0 hsla(0 0% 0% / 10%) inset;
+  &__header {
+    display: grid;
+    align-items: center;
+    grid-template-columns: auto 1fr;
+    gap: 6px;
+    padding: 0 12px;
+    background: var(--color-blur);
+    user-select: none;
+    --icon-size: 16px;
+    --icon-color: hsl(0 0% 100%);
+    h1 {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.05;
+      color: hsl(0 0% 100%);
+      font-weight: 700;
+    }
+  }
+  &__body {
+    padding: 24px;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    overflow-y: auto;
+    pre {
+      display: block;
+      font-family: var(--font-code);
+      font-size: 12px;
+      line-height: 1.15;
+    }
+  }
 }

@@ -17,13 +17,17 @@
 </menu>
 
 <script>
+import { createEventDispatcher } from 'svelte'
 import Icon from '../assets/icon.svelte'
+
+const dispatch = createEventDispatcher()
 export let items = []
 
 function onClickItem(e)
 {
   const key = e.currentTarget.dataset.key
-  console.log('onClickItem()', key)
+  e.currentTarget.blur()
+  dispatch('select', { key })
 }
 </script>
 
@@ -72,7 +76,6 @@ button {
   color: var(--color-base);
   transition: background 120ms ease-out;
   cursor: pointer;
-  //outline: none;
   font-size: 13px;
   line-height: 1.15;
   font-weight: 500;
@@ -80,11 +83,15 @@ button {
   --icon-size: 14px;
   --icon-color: hsl(0 0% 30%);
   &:focus-visible {
-    outline: 2px solid red;
+    outline: 2px solid var(--color-key);
     outline-offset: -2px;
   }
   @include mixins.hover() {
     background: hsl(0 0% 94%);
+  }
+  &.active {
+    color: var(--color-key);
+    --icon-color: var(--color-key);
   }
 }
 </style>

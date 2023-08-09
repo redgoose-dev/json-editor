@@ -25,6 +25,17 @@ const config = defineConfig(({ mode }) => {
         compilerOptions: {
           customElement: false,
         },
+        onwarn(warning, defaultHandler)
+        {
+          // console.log('====>', warning.code)
+          switch (warning.code)
+          {
+            case 'a11y-no-static-element-interactions':
+            case 'a11y-click-events-have-key-events':
+              return
+          }
+          defaultHandler(warning)
+        },
       }),
     ],
   }
