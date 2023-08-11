@@ -67,6 +67,7 @@ function menuRouting(e)
         case 'new':
           break
         case 'import':
+          $visibleManageJson = true
           break
         case 'export':
           break

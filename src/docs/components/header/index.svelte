@@ -11,9 +11,9 @@
             <div class="gnb__sub">
               <SubMenu
                 items={[
-                  { key: 'new', label: 'New json', icon: 'file' },
+                  { key: 'new', label: 'New', icon: 'file' },
                   { key: 'import', label: 'Import', icon: 'upload' },
-                  { key: 'export', label: 'Export json', icon: 'download' },
+                  { key: 'export', label: 'Export JSON', icon: 'download' },
                   { key: 'copy-clipboard', label: 'Copy clipboard', icon: 'paperclip' },
                 ]}
                 on:select={e => selectMenuItem('data', e)}/>
