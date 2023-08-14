@@ -97,7 +97,9 @@
   cursor: pointer;
   --icon-size: 20px;
   --icon-stroke: 2;
-  transition: opacity 120ms ease-out;
+  transition:
+    opacity 120ms ease-out,
+    background-color 120ms ease-out;
   @include mixins.hover() {
     background: hsl(0 0% 92%);
   }
@@ -110,6 +112,9 @@
   }
   &.on {
     background: var(--color-key);
-    --icon-color: hsl(0 0% 100%)
+    --icon-color: hsl(0 0% 100%);
+    &:focus-visible {
+      outline: 2px solid var(--color-base);
+    }
   }
 }

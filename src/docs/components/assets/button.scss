@@ -1,0 +1,55 @@
+@use '../../assets/scss/mixins';
+
+.button {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: auto;
+  height: 36px;
+  user-select: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  font-size: 14px;
+  line-height: 1.15;
+  color: var(--color-invert);
+  margin: 0;
+  padding: 0 16px;
+  border: none;
+  cursor: pointer;
+  border-radius: 2px;
+  background-color: var(--color-blur);
+  box-shadow: var(--button-outline), var(--button-focus);
+  transition: box-shadow 120ms ease-out;
+  --button-outline: 0 0 0 0 hsla(var(--color-base-hsl) / 0%);
+  --button-focus: 0 0 0 0 hsla(var(--color-key-hsl) / 0%);
+  --icon-size: 16px;
+  --icon-color: var(--color-invert);
+  --icon-margin: 0 0 0 -2px;
+  @include mixins.hover() {
+    --button-outline: 0 0 0 1px hsla(var(--color-base-hsl) / 25%);
+  }
+  &:active {
+    --button-outline: 0 0 0 1px hsla(var(--color-base-hsl) / 75%);
+  }
+  &:focus-visible {
+    outline: none;
+    --button-outline: 0 0 0 1px hsla(var(--color-base-hsl) / 75%);
+    --button-focus: 0 0 0 5px hsla(var(--color-base-hsl) / 20%);
+  }
+  &:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+    @include mixins.hover() {
+      --button-outline: 0 0 0 0;
+    }
+  }
+  &--color {
+    &-key {
+      background-color: var(--color-key);
+      &:focus-visible {
+        //--button-outline: 0 0 0 1px hsla(var(--color-base-hsl) / 100%);
+        //--button-focus: 0 0 0 3px hsla(var(--color-base-hsl) / 100%);
+      }
+    }
+  }
+}

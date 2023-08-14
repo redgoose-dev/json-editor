@@ -17,7 +17,11 @@
   container: modal-window / size;
   &__wrap {
     width: var(--modal-width, 640px);
+    min-width: var(--modal-min-width);
+    max-width: var(--modal-max-width);
     height: var(--modal-height, 480px);
+    min-height: var(--modal-min-height);
+    max-height: var(--modal-max-height);
     position: relative;
     box-sizing: border-box;
     background: hsl(0 0% 100%);

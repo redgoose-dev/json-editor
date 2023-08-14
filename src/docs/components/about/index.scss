@@ -1,0 +1,53 @@
+@use '../../assets/scss/mixins';
+
+.about {
+  display: grid;
+  place-content: center;
+  height: 100%;
+  &__wrap {
+    padding: 60px;
+    box-sizing: border-box;
+  }
+  &__logo {
+    display: grid;
+    gap: 36px;
+    place-content: center;
+    margin: 0;
+    .symbol {
+      display: block;
+      width: 150px;
+      margin: 0 auto;
+      --logo-symbol-wdith: 100%;
+    }
+    .label {
+      display: block;
+      width: 220px;
+      margin: 0 auto;
+      --logo-label-wdith: 100%;
+    }
+  }
+  &__description {
+    margin: 52px 0 0;
+    font-size: 15px;
+    line-height: 1.42;
+  }
+  &__information {}
+}
+
+.information {
+  margin: 30px 0 0;
+  h2 {
+    margin: 0;
+    font-size: 18px;
+    line-height: 1.15;
+  }
+  ul {
+    display: grid;
+    gap: 2px;
+    margin: 12px 0 0;
+    padding: 0 0 0 18px;
+    font-size: 15px;
+    line-height: 1.42;
+    li {}
+  }
+}

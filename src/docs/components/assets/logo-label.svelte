@@ -13,6 +13,8 @@
 
 <style>
 svg {
-  color: var(--color-base);
+  display: block;
+  width: var(--logo-label-wdith, 371px);
+  color: var(--logo-label-color, var(--color-base));
 }
 </style>

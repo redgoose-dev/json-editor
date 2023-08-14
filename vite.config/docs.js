@@ -32,6 +32,7 @@ const config = defineConfig(({ mode }) => {
           {
             case 'a11y-no-static-element-interactions':
             case 'a11y-click-events-have-key-events':
+            case 'css-unused-selector':
               return
           }
           defaultHandler(warning)

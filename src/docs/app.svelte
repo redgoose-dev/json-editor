@@ -14,27 +14,36 @@
   {/if}
 </div>
 
-{#if $visibleManageJson}
+{#if $visibleLoadJson}
   <div
-    transition:fade={{
-      duration: 160,
-      easing: cubicInOut,
-    }}
-    class="modal-manage-json">
-    <Modal on:close={closeManageJson}>
-      <ManageJson/>
+    transition:fade={modalTransition}
+    class="modal-data">
+    <Modal on:close={() => { $visibleLoadJson = false }}>
+      <ImportData
+        bind:source={jsonSource.load}
+        on:submit={onImportData}
+        on:close={() => $visibleLoadJson = false}/>
+    </Modal>
+  </div>
+{/if}
+
+{#if $visibleSaveJson}
+  <div
+    transition:fade={modalTransition}
+    class="modal-data">
+    <Modal on:close={() => { $visibleSaveJson = false }}>
+      <ExportData
+        source={jsonSource.save}
+        on:close={() => $visibleSaveJson = false}/>
     </Modal>
   </div>
 {/if}
 
 {#if $visibleAbout}
   <div
-    transition:fade={{
-      duration: 160,
-      easing: cubicInOut,
-    }}
+    transition:fade={modalTransition}
     class="modal-about">
-    <Modal on:close={closeAbout}>
+    <Modal on:close={() => $visibleAbout = false}>
       <About/>
     </Modal>
   </div>
@@ -43,17 +52,22 @@
 <script>
 import { fade } from 'svelte/transition'
 import { cubicInOut } from 'svelte/easing'
-import { visiblePreview, visibleManageJson, visibleAbout } from './store/visible.js'
+import { visiblePreview, visibleLoadJson, visibleSaveJson, visibleAbout } from './store/visible.js'
 import { theme } from './store/service.js'
 import Header from './components/header/index.svelte'
 import Editor from './components/editor/index.svelte'
 import Preview from './components/preview/index.svelte'
-import ManageJson from './components/manage-json/index.svelte'
+import { ImportData, ExportData } from './components/data/index.js'
 import About from './components/about/index.svelte'
 import Modal from './components/modal-window/index.svelte'
 
 let _editor
 let _preview
+let jsonSource = {
+  load: '',
+  save: undefined,
+}
+const modalTransition = { duration: 160, easing: cubicInOut }
 
 function menuRouting(e)
 {
@@ -66,12 +80,14 @@ function menuRouting(e)
       {
         case 'new':
           break
-        case 'import':
-          $visibleManageJson = true
+        case 'load':
+          jsonSource.load = ''
+          $visibleLoadJson = true
           break
-        case 'export':
-          break
-        case 'copy-clipboard':
+        case 'save':
+          // TODO: Editor 컴포넌트에서 데이터를 가져오기
+          jsonSource.save = {}
+          $visibleSaveJson = true
           break
       }
       break
@@ -83,7 +99,7 @@ function menuRouting(e)
         case 'unfold':
           break
         case 'toggle-live-preview':
-          $visiblePreview = !$visiblePreview
+          visiblePreview.change(!$visiblePreview)
           break
       }
       break
@@ -96,14 +112,13 @@ function menuRouting(e)
   }
 }
 
-function closeManageJson()
+function onImportData(e)
 {
-  $visibleManageJson = false
-}
-
-function closeAbout()
-{
-  $visibleAbout = false
+  if (!confirm('Should I retrieve this data?')) return
+  console.log('onImportData()', e.detail)
+  $visibleLoadJson = false
+  // TODO: 데이터를 객체로 변환하기
+  // TODO: 객체를 Editor 컴포넌트로 교체하기
 }
 </script>
 
