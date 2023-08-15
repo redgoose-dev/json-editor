@@ -1,23 +1,41 @@
+@use './assets/scss/mixins';
+
 .layout {
   display: grid;
-  grid-template-areas: var(--layout-area, 'header' 'editor');
-  grid-template-columns: 1fr;
-  grid-template-rows: auto 1fr;
-  container: layout / inline-size;
-  width: 100vw;
-  height: 100vh;
+  grid-template-areas: var(--layout-areas, 'header' 'editor');
+  grid-template-columns: var(--layout-columns, 1fr);
+  grid-template-rows: var(--layout-rows, auto 1fr);
+  min-height: 100%;
+  box-sizing: border-box;
   &__header {
     grid-area: header;
+    position: sticky;
+    z-index: 3;
+    top: 0;
   }
   &__editor {
     grid-area: editor;
   }
   &__preview {
     grid-area: preview;
+    position: sticky;
+    right: 0;
+    top: var(--layout-header-height);
+    width: 42vw;
+    max-width: 640px;
+    height: calc(100vh - var(--layout-header-height));
   }
   &--preview {
-    grid-template-areas: var(--layout-area, 'header header' 'editor preview');
-    grid-template-columns: 1fr 1fr;
+    --layout-areas: 'header header' 'editor preview';
+    --layout-columns: 1fr auto;
+  }
+  @include mixins.responsive(mobile) {
+    --layout-areas: 'header' 'editor';
+    --layout-columns: 1fr;
+    --layout-rows: unset;
+    &__preview {
+      display: none;
+    }
   }
 }
 

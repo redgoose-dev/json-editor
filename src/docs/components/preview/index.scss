@@ -7,7 +7,7 @@
   background: hsl(0 0% 93%);
   box-sizing: border-box;
   box-shadow:
-    4px 0 16px 0 hsla(0 0% 0% / 10%) inset,
+    6px 0 16px 0 hsla(0 0% 0% / 8%) inset,
     1px 0 0 0 hsla(0 0% 0% / 10%) inset;
   &__header {
     display: grid;
@@ -30,13 +30,15 @@
   &__body {
     padding: 24px;
     box-sizing: border-box;
-    overflow-x: hidden;
-    overflow-y: auto;
     pre {
       display: block;
+      margin: 0;
       font-family: var(--font-code);
       font-size: 12px;
-      line-height: 1.15;
+      line-height: 1.42;
+      box-sizing: border-box;
+      word-break: break-all;
+      white-space: break-spaces;
     }
   }
 }

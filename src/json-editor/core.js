@@ -12,7 +12,7 @@ import { iconSort, iconFold, iconType } from './assets/icons.js'
 
 class JsonEditorCore {
 
-  #el = { wrap: null, body: null, tree: null }
+  el = { wrap: null, body: null, tree: null }
   options
   context
   #drag
@@ -20,13 +20,13 @@ class JsonEditorCore {
 
   constructor(wrap, options = {})
   {
-    this.#el.wrap = $(wrap)
-    this.#el.body = $(`<div class="json-editor"></div>`)
+    this.el.wrap = $(wrap)
+    this.el.body = $(`<div class="json-editor"></div>`)
     this.options = new Proxy(Object.assign({}, defaultOptions, options), {
       get: (obj, prop) => (obj[prop]),
       set: this.#setOptions.bind(this),
     })
-    this.#el.wrap.append(this.#el.body)
+    this.el.wrap.append(this.el.body)
     this.#changeTheme(this.options.theme)
     this.replace({}, false)
   }
@@ -46,7 +46,7 @@ class JsonEditorCore {
   #changeTheme(theme)
   {
     theme = ([ 'system', 'light', 'dark' ].indexOf(theme) > -1) ? theme : 'system'
-    this.#el.body.attr('data-theme', theme)
+    this.el.body.attr('data-theme', theme)
   }
 
   #template(type, isRoot = false)
@@ -79,9 +79,9 @@ class JsonEditorCore {
       open: true,
     })
     this.#setEventFromNode($node)
-    this.#el.tree = $('<ul/>')
-    this.#el.tree.append($node)
-    this.#el.body.append(this.#el.tree)
+    this.el.tree = $('<ul/>')
+    this.el.tree.append($node)
+    this.el.body.append(this.el.tree)
     return $node
   }
 
@@ -232,9 +232,19 @@ class JsonEditorCore {
       return obj
     }
     $node = $($node)
-    const $rootNode = ($node?.length > 0) ? $node : this.#el.tree.children('.node')
+    const $rootNode = ($node?.length > 0) ? $node : this.el.tree.children('.node')
     const type = this.#getType($rootNode)
     return [ TYPES.OBJECT, TYPES.ARRAY ].includes(type) ? nest($rootNode, type) : undefined
+  }
+
+  #setNodeCount($node)
+  {
+    $node = $($node)
+    const type = this.#getType($node)
+    if (!(type === 'object' || type === 'array')) return
+    console.log('#setNodeCount()')
+    const count = $node.find('& > .node__children > ul > li').length
+    if (!isNaN(count)) $node.find('& > .node__body > .count').text(count)
   }
 
   /**
@@ -352,7 +362,7 @@ class JsonEditorCore {
     if (!this.#drag.activeNode)
     {
       // set class
-      this.#el.body.addClass('dragging')
+      this.el.body.addClass('dragging')
       this.#drag.$area.addClass('drag-area')
       this.#drag.$node.addClass('drag-select')
     }
@@ -377,7 +387,7 @@ class JsonEditorCore {
   #onDragEnd(e)
   {
     // remove class
-    this.#el.body.removeClass('dragging')
+    this.el.body.removeClass('dragging')
     this.#drag.$area.removeClass('drag-area')
     this.#drag.$node.removeClass('drag-select')
     this.#drag.$nodes.removeClass(DRAG_HOVER_NODE_CLASS.ALL)
@@ -408,8 +418,9 @@ class JsonEditorCore {
    * @param {HTMLElement} $target
    * @param {object} options
    * @param {boolean} useUpdate
+   * @param {boolean} useUpdateCount
    */
-  addNode($target, options, useUpdate = true)
+  addNode($target, options, useUpdate = true, useUpdateCount = true)
   {
     options = { ...defaultAddNodeOptions, ...options }
     const { data, between, open, callback } = options
@@ -429,6 +440,8 @@ class JsonEditorCore {
     {
       $ul.append($node)
     }
+    // set node count
+    if (useUpdateCount) this.#setNodeCount($target)
     // callback
     if (type === TYPES.ARRAY || type === TYPES.OBJECT)
     {
@@ -448,7 +461,9 @@ class JsonEditorCore {
   removeNode($node, useUpdate = true)
   {
     $node = $($node)
+    const $parentNode = $node.parent().closest('.node')
     $node.remove()
+    this.#setNodeCount($parentNode)
     if (useUpdate) this.#update()
   }
 
@@ -496,9 +511,15 @@ class JsonEditorCore {
     const $node = $($target.get(0).outerHTML)
     this.#setEventFromNode($node)
     $target.after($node)
+    this.#setNodeCount($target.parent().closest('.node'))
     if (useUpdate) this.#update()
   }
 
+  /**
+   * fold node
+   * @param {HTMLElement} $node
+   * @param {boolean} sw
+   */
   fold($node, sw)
   {
     $node = $($node)
@@ -518,8 +539,8 @@ class JsonEditorCore {
 
   clear()
   {
-    if (!this.#el.tree) return
-    this.#el.body.empty()
+    if (!this.el.tree) return
+    this.el.body.empty()
     this.replace({}, false)
     this.#update()
   }
@@ -530,7 +551,7 @@ class JsonEditorCore {
       .off(DRAG_EVENT.END)
       .off(CONTEXT_EVENT.CLICK)
       .off(CONTEXT_EVENT.KEYUP)
-    this.#el.wrap.empty()
+    this.el.wrap.empty()
   }
 
   /**
@@ -540,30 +561,33 @@ class JsonEditorCore {
    */
   replace(data, useUpdate = true)
   {
-    this.#el.body.empty()
+    this.el.body.empty()
     data = checkData(data)
     const $item = this.#createRoot(data)
-    this.import($item, data, false)
+    this.import($item, data, false, false)
     if (useUpdate) this.#update()
   }
 
   /**
    * import data
-   * @param {HTMLElement} target
+   * @param {HTMLElement} $target
    * @param {object|array} data
    * @param {boolean} useUpdate
+   * @param {boolean} useUpdateCount
    */
-  import(target, data, useUpdate = true)
+  import($target, data, useUpdate = true, useUpdateCount = true)
   {
+    $target = $($target)
     $.each(data, (key, value) => {
       const type = getTypeName(value)
       const data = { key, value, type }
-      this.addNode(target, {
+      this.addNode($target, {
         data,
         open: false,
-        callback: (node, value) => this.import(node, value, false),
-      }, false)
+        callback: (node, value) => this.import(node, value, false, false),
+      }, false, false)
     })
+    if (useUpdateCount) this.#setNodeCount($target)
     if (useUpdate) this.#update()
   }
 
@@ -599,6 +623,17 @@ class JsonEditorCore {
 
   customContext(body, { node, type, isRoot }, $)
   {}
+
+  /**
+   * get node
+   * @param {string} selector
+   * @return {HTMLElement}
+   */
+  getNode(selector)
+  {
+    if (!selector) return this.el.body[0]
+    return this.el.wrap.find(selector).get(0)
+  }
 
 }
 

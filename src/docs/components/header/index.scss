@@ -1,9 +1,6 @@
 @use '../../assets/scss/mixins';
 
 .header {
-  --layout-header-height: 44px;
-  position: sticky;
-  top: 0;
   height: var(--layout-header-height);
   background: hsl(0 0% 100% / 75%);
   box-shadow:
@@ -23,6 +20,11 @@
   }
   &__body {}
   &__side {}
+  @include mixins.responsive(mobile) {
+    &__side {
+      display: none;
+    }
+  }
 }
 
 .gnb {
@@ -76,6 +78,7 @@
   }
   &__sub {
     position: absolute;
+    z-index: 3;
     left: -10px;
     top: calc(100% - 4px);
     pointer-events: none;

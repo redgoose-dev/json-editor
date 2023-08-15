@@ -5,11 +5,13 @@
     <Header on:select-menu={menuRouting}/>
   </div>
   <div class="layout__editor">
-    <Editor bind:this={_editor}/>
+    <Editor
+      on:init={onInitEditor}
+      on:update={onUpdateEditor}/>
   </div>
   {#if $visiblePreview}
     <div class="layout__preview">
-      <Preview bind:this={_preview}/>
+      <Preview/>
     </div>
   {/if}
 </div>
@@ -19,9 +21,9 @@
     transition:fade={modalTransition}
     class="modal-data">
     <Modal on:close={() => { $visibleLoadJson = false }}>
-      <ImportData
+      <LoadData
         bind:source={jsonSource.load}
-        on:submit={onImportData}
+        on:submit={onLoadData}
         on:close={() => $visibleLoadJson = false}/>
     </Modal>
   </div>
@@ -32,7 +34,7 @@
     transition:fade={modalTransition}
     class="modal-data">
     <Modal on:close={() => { $visibleSaveJson = false }}>
-      <ExportData
+      <SaveData
         source={jsonSource.save}
         on:close={() => $visibleSaveJson = false}/>
     </Modal>
@@ -53,16 +55,15 @@
 import { fade } from 'svelte/transition'
 import { cubicInOut } from 'svelte/easing'
 import { visiblePreview, visibleLoadJson, visibleSaveJson, visibleAbout } from './store/visible.js'
-import { theme } from './store/service.js'
+import { theme, source } from './store/service.js'
 import Header from './components/header/index.svelte'
 import Editor from './components/editor/index.svelte'
 import Preview from './components/preview/index.svelte'
-import { ImportData, ExportData } from './components/data/index.js'
+import { LoadData, SaveData } from './components/data/index.js'
 import About from './components/about/index.svelte'
 import Modal from './components/modal-window/index.svelte'
 
-let _editor
-let _preview
+let editor
 let jsonSource = {
   load: '',
   save: undefined,
@@ -72,21 +73,21 @@ const modalTransition = { duration: 160, easing: cubicInOut }
 function menuRouting(e)
 {
   const { main, sub } = e.detail
-  console.log('menuRouting()', main, sub)
+  // console.log('menuRouting()', main, sub)
   switch (main)
   {
     case 'data':
       switch (sub)
       {
         case 'new':
+          editor.replace({})
           break
         case 'load':
           jsonSource.load = ''
           $visibleLoadJson = true
           break
         case 'save':
-          // TODO: Editor 컴포넌트에서 데이터를 가져오기
-          jsonSource.save = {}
+          jsonSource.save = Object.assign({}, $source)
           $visibleSaveJson = true
           break
       }
@@ -112,13 +113,34 @@ function menuRouting(e)
   }
 }
 
-function onImportData(e)
+function onLoadData(e)
 {
   if (!confirm('Should I retrieve this data?')) return
-  console.log('onImportData()', e.detail)
-  $visibleLoadJson = false
+  const { source } = e.detail
+  try
+  {
+    let parsedSource = JSON.parse(source)
+    $visibleLoadJson = false
+    editor.replace(parsedSource)
+  }
+  catch (e)
+  {
+    alert('Failed load JSON data.')
+  }
   // TODO: 데이터를 객체로 변환하기
   // TODO: 객체를 Editor 컴포넌트로 교체하기
+}
+
+function onInitEditor(e)
+{
+  const { instance } = e.detail
+  editor = instance
+}
+
+function onUpdateEditor(e)
+{
+  const { src } = e.detail
+  // console.log('onUpdateEditor() in app.svelte', src)
 }
 </script>
 

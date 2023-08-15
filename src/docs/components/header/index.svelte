@@ -7,7 +7,7 @@
       <menu class="gnb">
         <li class="gnb__item">
           <div class="gnb__button">
-            <MenuItem icon="database" label="Data"/>
+            <MenuItem icon="database" label="Data" dropdown={true}/>
             <div class="gnb__sub">
               <SubMenu
                 items={[
@@ -21,7 +21,7 @@
         </li>
         <li class="gnb__item">
           <div class="gnb__button">
-            <MenuItem icon="eye" label="View"/>
+            <MenuItem icon="eye" label="View" dropdown={true}/>
             <div class="gnb__sub">
               <SubMenu
                 items={[
@@ -39,7 +39,7 @@
         </li>
         <li class="gnb__item">
           <div class="gnb__button">
-            <MenuItem icon="monitor" label="Theme"/>
+            <MenuItem icon="monitor" label="Theme" dropdown={true}/>
             <div class="gnb__sub">
               <SubMenu
                 items={[
@@ -71,7 +71,7 @@
             type="button"
             class="gnb__button"
             on:click={() => selectMenuItem('about')}>
-            <MenuItem icon="cloud" label="About"/>
+            <MenuItem icon="cloud" label="About" dropdown={false}/>
           </button>
         </li>
       </menu>

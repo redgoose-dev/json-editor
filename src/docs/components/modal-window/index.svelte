@@ -24,9 +24,11 @@ function onKeyup(e)
 }
 
 onMount(() => {
+  document.querySelector('html').classList.add('opened-modal')
   addEventListener('keyup', onKeyup)
 })
 onDestroy(() => {
+  document.querySelector('html').classList.remove('opened-modal')
   removeEventListener('keyup', onKeyup)
 })
 </script>

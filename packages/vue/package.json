@@ -1,0 +1,22 @@
+{
+  "name": "@json-editor/vue",
+  "module": "src/main.js",
+  "type": "module",
+  "author": "redgoose <scripter@me.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "dependencies": {
+    "vue": "^3.3.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.2.3",
+    "sass": "^1.64.2",
+    "vite": "^4.4.9"
+  }
+}

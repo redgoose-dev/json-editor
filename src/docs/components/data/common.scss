@@ -10,6 +10,7 @@
     box-sizing: border-box;
   }
   &__header {
+    user-select: none;
     h1 {
       margin: 0;
       font-size: 20px;
@@ -69,7 +70,7 @@
 }
 
 .help-message {
-  --color-fill: red;
+  --color-fill: hsl(0 82% 48%);
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
@@ -105,6 +106,8 @@
     line-height: 1.62;
     font-family: var(--font-code);
     box-sizing: border-box;
+    word-break: break-all;
+    white-space: break-spaces;
   }
 }
 

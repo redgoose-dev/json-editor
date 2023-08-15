@@ -1,0 +1,20 @@
+.layout {}
+
+.header {
+  &__title {
+    margin: 0;
+    line-height: 1.15;
+    font-weight: 700;
+  }
+}
+
+.controller {
+  margin: 12px 0 0;
+}
+
+.editor-body {
+  margin: 30px 0 0;
+  padding: 16px;
+  box-sizing: border-box;
+  border: 1px dashed hsl(0 0% 50%);
+}

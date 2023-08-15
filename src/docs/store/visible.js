@@ -1,8 +1,7 @@
 import { writable } from 'svelte/store'
 import * as storage from '../libs/storage.js'
 
-function createVisiblePreview()
-{
+export const visiblePreview = (() => {
   const storageKey = 'preview'
   const { subscribe, update } = writable(storage.get(storageKey) === 'true')
   return {
@@ -13,9 +12,7 @@ function createVisiblePreview()
       return newValue
     }),
   }
-}
-
-export const visiblePreview = createVisiblePreview()
+})()
 
 export const visibleLoadJson = writable(false)
 

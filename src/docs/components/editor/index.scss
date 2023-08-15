@@ -2,9 +2,8 @@
   height: 100%;
   padding: 24px;
   box-sizing: border-box;
-  overflow: auto;
-  p {
-    border: 1px solid #000;
-    margin: 0;
+  background: var(--color-bg);
+  &__body {
+    min-width: 360px;
   }
 }

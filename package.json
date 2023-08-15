@@ -1,6 +1,6 @@
 {
-  "name": "json-editor",
-  "description": "Easy editing json data",
+  "name": "@redgoose/json-editor",
+  "description": "Easy editing JSON data",
   "author": "redgoose <scripter@me.com>",
   "version": "1.0.0",
   "keywords": [
@@ -19,7 +19,6 @@
   "main": "",
   "module": "",
   "type": "module",
-  "types": "",
   "scripts": {
     "dev": "vite --config vite.config/dev.js",
     "docs": "vite --config vite.config/docs.js",
@@ -32,6 +31,11 @@
   ],
   "engines": {
     "node": "20"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.4.4",

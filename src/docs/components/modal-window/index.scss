@@ -14,7 +14,6 @@
   background: hsla(0 0% 100% / 75%);
   cursor: zoom-out;
   @include mixins.background-blur(8px);
-  container: modal-window / size;
   &__wrap {
     width: var(--modal-width, 640px);
     min-width: var(--modal-min-width);
@@ -61,15 +60,21 @@
       opacity: .5;
     }
   }
-}
 
-@media (max-height: 768px) {
-  .modal {
+  @include mixins.responsive(mobile) {
     display: block;
-    padding: 40px 0;
+    padding: 0;
+    background: none;
+    cursor: auto;
     &__wrap {
-      height: auto;
-      min-height: var(--modal-height, 480px);
+      --modal-width: 100%;
+      --modal-min-width: auto;
+      --modal-max-width: none;
+      --modal-height: 100%;
+      --modal-min-height: auto;
+      --modal-max-height: none;
+      border-radius: 0;
+      box-shadow: none;
     }
   }
 }

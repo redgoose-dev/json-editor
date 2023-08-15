@@ -32,6 +32,21 @@
     line-height: 1.42;
   }
   &__information {}
+  @include mixins.responsive(mobile) {
+    &__wrap {
+      padding: 32px;
+      max-width: 540px;
+    }
+    &__logo {
+      gap: 24px;
+      .symbol {
+        width: 100px;
+      }
+      .label {
+        width: 180px;
+      }
+    }
+  }
 }
 
 .information {

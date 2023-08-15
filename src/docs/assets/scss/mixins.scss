@@ -48,3 +48,11 @@
     }
   }
 }
+
+// responsive
+@mixin responsive($range)
+{
+  @if ($range == mobile) { @media (max-width: 768px) { @content; } }
+  //@else if ($range == desktop) { @media (min-width: 1024px) { @content; } }
+  //@else if ($range == desktop-large) { @media (min-width: 1440px) { @content; } }
+}

@@ -34,7 +34,7 @@ const tree = [
 class Context {
 
   #parent
-  #el = {
+  el = {
     node: undefined,
     type: undefined,
     dialog: undefined,
@@ -44,21 +44,21 @@ class Context {
   constructor(parent, $node, isRoot = false)
   {
     this.#parent = parent
-    this.#el.node = $($node)
-    this.#type = String(this.#el.node.data('type'))
-    this.#el.type = this.#el.node.find('& > .node__body > .type')
-    this.#el.type.addClass('open')
-    this.#el.dialog = this.#template(tree, this.#type, isRoot)
-    this.#el.dialog.on('click', e => e.stopPropagation())
-    this.#el.dialog.find('button').on('click', e => this.#onClickItem(e))
+    this.el.node = $($node)
+    this.#type = String(this.el.node.data('type'))
+    this.el.type = this.el.node.find('& > .node__body > .type')
+    this.el.type.addClass('open')
+    this.el.dialog = this.#template(tree, this.#type, isRoot)
+    this.el.dialog.on('click', e => e.stopPropagation())
+    this.el.dialog.find('button').on('click', e => this.#onClickItem(e))
     // custom context
-    this.#parent.customContext(this.#el.dialog.get(0), {
-      node: this.#el.node.get(0),
+    this.#parent.customContext(this.el.dialog.get(0), {
+      node: this.el.node.get(0),
       type: this.#type,
       isRoot,
     }, $)
     // append
-    this.#el.type.append(this.#el.dialog)
+    this.el.type.append(this.el.dialog)
     // set events
     $(window).on(CONTEXT_EVENT.CLICK, e => this.close(e))
     $(window).on(CONTEXT_EVENT.KEYUP, e => this.#onKeyupWindow(e))
@@ -165,7 +165,7 @@ class Context {
     this.close()
     if (this.selectItem && typeof this.selectItem === 'function')
     {
-      this.selectItem(this.#el.node, mode, type)
+      this.selectItem(this.el.node, mode, type)
     }
   }
 
@@ -176,8 +176,8 @@ class Context {
 
   close()
   {
-    this.#el.type.removeClass('open')
-    this.#el.dialog.remove()
+    this.el.type.removeClass('open')
+    this.el.dialog.remove()
     $(window).off(CONTEXT_EVENT.CLICK)
     $(window).off(CONTEXT_EVENT.KEYUP)
     delete this.#parent.context

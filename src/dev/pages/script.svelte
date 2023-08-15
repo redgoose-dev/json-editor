@@ -25,6 +25,7 @@
       </button>
     </p>
     <button type="button" on:click={exportData}>Export</button>
+    <button type="button" on:click={importData}>Import</button>
   </div>
 </nav>
 
@@ -69,6 +70,19 @@ function exportData()
 {
   const data = jsonEditor.export(undefined, true, 2)
   console.log('exportData()', data)
+}
+
+function importData()
+{
+  const $node = jsonEditor.el.tree.find('.root.node')
+  const data = {
+    "4235235": "====@@=====@@===",
+    "qqqq": 123123,
+    "sdgsdg": null,
+    "iouiouio": [ "qqq", "www", "eee" ],
+    "foobar": { "foo": true, "bar": false },
+  }
+  jsonEditor.import($node, data, true, true)
 }
 
 onMount(() => {
