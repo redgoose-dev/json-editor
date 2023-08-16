@@ -80,6 +80,7 @@ function onClickExport()
 
 function onClickSelectNode()
 {
+  // TODO: 메서드 없어졌으니 다른 방법으로 해결하기
   const node = editor.getNode('li.root')
   console.warn('SELECT NODE:', node)
   editor.import(node, { goo: 'se' }, false)

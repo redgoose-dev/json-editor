@@ -236,8 +236,9 @@
       color: var(--json-editor-color-blur);
       font-style: normal;
       user-select: none;
-      font-size: 14px;
+      font-size: 13px;
       line-height: normal;
+      font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     }
     > .value {
       display: flex;

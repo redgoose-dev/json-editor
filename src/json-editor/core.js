@@ -20,6 +20,7 @@ class JsonEditorCore {
 
   constructor(wrap, options = {})
   {
+    this.$ = $
     this.el.wrap = $(wrap)
     this.el.body = $(`<div class="json-editor"></div>`)
     this.options = new Proxy(Object.assign({}, defaultOptions, options), {
@@ -623,17 +624,6 @@ class JsonEditorCore {
 
   customContext(body, { node, type, isRoot }, $)
   {}
-
-  /**
-   * get node
-   * @param {string} selector
-   * @return {HTMLElement}
-   */
-  getNode(selector)
-  {
-    if (!selector) return this.el.body[0]
-    return this.el.wrap.find(selector).get(0)
-  }
 
 }
 

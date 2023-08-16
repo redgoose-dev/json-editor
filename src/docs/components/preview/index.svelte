@@ -3,7 +3,7 @@
     <Icon name="code"/>
     <h1>Preview</h1>
   </header>
-  <div class="preview__body">
+  <div class="preview__body scroll-area">
     <pre>{_data}</pre>
   </div>
 </article>

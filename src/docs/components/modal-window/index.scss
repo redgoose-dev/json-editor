@@ -60,7 +60,6 @@
       opacity: .5;
     }
   }
-
   @include mixins.responsive(mobile) {
     display: block;
     padding: 0;
@@ -75,6 +74,15 @@
       --modal-max-height: none;
       border-radius: 0;
       box-shadow: none;
+    }
+  }
+}
+
+@include mixins.dark-mode() {
+  .modal {
+    background: hsla(0 0% 6% / 75%);
+    &__wrap {
+      background: hsl(0 0% 16%);
     }
   }
 }

@@ -5,25 +5,20 @@
   grid-template-areas: var(--layout-areas, 'header' 'editor');
   grid-template-columns: var(--layout-columns, 1fr);
   grid-template-rows: var(--layout-rows, auto 1fr);
-  min-height: 100%;
+  height: 100%;
   box-sizing: border-box;
   &__header {
     grid-area: header;
-    position: sticky;
-    z-index: 3;
-    top: 0;
+    position: relative;
   }
   &__editor {
     grid-area: editor;
   }
   &__preview {
     grid-area: preview;
-    position: sticky;
-    right: 0;
-    top: var(--layout-header-height);
+    position: relative;
     width: 42vw;
     max-width: 640px;
-    height: calc(100vh - var(--layout-header-height));
   }
   &--preview {
     --layout-areas: 'header header' 'editor preview';
@@ -40,10 +35,9 @@
 }
 
 .modal-data {
-  --modal-width: 800px;
+  --modal-width: 720px;
   --modal-height: 540px;
 }
-
 .modal-about {
   --modal-width: 640px;
   --modal-height: 600px;

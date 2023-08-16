@@ -14,6 +14,7 @@
                   { key: 'new', label: 'New', icon: 'file' },
                   { key: 'load', label: 'Load', icon: 'upload' },
                   { key: 'save', label: 'Save', icon: 'download' },
+                  { key: 'clipboard', label: 'Copy Clipboard', icon: 'copy' },
                 ]}
                 on:select={e => selectMenuItem('data', e)}/>
             </div>

@@ -3,19 +3,19 @@
 .preview {
   display: grid;
   grid-template-rows: 36px 1fr;
-  height: 100%;
+  height: calc(100vh - var(--layout-header-height));
   background: hsl(0 0% 93%);
   box-sizing: border-box;
   box-shadow:
-    6px 0 16px 0 hsla(0 0% 0% / 8%) inset,
-    1px 0 0 0 hsla(0 0% 0% / 10%) inset;
+    1px 0 0 0 hsla(0 0% 0% / 10%) inset,
+    6px 0 24px 0 hsla(0 0% 0% / 8%) inset;
   &__header {
     display: grid;
     align-items: center;
     grid-template-columns: auto 1fr;
     gap: 6px;
     padding: 0 12px;
-    background: var(--color-blur);
+    background: hsl(0 0% 64%);
     user-select: none;
     --icon-size: 16px;
     --icon-color: hsl(0 0% 100%);
@@ -39,6 +39,18 @@
       box-sizing: border-box;
       word-break: break-all;
       white-space: break-spaces;
+    }
+  }
+}
+
+@include mixins.dark-mode() {
+  .preview {
+    background: hsl(0 0% 20%);
+    box-shadow:
+      1px 0 0 0 hsla(0 0% 100% / 10%) inset,
+      6px 0 24px 0 hsla(0 0% 0% / 20%) inset;
+    &__header {
+      background: hsl(0 0% 36%);
     }
   }
 }

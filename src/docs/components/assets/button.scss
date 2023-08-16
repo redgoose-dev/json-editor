@@ -11,19 +11,19 @@
   box-sizing: border-box;
   font-size: 14px;
   line-height: 1.15;
-  color: var(--color-invert);
+  color: hsl(0 0% 100%);
   margin: 0;
   padding: 0 16px;
   border: none;
   cursor: pointer;
   border-radius: 2px;
-  background-color: var(--color-blur);
+  background-color: hsl(0 0% 52%);
   box-shadow: var(--button-outline), var(--button-focus);
   transition: box-shadow 120ms ease-out;
   --button-outline: 0 0 0 0 hsla(var(--color-base-hsl) / 0%);
   --button-focus: 0 0 0 0 hsla(var(--color-key-hsl) / 0%);
   --icon-size: 16px;
-  --icon-color: var(--color-invert);
+  --icon-color: hsl(0 0% 100%);
   --icon-margin: 0 0 0 -2px;
   @include mixins.hover() {
     --button-outline: 0 0 0 1px hsla(var(--color-base-hsl) / 25%);
@@ -46,9 +46,15 @@
   &--color {
     &-key {
       background-color: var(--color-key);
-      &:focus-visible {
-        //--button-outline: 0 0 0 1px hsla(var(--color-base-hsl) / 100%);
-        //--button-focus: 0 0 0 3px hsla(var(--color-base-hsl) / 100%);
+    }
+  }
+}
+@include mixins.dark-mode() {
+  .button {
+    background-color: hsl(0 0% 52%);
+    &--color {
+      &-key {
+        background-color: var(--color-key);
       }
     }
   }

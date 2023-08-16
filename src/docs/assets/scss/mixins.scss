@@ -1,7 +1,7 @@
 // dark mode
-@mixin dark-mode($root: false)
+@mixin dark-mode($mode: '')
 {
-  @if ($root)
+  @if ($mode == 'root')
   {
     &[data-theme=dark] {
       @content;
@@ -14,7 +14,7 @@
       }
     }
   }
-  @else
+  @else if ($mode == 'global')
   {
     html[data-theme=dark] & {
       @content;
@@ -24,6 +24,23 @@
       html:not([data-theme]) &,
       html[data-theme=""] & {
         @content;
+      }
+    }
+  }
+  @else
+  {
+    :global(html[data-theme=dark]) {
+      & {
+        @content;
+      }
+    }
+    @media (prefers-color-scheme: dark) {
+      :global(html[data-theme=system]),
+      :global(html:not([data-theme])),
+      :global(html[data-theme=""]) {
+        & {
+          @content;
+        }
       }
     }
   }

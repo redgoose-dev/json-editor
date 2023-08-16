@@ -35,6 +35,7 @@ function onClickItem(e)
 @use '../../assets/scss/mixins';
 
 .sub-menu {
+  --sub-menu-color-inner-line: hsl(0 0% 88%);
   display: grid;
   gap: 1px;
   margin: 0;
@@ -49,7 +50,7 @@ function onClickItem(e)
 }
 li {
   &:nth-child(n+2) {
-    box-shadow: 0 -1px 0 hsl(0 0% 88%);
+    box-shadow: 0 -1px 0 var(--sub-menu-color-inner-line);
   }
   &:first-child button {
     border-top-left-radius: 4px;
@@ -81,7 +82,7 @@ button {
   font-weight: 500;
   white-space: nowrap;
   --icon-size: 14px;
-  --icon-color: hsl(0 0% 30%);
+  --icon-color: var(--color-base);
   &:focus-visible {
     outline: 2px solid var(--color-key);
     outline-offset: -2px;
@@ -92,6 +93,21 @@ button {
   &.active {
     color: var(--color-key);
     --icon-color: var(--color-key);
+  }
+}
+
+@include mixins.dark-mode() {
+  .sub-menu {
+    background: hsl(0 0% 8%);
+    box-shadow:
+      0 4px 16px 0 hsla(0 0% 0% / 30%),
+      0 0 0 1px hsl(0 0% 16%);
+    --sub-menu-color-inner-line: hsl(0 0% 16%);
+  }
+  button {
+    @include mixins.hover() {
+      background: hsl(0 0% 16%);
+    }
   }
 }
 </style>

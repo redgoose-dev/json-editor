@@ -17,23 +17,28 @@
   --layout-header-height: 44px;
   --layout-min-width: 640px;
   color-scheme: light;
-  @include mixins.dark-mode(true) {
+  @include mixins.dark-mode('root') {
     color-scheme: dark;
-    --color-bg: hsl(0 0% 13%);
+    --color-bg-hsl: 0 0% 13%;
+    --color-base-hsl: 0 0% 94%;
+    --color-key-hsl: 172 92% 40%;
+    --color-blur-hsl: 0 0% 64%;
+    --color-invert-hsl: 0 0% 0%;
   }
 }
 
 html, body {
   -webkit-text-size-adjust: none;
-  height: 100%;
   box-sizing: border-box;
   text-size-adjust: none;
 }
 html {
   touch-action: manipulation;
-  &.opened-modal {
-    overflow: hidden;
-  }
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
 }
 body {
   margin: 0;
@@ -42,6 +47,7 @@ body {
   font-size: 16px;
   line-height: 1.52;
   color: var(--color-base);
+  box-sizing: border-box;
 }
 body, button, input, textarea, select {
   font-family: var(--font-base);
@@ -56,4 +62,33 @@ a {
 ::selection {
   background: var(--color-key);
   color: hsl(0 0% 100%);
+}
+
+.scroll-area {
+  overflow: auto;
+  box-sizing: border-box;
+  --scroll-size: 15px;
+  --scroll-padding: 5px;
+  --scroll-track: hsl(0 0% 65%);
+  --scroll-track-hover: hsl(0 0% 45%);
+  --scroll-bg: hsla(0 0% 100% / 0%);
+  &::-webkit-scrollbar {
+    width: var(--scroll-size);
+  }
+  &::-webkit-scrollbar-thumb {
+    border: var(--scroll-padding) solid hsla(0 0% 100% / 0%);
+    background-clip: padding-box;
+    border-radius: 9999px;
+    background-color: var(--scroll-track);
+    &:hover {
+      background-color: var(--scroll-track-hover);
+    }
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--scroll-bg);
+  }
+  @include mixins.dark-mode('global') {
+    --scroll-track: hsl(0 0% 72%);
+    --scroll-track-hover: hsl(0 0% 52%);
+  }
 }

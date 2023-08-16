@@ -7,23 +7,20 @@
         You can copy the JSON code or save it as a file.
       </p>
     </header>
-    <div class="source-result" on:click={onClickSource}>
+    <div class="source-result scroll-area" on:click={onClickSource}>
       <pre>{_source}</pre>
     </div>
     <nav class="nav-submit">
       <div>
-        <div class="code-style">
-          <span>Code:</span>
-          <label class="select-code-style">
-            <select bind:value={style}>
-              <option value="2space">2 Space</option>
-              <option value="4space">4 Space</option>
-              <option value="tab">Tab</option>
-              <option value="minify">Minify</option>
-            </select>
-            <i><Icon name="chevron-down"/></i>
-          </label>
-        </div>
+        <label class="select-code-style">
+          <select bind:value={style}>
+            <option value="2space">2 Space</option>
+            <option value="4space">4 Space</option>
+            <option value="tab">Tab</option>
+            <option value="minify">Minify</option>
+          </select>
+          <i><Icon name="chevron-down"/></i>
+        </label>
       </div>
       <div>
         <Button
@@ -31,13 +28,6 @@
           on:click={() => dispatch('close')}>
           <Icon name="x"/>
           <span>Close</span>
-        </Button>
-        <Button
-          type="button"
-          color="key"
-          on:click={onClickCopyClipboard}>
-          <Icon name="paperclip"/>
-          <span>Copy Clipboard</span>
         </Button>
         <Button
           type="button"
@@ -53,7 +43,7 @@
 
 <script>
 import { createEventDispatcher } from 'svelte'
-import { selectText, copyClipboard, saveFileText, dateFormat } from '../../libs/util.js'
+import { selectText, saveFileText, dateFormat } from '../../libs/util.js'
 import Button from '../assets/button.svelte'
 import Icon from '../assets/icon.svelte'
 
@@ -81,19 +71,6 @@ function renderSource(source, style)
 function onClickSource(e)
 {
   selectText(e.currentTarget.children[0])
-}
-
-async function onClickCopyClipboard()
-{
-  try
-  {
-    await copyClipboard(_source)
-    alert('Success copy clipboard.')
-  }
-  catch (e)
-  {
-    alert('Failed copy clipboard.')
-  }
 }
 
 function onClickSaveFile()

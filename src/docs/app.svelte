@@ -56,6 +56,7 @@ import { fade } from 'svelte/transition'
 import { cubicInOut } from 'svelte/easing'
 import { visiblePreview, visibleLoadJson, visibleSaveJson, visibleAbout } from './store/visible.js'
 import { theme, source } from './store/service.js'
+import { copyClipboard } from './libs/util.js'
 import Header from './components/header/index.svelte'
 import Editor from './components/editor/index.svelte'
 import Preview from './components/preview/index.svelte'
@@ -63,6 +64,7 @@ import { LoadData, SaveData } from './components/data/index.js'
 import About from './components/about/index.svelte'
 import Modal from './components/modal-window/index.svelte'
 
+let cash
 let editor
 let jsonSource = {
   load: '',
@@ -73,6 +75,7 @@ const modalTransition = { duration: 160, easing: cubicInOut }
 function menuRouting(e)
 {
   const { main, sub } = e.detail
+  let nodes
   // console.log('menuRouting()', main, sub)
   switch (main)
   {
@@ -90,14 +93,26 @@ function menuRouting(e)
           jsonSource.save = Object.assign({}, $source)
           $visibleSaveJson = true
           break
+        case 'clipboard':
+          try
+          {
+            copyClipboard(JSON.stringify($source, null, 2))
+              .then(() => alert('Success copy clipboard.'))
+          }
+          catch (e)
+          {
+            alert('Failed copy clipboard.')
+          }
+          break
       }
       break
     case 'view':
       switch (sub)
       {
         case 'fold':
-          break
         case 'unfold':
+          nodes = editor.el.tree.children().find('.node[data-type=object],.node[data-type=array]')
+          editor.fold(nodes, sub === 'unfold')
           break
         case 'toggle-live-preview':
           visiblePreview.change(!$visiblePreview)
@@ -115,7 +130,6 @@ function menuRouting(e)
 
 function onLoadData(e)
 {
-  if (!confirm('Should I retrieve this data?')) return
   const { source } = e.detail
   try
   {
@@ -127,14 +141,13 @@ function onLoadData(e)
   {
     alert('Failed load JSON data.')
   }
-  // TODO: 데이터를 객체로 변환하기
-  // TODO: 객체를 Editor 컴포넌트로 교체하기
 }
 
 function onInitEditor(e)
 {
   const { instance } = e.detail
   editor = instance
+  cash = editor.$
 }
 
 function onUpdateEditor(e)

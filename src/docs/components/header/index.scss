@@ -26,6 +26,14 @@
     }
   }
 }
+@include mixins.dark-mode() {
+  .header {
+    background: hsl(0 0% 0% / 75%);
+    box-shadow:
+      0 2px 16px hsla(0 0% 0% / 32%),
+      0 1px 0 0 hsla(0 0% 100% / 6%);
+  }
+}
 
 .gnb {
   margin: 0;
@@ -86,6 +94,18 @@
     transition: opacity 160ms ease-out;
   }
 }
+@include mixins.dark-mode() {
+  .gnb {
+    &__item {
+      @include mixins.hover() {
+        background-color: hsl(0 0% 16%);
+      }
+      &:focus-within {
+        background-color: hsl(0 0% 16%);
+      }
+    }
+  }
+}
 
 .toggle-preview {
   display: grid;
@@ -118,6 +138,17 @@
     --icon-color: hsl(0 0% 100%);
     &:focus-visible {
       outline: 2px solid var(--color-base);
+    }
+  }
+}
+@include mixins.dark-mode() {
+  .toggle-preview {
+    @include mixins.hover() {
+      background: hsl(0 0% 16%);
+      &.on {
+        background: var(--color-key);
+        opacity: .85;
+      }
     }
   }
 }

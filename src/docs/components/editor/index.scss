@@ -1,5 +1,5 @@
 .editor {
-  height: 100%;
+  height: calc(100vh - var(--layout-header-height));
   padding: 24px;
   box-sizing: border-box;
   background: var(--color-bg);

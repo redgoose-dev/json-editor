@@ -15,6 +15,7 @@
         <textarea
           bind:value={source}
           placeholder="JSON source code"
+          class="scroll-area"
           on:keydown={onKeydownSource}/>
         {#if error}
           <div class="help-message">
@@ -24,7 +25,13 @@
         {/if}
       </fieldset>
       <nav class="nav-submit">
-        <div>
+        <div class="json-uploader">
+          <input
+            bind:this={_jsonFileUpload}
+            type="file"
+            accept="application/json"
+            class="json-uploader__file"
+            on:change={onChangeJsonUploader}>
           <Button
             type="button"
             color="key"
@@ -35,7 +42,8 @@
         </div>
         <div>
           <Button
-            type="button">
+            type="button"
+            on:click={() => dispatch('close')}>
             <Icon name="x"/>
             <span>Close</span>
           </Button>
@@ -57,20 +65,48 @@ import Button from '../assets/button.svelte'
 import Icon from '../assets/icon.svelte'
 
 const dispatch = createEventDispatcher()
+let _jsonFileUpload
 export let source = ''
 let error = ''
 
 function onKeydownSource(e)
 {
-  if (e.metaKey && e.key === 'Enter')
-  {
-    onSubmit()
-  }
+  if (e.metaKey && e.key === 'Enter') onSubmit()
 }
 
 function onClickUpload()
 {
-  console.log('onClickUpload()')
+  _jsonFileUpload.click()
+}
+
+function onChangeJsonUploader(e)
+{
+  const target = e.target
+  const file = e.target.files[0]
+  if (!(file && file.type === 'application/json'))
+  {
+    alert('The file is not a valid JSON.')
+    return
+  }
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    try
+    {
+      const jsonCode = String(e.target.result)
+      JSON.parse(jsonCode)
+      source = jsonCode
+    }
+    catch (e)
+    {
+      alert('The data is not valid JSON.')
+    }
+    target.value = ''
+  }
+  reader.onerror = (e) => {
+    alert('File read error.')
+    target.value = ''
+  }
+  reader.readAsText(file)
 }
 
 function onSubmit()
