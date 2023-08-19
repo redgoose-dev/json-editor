@@ -67,8 +67,8 @@
     line-height: 1.42;
     resize: none;
     box-shadow:
-      var(--source-code-border, (0 0 0 1px hsla(0 0% 0% / 25%) inset)),
       var(--source-code-shadow, (0 4px 12px 0 hsla(0 0% 0% / 15%) inset)),
+      var(--source-code-border, (0 0 0 1px hsla(0 0% 0% / 25%) inset)),
       var(--source-code-focus, (0 0 0 3px hsla(var(--color-key-hsl) / 0%)));
     transition: box-shadow 120ms ease-out;
     &:focus-visible {
@@ -81,6 +81,7 @@
   .source-input {
     textarea {
       background: hsl(0 0% 12%);
+      --source-code-border: 0 0 0 1px hsla(0 0% 100% / 12%) inset;
     }
   }
 }

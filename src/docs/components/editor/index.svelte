@@ -24,13 +24,29 @@ function updateSource(src)
 
 function customContext(body, { node, type, isRoot }, $)
 {
-  // TODO: 버튼을 삭입하고 import 기능 만들기
-  console.group('customContext()')
-  console.log(body)
-  console.log(node)
-  console.log(type)
-  console.log(isRoot)
-  console.groupEnd()
+  if (![ 'object', 'array' ].includes(type)) return
+  const menuItems = [
+    { key: 'import', label: 'Import JSON' },
+    { key: 'export', label: 'Export JSON' },
+  ]
+  const $newItems = $(menuItems.map(o => (`<li><button type="button" data-mode="${o.key}"><em class="label">${o.label}</em></button></li>`)).join(''))
+  $newItems.find('button').on('click', (e) => {
+    editor.context.close()
+    const mode = e.currentTarget.dataset.mode
+    dispatch('action', {
+      main: 'editor',
+      sub: mode,
+      node,
+    })
+  })
+  if (isRoot)
+  {
+    $(body).find('& > ol').append($newItems)
+  }
+  else
+  {
+    $(body).find('& > ol > .remove').before($newItems)
+  }
 }
 
 onMount(() => {

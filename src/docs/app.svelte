@@ -7,7 +7,8 @@
   <div class="layout__editor">
     <Editor
       on:init={onInitEditor}
-      on:update={onUpdateEditor}/>
+      on:update={onUpdateEditor}
+      on:action={menuRouting}/>
   </div>
   {#if $visiblePreview}
     <div class="layout__preview">
@@ -16,27 +17,27 @@
   {/if}
 </div>
 
-{#if $visibleLoadJson}
+{#if dataImport.visible}
   <div
     transition:fade={modalTransition}
     class="modal-data">
-    <Modal on:close={() => { $visibleLoadJson = false }}>
-      <LoadData
-        bind:source={jsonSource.load}
-        on:submit={onLoadData}
-        on:close={() => $visibleLoadJson = false}/>
+    <Modal on:close={() => { dataImport.visible = false }}>
+      <ImportData
+        bind:source={dataImport.source}
+        on:submit={onImportData}
+        on:close={() => { dataImport.visible = false }}/>
     </Modal>
   </div>
 {/if}
 
-{#if $visibleSaveJson}
+{#if dataExport.visible}
   <div
     transition:fade={modalTransition}
     class="modal-data">
-    <Modal on:close={() => { $visibleSaveJson = false }}>
-      <SaveData
-        source={jsonSource.save}
-        on:close={() => $visibleSaveJson = false}/>
+    <Modal on:close={() => { dataExport.visible = false }}>
+      <ExportData
+        source={dataExport.source}
+        on:close={() => dataExport.visible = false}/>
     </Modal>
   </div>
 {/if}
@@ -54,29 +55,26 @@
 <script>
 import { fade } from 'svelte/transition'
 import { cubicInOut } from 'svelte/easing'
-import { visiblePreview, visibleLoadJson, visibleSaveJson, visibleAbout } from './store/visible.js'
+import { visiblePreview, visibleAbout } from './store/visible.js'
 import { theme, source } from './store/service.js'
 import { copyClipboard } from './libs/util.js'
 import Header from './components/header/index.svelte'
 import Editor from './components/editor/index.svelte'
 import Preview from './components/preview/index.svelte'
-import { LoadData, SaveData } from './components/data/index.js'
+import { ImportData, ExportData } from './components/data/index.js'
 import About from './components/about/index.svelte'
 import Modal from './components/modal-window/index.svelte'
 
 let cash
 let editor
-let jsonSource = {
-  load: '',
-  save: undefined,
-}
+let dataImport = { source: '', visible: false, node: undefined }
+let dataExport = { source: undefined, visible: false, node: undefined }
 const modalTransition = { duration: 160, easing: cubicInOut }
 
 function menuRouting(e)
 {
-  const { main, sub } = e.detail
+  const { main, sub, node } = e.detail
   let nodes
-  // console.log('menuRouting()', main, sub)
   switch (main)
   {
     case 'data':
@@ -85,13 +83,15 @@ function menuRouting(e)
         case 'new':
           editor.replace({})
           break
-        case 'load':
-          jsonSource.load = ''
-          $visibleLoadJson = true
+        case 'import':
+          dataImport.source = ''
+          dataImport.node = undefined
+          dataImport.visible = true
           break
-        case 'save':
-          jsonSource.save = Object.assign({}, $source)
-          $visibleSaveJson = true
+        case 'export':
+          dataExport.source = Object.assign({}, $source)
+          dataExport.node = undefined
+          dataExport.visible = true
           break
         case 'clipboard':
           try
@@ -125,21 +125,43 @@ function menuRouting(e)
     case 'about':
       $visibleAbout = true
       break
+    case 'editor':
+      switch (sub) {
+        case 'import':
+          dataImport.source = ''
+          dataImport.node = node
+          dataImport.visible = true
+          break
+        case 'export':
+          dataExport.source = editor.export(node, false)
+          dataExport.node = node
+          dataExport.visible = true
+          break
+      }
+      break
   }
 }
 
-function onLoadData(e)
+function onImportData(e)
 {
   const { source } = e.detail
   try
   {
     let parsedSource = JSON.parse(source)
-    $visibleLoadJson = false
-    editor.replace(parsedSource)
+    dataImport.visible = false
+    if (dataImport.node)
+    {
+      editor.fold(dataImport.node, true)
+      editor.import(dataImport.node, parsedSource)
+    }
+    else
+    {
+      editor.replace(parsedSource)
+    }
   }
   catch (e)
   {
-    alert('Failed load JSON data.')
+    alert('Failed import JSON data.')
   }
 }
 

@@ -8,63 +8,63 @@
         <li class="gnb__item">
           <div class="gnb__button">
             <MenuItem icon="database" label="Data" dropdown={true}/>
-            <div class="gnb__sub">
-              <SubMenu
-                items={[
-                  { key: 'new', label: 'New', icon: 'file' },
-                  { key: 'load', label: 'Load', icon: 'upload' },
-                  { key: 'save', label: 'Save', icon: 'download' },
-                  { key: 'clipboard', label: 'Copy Clipboard', icon: 'copy' },
-                ]}
-                on:select={e => selectMenuItem('data', e)}/>
-            </div>
+          </div>
+          <div class="gnb__sub">
+            <SubMenu
+              items={[
+                { key: 'new', label: 'New', icon: 'file' },
+                { key: 'import', label: 'Import', icon: 'download' },
+                { key: 'export', label: 'Export', icon: 'upload' },
+                _useClipboard && { key: 'clipboard', label: 'Copy Clipboard', icon: 'copy' },
+              ].filter(Boolean)}
+              on:select={e => selectMenuItem('data', e)}/>
           </div>
         </li>
         <li class="gnb__item">
           <div class="gnb__button">
             <MenuItem icon="eye" label="View" dropdown={true}/>
-            <div class="gnb__sub">
-              <SubMenu
-                items={[
-                  { key: 'fold', label: 'Fold tree', icon: 'minimize-2' },
-                  { key: 'unfold', label: 'Unfold tree', icon: 'maximize-2' },
-                  {
-                    key: 'toggle-live-preview',
-                    label: $visiblePreview ? 'Hide live preview' : 'Show live preview',
-                    icon: 'code',
-                  },
-                ]}
-                on:select={e => selectMenuItem('view', e)}/>
-            </div>
+          </div>
+          <div class="gnb__sub">
+            <SubMenu
+              items={[
+                { key: 'fold', label: 'Fold tree', icon: 'minimize-2' },
+                { key: 'unfold', label: 'Unfold tree', icon: 'maximize-2' },
+                {
+                  key: 'toggle-live-preview',
+                  label: $visiblePreview ? 'Hide live preview' : 'Show live preview',
+                  icon: 'code',
+                },
+              ]}
+              on:select={e => selectMenuItem('view', e)}/>
           </div>
         </li>
         <li class="gnb__item">
           <div class="gnb__button">
             <MenuItem icon="monitor" label="Theme" dropdown={true}/>
-            <div class="gnb__sub">
-              <SubMenu
-                items={[
-                  {
-                    key: 'system',
-                    label: 'System',
-                    icon: 'droplet',
-                    active: $theme === 'system',
-                  },
-                  {
-                    key: 'light',
-                    label: 'Light',
-                    icon: 'sun',
-                    active: $theme === 'light',
-                  },
-                  {
-                    key: 'dark',
-                    label: 'Dark',
-                    icon: 'moon',
-                    active: $theme === 'dark',
-                  },
-                ]}
-                on:select={e => selectMenuItem('theme', e)}/>
-            </div>
+          </div>
+          <div class="gnb__sub">
+            <SubMenu
+              items={[
+                {
+                  key: 'system',
+                  label: 'System',
+                  icon: 'droplet',
+                  active: $theme === 'system',
+                },
+                {
+                  key: 'light',
+                  label: 'Light',
+                  icon: 'sun',
+                  active: $theme === 'light',
+                },
+                {
+                  key: 'dark',
+                  label: 'Dark',
+                  icon: 'moon',
+                  active: $theme === 'dark',
+                },
+              ]}
+              on:select={e => selectMenuItem('theme', e)}/>
           </div>
         </li>
         <li class="gnb__item">
@@ -100,6 +100,8 @@ import MenuItem from './menu-item.svelte'
 import SubMenu from './sub-menu.svelte'
 
 const dispatch = createEventDispatcher()
+
+$: _useClipboard = window.isSecureContext
 
 function selectMenuItem(main, e)
 {

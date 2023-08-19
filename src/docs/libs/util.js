@@ -51,3 +51,16 @@ export function dateFormat(date, format)
   mix = mix.replace(/\{ss\}/, twoDigit(date.getSeconds()))
   return mix
 }
+
+export function pureObject(src)
+{
+  if (!src) return null
+  try
+  {
+    return JSON.parse(JSON.stringify(src))
+  }
+  catch(_)
+  {
+    return null
+  }
+}

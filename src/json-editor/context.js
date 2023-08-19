@@ -5,7 +5,7 @@ import { iconArrow, iconType } from './assets/icons.js'
 const tree = [
   {
     key : 'change-type',
-    label: 'Change Type',
+    label: 'Change type',
     children : [
       { key: TYPES.OBJECT, label: 'Object' },
       { key: TYPES.ARRAY, label : 'Array' },

@@ -243,7 +243,6 @@ class JsonEditorCore {
     $node = $($node)
     const type = this.#getType($node)
     if (!(type === 'object' || type === 'array')) return
-    console.log('#setNodeCount()')
     const count = $node.find('& > .node__children > ul > li').length
     if (!isNaN(count)) $node.find('& > .node__body > .count').text(count)
   }
@@ -339,6 +338,7 @@ class JsonEditorCore {
   }
   #onDragStart(e)
   {
+    if (e.pointerType === 'touch') return
     this.#drag = {}
     this.#drag.$node = $(e.currentTarget).closest('.node')
     this.#drag.$area = this.#drag.$node.parent()
@@ -385,7 +385,7 @@ class JsonEditorCore {
       .removeClass(DRAG_HOVER_NODE_CLASS.ALL)
       .addClass(checkHalf ? DRAG_HOVER_NODE_CLASS.END : DRAG_HOVER_NODE_CLASS.START)
   }
-  #onDragEnd(e)
+  #onDragEnd()
   {
     // remove class
     this.el.body.removeClass('dragging')

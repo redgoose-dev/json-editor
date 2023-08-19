@@ -31,14 +31,10 @@ html, body {
   -webkit-text-size-adjust: none;
   box-sizing: border-box;
   text-size-adjust: none;
+  overflow: hidden;
 }
 html {
   touch-action: manipulation;
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
 }
 body {
   margin: 0;
@@ -53,7 +49,6 @@ body, button, input, textarea, select {
   font-family: var(--font-base);
 }
 main {
-  height: 100%;
   box-sizing: border-box;
 }
 a {

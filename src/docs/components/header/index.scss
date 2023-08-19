@@ -36,6 +36,13 @@
 }
 
 .gnb {
+  @mixin active-sub-menu() {
+    background-color: var(--gnb-menu-color-active, hsl(0 0% 92%));
+    .gnb__sub {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
   margin: 0;
   padding: 0;
   list-style: none;
@@ -45,19 +52,11 @@
   &__item {
     position: relative;
     transition: background-color 120ms ease-out;
-    @include mixins.hover() {
-      background-color: hsl(0 0% 92%);
-      .gnb__sub {
-        opacity: 1;
-        pointer-events: auto;
-      }
-    }
     &:focus-within {
-      background-color: hsl(0 0% 92%);
-      .gnb__sub {
-        opacity: 1;
-        pointer-events: auto;
-      }
+      @include active-sub-menu();
+    }
+    @include mixins.hover() {
+      @include active-sub-menu();
     }
   }
   &__button {
@@ -70,6 +69,7 @@
     box-sizing: border-box;
     user-select: none;
     transition: opacity 120ms ease-out;
+    -webkit-tap-highlight-color: transparent;
     &[type=button] {
       border: none;
       border-radius: 0;
@@ -96,35 +96,30 @@
 }
 @include mixins.dark-mode() {
   .gnb {
-    &__item {
-      @include mixins.hover() {
-        background-color: hsl(0 0% 16%);
-      }
-      &:focus-within {
-        background-color: hsl(0 0% 16%);
-      }
-    }
+    --gnb-menu-color-active: hsl(0 0% 16%);
   }
 }
 
 .toggle-preview {
+  --bg: 0 0% 92%;
   display: grid;
   place-content: center;
   width: var(--layout-header-height);
   height: 100%;
   margin: 0;
   padding: 0;
-  background: none;
+  background: hsla(var(--bg) / 0%);
   border: none;
   border-radius: 0;
   cursor: pointer;
-  --icon-size: 20px;
-  --icon-stroke: 2;
   transition:
     opacity 120ms ease-out,
-    background-color 120ms ease-out;
+    background 120ms ease-out;
+  -webkit-tap-highlight-color: transparent;
+  --icon-size: 20px;
+  --icon-stroke: 2;
   @include mixins.hover() {
-    background: hsl(0 0% 92%);
+    background: hsla(var(--bg) / 100%);
   }
   &:active {
     opacity: .5;
@@ -143,8 +138,8 @@
 }
 @include mixins.dark-mode() {
   .toggle-preview {
+    --bg: 0 0% 16%;
     @include mixins.hover() {
-      background: hsl(0 0% 16%);
       &.on {
         background: var(--color-key);
         opacity: .85;

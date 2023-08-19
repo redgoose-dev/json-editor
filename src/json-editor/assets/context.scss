@@ -94,6 +94,7 @@
     letter-spacing: -.25px;
     outline: none;
     color: var(--json-editor-color-base);
+    -webkit-tap-highlight-color: transparent;
     &:hover,
     &:active {
       background-color: var(--context-color-item-active);

@@ -49,6 +49,7 @@
     border: none;
     transition: opacity 120ms ease-out;
     border-radius: 4px;
+    -webkit-tap-highlight-color: transparent;
     --icon-size: 24px;
     --icon-color: var(--color-base);
     --icon-stroke: 2px;

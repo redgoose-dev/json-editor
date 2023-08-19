@@ -97,6 +97,7 @@
   border: none;
   font-size: 0;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
   span {
     display: block;
     position: relative;
@@ -186,6 +187,7 @@
         cursor: pointer;
         transition: opacity 120ms ease-out;
         border-radius: 6px;
+        -webkit-tap-highlight-color: transparent;
         &:active {
           opacity: .5;
         }
@@ -210,9 +212,13 @@
       border: none;
       box-sizing: border-box;
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
       &:focus-visible {
         outline: 2px solid var(--json-editor-color-focus);
         outline-offset: -6px;
+      }
+      &:active {
+        opacity: .5;
       }
       svg {
         display: block;

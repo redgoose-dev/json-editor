@@ -20,6 +20,7 @@
   background-color: hsl(0 0% 52%);
   box-shadow: var(--button-outline), var(--button-focus);
   transition: box-shadow 120ms ease-out;
+  -webkit-tap-highlight-color: transparent;
   --button-outline: 0 0 0 0 hsla(var(--color-base-hsl) / 0%);
   --button-focus: 0 0 0 0 hsla(var(--color-key-hsl) / 0%);
   --icon-size: 16px;

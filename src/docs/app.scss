@@ -4,12 +4,11 @@
   display: grid;
   grid-template-areas: var(--layout-areas, 'header' 'editor');
   grid-template-columns: var(--layout-columns, 1fr);
-  grid-template-rows: var(--layout-rows, auto 1fr);
-  height: 100%;
+  grid-template-rows: var(--layout-rows, var(--layout-header-height) 1fr);
   box-sizing: border-box;
   &__header {
-    grid-area: header;
     position: relative;
+    grid-area: header;
   }
   &__editor {
     grid-area: editor;

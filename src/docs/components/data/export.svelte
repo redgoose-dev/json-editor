@@ -1,7 +1,7 @@
 <article class="data">
   <div class="data__wrap">
     <header class="data__header">
-      <h1>Save JSON Data</h1>
+      <h1>Export JSON Data</h1>
       <p>
         The content edited in the editor can be saved as JSON data.<br/>
         You can copy the JSON code or save it as a file.

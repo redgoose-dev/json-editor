@@ -14,8 +14,4 @@ export const visiblePreview = (() => {
   }
 })()
 
-export const visibleLoadJson = writable(false)
-
-export const visibleSaveJson = writable(false)
-
 export const visibleAbout = writable(false)
