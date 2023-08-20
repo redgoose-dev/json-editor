@@ -37,7 +37,6 @@ declare module 'json-editor' {
     export(node: HTMLElement, json?: boolean, space?: number): any[]|object
     preview(src?: typeData): void
     customContext(body?: HTMLElement, options?: typeCustomContextOptions, $?: unknown): void
-    getNode(selector?: string): HTMLElement
   }
 
   class Context {
