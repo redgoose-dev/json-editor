@@ -5,20 +5,21 @@
   "version": "1.0.0",
   "keywords": [ "json", "editor", "library", "tool" ],
   "license": "MIT",
+  "main": "./lib/json-editor.js",
   "types": "./lib/json-editor.d.ts",
   "files": [ "lib" ],
   "exports": {
     ".": {
       "module": "./lib/json-editor.js",
       "default": "./lib/json-editor.js",
-      "types": "./lib/json-editor.d.cts"
+      "types": "./lib/json-editor.d.ts"
     },
-    "./lib/*": "./lib/*",
-    "./wc": "./lib/json-editor.wc.js",
     "./css": "./lib/json-editor.css",
+    "./wc": "./lib/json-editor.wc.js",
     "./vue": "./lib/json-editor.vue.js",
-    "./react": "",
-    "./svelte": ""
+    "./react": "./lib/json-editor.react.js",
+    "./svelte": "./lib/json-editor.svelte.js",
+    "./lib/*": "./lib/*"
   },
   "repository": {
     "type": "git",

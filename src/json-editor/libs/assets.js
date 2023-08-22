@@ -4,8 +4,6 @@ export const defaultOptions = {
 }
 
 export const defaultAddNodeOptions = {
-  data: undefined,
-  between: 'after',
   open: true,
   callback: undefined,
 }

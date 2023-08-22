@@ -6,8 +6,6 @@ declare module 'json-editor' {
   }
   type typeData = any[] | object
   type typeAddNodeOptions = {
-    data: typeData
-    between?: 'before' | 'after'
     open?: boolean
     callback?: function
   }
@@ -25,7 +23,7 @@ declare module 'json-editor' {
     // class units
     constructor(wrap: HTMLElement, options?: typeOptions)
     // public methods
-    addNode(target: HTMLElement, options: typeAddNodeOptions, useUpdate?: boolean): void
+    addNode(target: HTMLElement, data: typeData, options?: typeAddNodeOptions, useUpdate?: boolean): void
     removeNode(node: HTMLElement, useUpdate?: boolean): void
     changeType(node: HTMLElement, type: typeNames, useUpdate?: boolean): void
     duplicate(target: HTMLElement, useUpdate?: boolean): void

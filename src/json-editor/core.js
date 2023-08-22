@@ -95,9 +95,7 @@ class JsonEditorCore {
         break
       case 'insert':
         this.fold($node, true)
-        this.addNode($node, {
-          data: { key: '', value: '', type },
-        })
+        this.addNode($node, { key: '', value: '', type })
         break
       case 'duplicate':
         this.duplicate($node)
@@ -429,15 +427,17 @@ class JsonEditorCore {
   /**
    * add node
    * @param {HTMLElement} $target
+   * @param {object} data
    * @param {object} options
    * @param {boolean} useUpdate
    * @param {boolean} useUpdateCount
    */
-  addNode($target, options, useUpdate = true, useUpdateCount = true)
+  addNode($target, data, options = {}, useUpdate = true, useUpdateCount = true)
   {
     options = { ...defaultAddNodeOptions, ...options }
-    const { data, between, open, callback } = options
+    const { open, callback } = options
     $target = $($target)
+    // TODO: 노드검사, 올바른 노드인지 검사할 필요가 있다.
     const { key, value, type } = data
     // set node item
     const $node = this.#template(type, false)
@@ -445,14 +445,7 @@ class JsonEditorCore {
     this.#setEventFromNode($node)
     // add element
     const $ul = $target.find('& > .node__children > ul')
-    if (between === 'before')
-    {
-      $ul.prepend($node)
-    }
-    else
-    {
-      $ul.append($node)
-    }
+    $ul.append($node)
     // set node count
     if (useUpdateCount) this.#setNodeCount($target)
     // callback
@@ -594,11 +587,11 @@ class JsonEditorCore {
     $.each(data, (key, value) => {
       const type = getTypeName(value)
       const data = { key, value, type }
-      this.addNode($target, {
-        data,
+      const options = {
         open: false,
         callback: (node, value) => this.import(node, value, false, false),
-      }, false, false)
+      }
+      this.addNode($target, data, options, false, false)
     })
     if (useUpdateCount) this.#setNodeCount($target)
     if (useUpdate) this.#update()
