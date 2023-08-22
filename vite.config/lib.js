@@ -89,6 +89,8 @@ function getFrameworkComponentConfig(type)
   let root, entry, external, plugins
   switch (type)
   {
+    case 'web-component':
+      break
     case 'vue':
       root = `${path}/packages/vue`
       entry = { 'json-editor.vue': './src/json-editor/index.vue' }

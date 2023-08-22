@@ -122,12 +122,6 @@ jsonEditor.duplicate(node, true)
 노드를 접거나 펼칩니다.
 
 ```javascript
-jsonEditor.fold(node, sw)
-```
-
-예제코드
-
-```javascript
 jsonEditor.fold(node, true)
 ```
 
