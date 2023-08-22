@@ -1,4 +1,4 @@
-<article class="editor scroll-area">
+<article class="editor">
   <div bind:this={_editor} class="editor__body"></div>
 </article>
 

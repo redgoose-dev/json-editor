@@ -6,6 +6,7 @@
   box-shadow:
     0 2px 16px hsla(0 0% 0% / 20%),
     0 1px 0 0 hsla(0 0% 0% / 8%);
+  @include mixins.background-blur(16px);
   &__wrap {
     display: grid;
     grid-template-columns: auto 1fr auto;
@@ -19,12 +20,6 @@
     --logo-symbol-wdith: 36px;
   }
   &__body {}
-  &__side {}
-  @include mixins.responsive(mobile) {
-    &__side {
-      display: none;
-    }
-  }
 }
 @include mixins.dark-mode() {
   .header {
@@ -55,7 +50,7 @@
     &:focus-within {
       @include active-sub-menu();
     }
-    @include mixins.hover() {
+    &.on {
       @include active-sub-menu();
     }
   }
@@ -68,19 +63,25 @@
     height: 100%;
     box-sizing: border-box;
     user-select: none;
+    -webkit-user-select: none;
     transition: opacity 120ms ease-out;
     -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
     &[type=button] {
       border: none;
       border-radius: 0;
       background: none;
-      cursor: pointer;
       &:active {
         opacity: .5;
       }
       &:focus-visible {
         outline: 2px solid var(--color-key);
         outline-offset: -2px;
+      }
+    }
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        opacity: .5;
       }
     }
   }
@@ -97,53 +98,5 @@
 @include mixins.dark-mode() {
   .gnb {
     --gnb-menu-color-active: hsl(0 0% 16%);
-  }
-}
-
-.toggle-preview {
-  --bg: 0 0% 92%;
-  display: grid;
-  place-content: center;
-  width: var(--layout-header-height);
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  background: hsla(var(--bg) / 0%);
-  border: none;
-  border-radius: 0;
-  cursor: pointer;
-  transition:
-    opacity 120ms ease-out,
-    background 120ms ease-out;
-  -webkit-tap-highlight-color: transparent;
-  --icon-size: 20px;
-  --icon-stroke: 2;
-  @include mixins.hover() {
-    background: hsla(var(--bg) / 100%);
-  }
-  &:active {
-    opacity: .5;
-  }
-  &:focus-visible {
-    outline: 2px solid var(--color-key);
-    outline-offset: -2px;
-  }
-  &.on {
-    background: var(--color-key);
-    --icon-color: hsl(0 0% 100%);
-    &:focus-visible {
-      outline: 2px solid var(--color-base);
-    }
-  }
-}
-@include mixins.dark-mode() {
-  .toggle-preview {
-    --bg: 0 0% 16%;
-    @include mixins.hover() {
-      &.on {
-        background: var(--color-key);
-        opacity: .85;
-      }
-    }
   }
 }

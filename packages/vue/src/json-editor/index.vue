@@ -12,7 +12,7 @@ const props = defineProps({
   live: { type: Boolean, default: false },
   theme: { type: String, default: 'system' },
 })
-const emits = defineEmits([ 'init', 'update' ])
+const emits = defineEmits([ 'init', 'preview' ])
 
 function core()
 {
@@ -24,7 +24,7 @@ onMounted(() => {
     live: props.live,
     theme: props.theme,
   })
-  editor.preview = src => emits('update', src)
+  editor.preview = src => emits('preview', src)
   emits('init', editor)
 })
 

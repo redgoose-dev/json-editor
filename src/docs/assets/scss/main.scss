@@ -31,7 +31,6 @@ html, body {
   -webkit-text-size-adjust: none;
   box-sizing: border-box;
   text-size-adjust: none;
-  overflow: hidden;
 }
 html {
   touch-action: manipulation;
@@ -59,9 +58,15 @@ a {
   color: hsl(0 0% 100%);
 }
 
+.opened-modal {
+  overflow: hidden;
+  body {
+    overflow: hidden;
+  }
+}
+
 .scroll-area {
   overflow: auto;
-  box-sizing: border-box;
   --scroll-size: 15px;
   --scroll-padding: 5px;
   --scroll-track: hsl(0 0% 65%);

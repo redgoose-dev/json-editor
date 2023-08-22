@@ -3,11 +3,23 @@
   "description": "Easy editing JSON data",
   "author": "redgoose <scripter@me.com>",
   "version": "1.0.0",
-  "keywords": [
-    "json",
-    "editor"
-  ],
+  "keywords": [ "json", "editor", "library", "tool" ],
   "license": "MIT",
+  "types": "./lib/json-editor.d.ts",
+  "files": [ "lib" ],
+  "exports": {
+    ".": {
+      "module": "./lib/json-editor.js",
+      "default": "./lib/json-editor.js",
+      "types": "./lib/json-editor.d.cts"
+    },
+    "./lib/*": "./lib/*",
+    "./wc": "./lib/json-editor.wc.js",
+    "./css": "./lib/json-editor.css",
+    "./vue": "./lib/json-editor.vue.js",
+    "./react": "",
+    "./svelte": ""
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/redgoose-dev/json-editor.git"
@@ -16,8 +28,6 @@
     "url": "https://github.com/redgoose-dev/json-editor/issues"
   },
   "homepage": "https://redgoose-dev.github.io/json-editor",
-  "main": "",
-  "module": "",
   "type": "module",
   "scripts": {
     "dev": "vite --config vite.config/dev.js",
@@ -30,7 +40,7 @@
     "last 2 versions"
   ],
   "engines": {
-    "node": "20"
+    "node": ">=20"
   },
   "workspaces": {
     "packages": [

@@ -5,8 +5,14 @@
     </h1>
     <nav class="header__body">
       <menu class="gnb">
-        <li class="gnb__item">
-          <div class="gnb__button">
+        <li
+          class="gnb__item"
+          class:on={focusMenuItem === 'data'}
+          on:click|stopPropagation>
+          <div
+            data-name="data"
+            class="gnb__button"
+            on:click={onClickDropdown}>
             <MenuItem icon="database" label="Data" dropdown={true}/>
           </div>
           <div class="gnb__sub">
@@ -20,8 +26,14 @@
               on:select={e => selectMenuItem('data', e)}/>
           </div>
         </li>
-        <li class="gnb__item">
-          <div class="gnb__button">
+        <li
+          class="gnb__item"
+          class:on={focusMenuItem === 'view'}
+          on:click|stopPropagation>
+          <div
+            data-name="view"
+            class="gnb__button"
+            on:click={onClickDropdown}>
             <MenuItem icon="eye" label="View" dropdown={true}/>
           </div>
           <div class="gnb__sub">
@@ -38,8 +50,14 @@
               on:select={e => selectMenuItem('view', e)}/>
           </div>
         </li>
-        <li class="gnb__item">
-          <div class="gnb__button">
+        <li
+          class="gnb__item"
+          class:on={focusMenuItem === 'theme'}
+          on:click|stopPropagation>
+          <div
+            data-name="theme"
+            class="gnb__button"
+            on:click={onClickDropdown}>
             <MenuItem icon="monitor" label="Theme" dropdown={true}/>
           </div>
           <div class="gnb__sub">
@@ -77,21 +95,11 @@
         </li>
       </menu>
     </nav>
-    <nav class="header__side">
-      <button
-        type="button"
-        title="Toggle preview panel"
-        class="toggle-preview"
-        class:on={$visiblePreview}
-        on:click={togglePreview}>
-        <Icon name="code"/>
-      </button>
-    </nav>
   </div>
 </header>
 
 <script>
-import { createEventDispatcher } from 'svelte'
+import { createEventDispatcher, onMount, onDestroy } from 'svelte'
 import { visiblePreview } from '../../store/visible.js'
 import { theme } from '../../store/service.js'
 import LogoSymbol from '../assets/logo-symbol.svelte'
@@ -101,6 +109,8 @@ import SubMenu from './sub-menu.svelte'
 
 const dispatch = createEventDispatcher()
 
+let focusMenuItem
+
 $: _useClipboard = window.isSecureContext
 
 function selectMenuItem(main, e)
@@ -108,12 +118,31 @@ function selectMenuItem(main, e)
   let sub
   if (e) sub = e.detail?.key
   dispatch('select-menu', { main, sub })
+  deselect()
+}
+
+function onClickDropdown(e)
+{
+  const { name } = e.currentTarget.dataset
+  focusMenuItem = (focusMenuItem === name) ? undefined : name
 }
 
 function togglePreview()
 {
   dispatch('select-menu', { main: 'view', sub: 'toggle-live-preview' })
 }
+
+function deselect()
+{
+  focusMenuItem = undefined
+}
+
+onMount(() => {
+  document.body.addEventListener('click', deselect)
+})
+onDestroy(() => {
+  document.body.removeEventListener('click', deselect)
+})
 </script>
 
 <style lang="scss">

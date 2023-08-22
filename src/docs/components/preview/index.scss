@@ -1,35 +1,54 @@
 @use '../../assets/scss/mixins';
 
 .preview {
-  display: grid;
-  grid-template-rows: 36px 1fr;
+  --preview-padding: 24px;
+  --preview-header-height: 36px;
+  position: fixed;
+  top: var(--layout-header-height);
+  right: 0;
+  width: var(--preview-width);
+  max-width: calc(var(--preview-max-width));
   height: calc(100vh - var(--layout-header-height));
-  background: hsl(0 0% 93%);
+  padding: var(--preview-padding);
   box-sizing: border-box;
-  box-shadow:
-    1px 0 0 0 hsla(0 0% 0% / 10%) inset,
-    6px 0 24px 0 hsla(0 0% 0% / 8%) inset;
+  @supports (-webkit-touch-callout: none) {
+    height: calc(90vh - var(--layout-header-height));
+  }
+  &__wrap {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    box-shadow:
+      0 0 0 1px hsla(0 0% 0% / 10%),
+      0 4px 32px 0 hsla(0 0% 0% / 20%);
+    border-radius: 6px;
+    overflow: hidden;
+  }
   &__header {
-    display: grid;
-    align-items: center;
-    grid-template-columns: auto 1fr;
-    gap: 6px;
-    padding: 0 12px;
-    background: hsl(0 0% 64%);
+    height: var(--preview-header-height);
+    padding: 0 16px;
+    background: hsl(0 0% 60% / 85%);
     user-select: none;
-    --icon-size: 16px;
-    --icon-color: hsl(0 0% 100%);
     h1 {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      gap: 8px;
       margin: 0;
       font-size: 14px;
       line-height: 1.05;
       color: hsl(0 0% 100%);
-      font-weight: 700;
+      font-weight: 500;
+      --icon-size: 16px;
+      --icon-color: hsl(0 0% 100%);
     }
   }
   &__body {
+    flex: 1;
     padding: 24px;
     box-sizing: border-box;
+    background: hsla(0 0% 90% / 75%);
     pre {
       display: block;
       margin: 0;
@@ -45,10 +64,14 @@
 
 @include mixins.dark-mode() {
   .preview {
-    background: hsl(0 0% 20%);
-    box-shadow:
-      1px 0 0 0 hsla(0 0% 100% / 10%) inset,
-      6px 0 24px 0 hsla(0 0% 0% / 20%) inset;
+    &__wrap {
+      box-shadow:
+        0 0 0 1px hsla(0 0% 100% / 10%),
+        0 4px 32px 0 hsla(0 0% 0% / 25%);
+    }
+    &__body {
+      background: hsla(0 0% 20% / 75%);
+    }
     &__header {
       background: hsl(0 0% 36%);
     }

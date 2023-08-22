@@ -152,6 +152,7 @@
 
 .node {
   position: relative;
+  -webkit-user-select: none;
   &__body {
     position: relative;
     display: flex;
@@ -165,6 +166,7 @@
       cursor: move;
       margin: -4px 4px -4px 0;
       padding: 4px 0;
+      touch-action: none;
       svg {
         display: block;
         width: 24px;

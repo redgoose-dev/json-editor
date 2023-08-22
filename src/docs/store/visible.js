@@ -13,5 +13,6 @@ export const visiblePreview = (() => {
     }),
   }
 })()
+export const foldPreview = writable(false)
 
 export const visibleAbout = writable(false)

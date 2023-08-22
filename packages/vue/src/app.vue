@@ -15,7 +15,7 @@
       ref="$editor"
       :theme="state.theme"
       :live="state.live"
-      @update="onUpdateEditor"/>
+      @preview="onUpdateEditor"/>
   </div>
 </article>
 </template>

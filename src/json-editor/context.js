@@ -60,7 +60,7 @@ class Context {
     // append
     this.el.type.append(this.el.dialog)
     // set events
-    $(window).on(CONTEXT_EVENT.CLICK, e => this.close(e))
+    $('body').on(CONTEXT_EVENT.CLICK, e => this.close(e))
     $(window).on(CONTEXT_EVENT.KEYUP, e => this.#onKeyupWindow(e))
   }
 
@@ -178,7 +178,7 @@ class Context {
   {
     this.el.type.removeClass('open')
     this.el.dialog.remove()
-    $(window).off(CONTEXT_EVENT.CLICK)
+    $('body').off(CONTEXT_EVENT.CLICK)
     $(window).off(CONTEXT_EVENT.KEYUP)
     delete this.#parent.context
   }

@@ -338,7 +338,7 @@ class JsonEditorCore {
   }
   #onDragStart(e)
   {
-    if (e.pointerType === 'touch') return
+    // if (e.pointerType === 'touch') return
     this.#drag = {}
     this.#drag.$node = $(e.currentTarget).closest('.node')
     this.#drag.$area = this.#drag.$node.parent()
@@ -354,7 +354,19 @@ class JsonEditorCore {
   }
   #onDragMove(e)
   {
-    const $node = $(e.currentTarget)
+    let $node
+    if (e.pointerType === 'touch')
+    {
+      const { clientX, clientY } = e
+      const selectedNode = document.elementFromPoint(clientX, clientY).closest('.node')
+      const isSameArea = this.#drag.$nodes.get().includes(selectedNode)
+      if (!isSameArea) return
+      $node = $(selectedNode)
+    }
+    else
+    {
+      $node = $(e.currentTarget)
+    }
     const $body = $node.children('.node__body')
     if (!($body.length > 0)) return
     // check half

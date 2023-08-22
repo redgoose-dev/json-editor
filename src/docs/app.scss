@@ -7,21 +7,27 @@
   grid-template-rows: var(--layout-rows, var(--layout-header-height) 1fr);
   box-sizing: border-box;
   &__header {
-    position: relative;
     grid-area: header;
+    position: sticky;
+    top: 0;
+    z-index: 10;
   }
   &__editor {
     grid-area: editor;
   }
   &__preview {
     grid-area: preview;
-    position: relative;
-    width: 42vw;
-    max-width: 640px;
+    --preview-width: 42vw;
+    --preview-max-width: 640px;
+    width: var(--preview-width);
+    max-width: var(--preview-max-width);
   }
   &--preview {
     --layout-areas: 'header header' 'editor preview';
     --layout-columns: 1fr auto;
+    .layout {
+      &__preview {}
+    }
   }
   @include mixins.responsive(mobile) {
     --layout-areas: 'header' 'editor';
