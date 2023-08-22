@@ -47,7 +47,7 @@ import { sampleObject, sampleArray } from '../assets/resource.js'
 
 let self
 const elementName = 'json-editor'
-let theme = 'system'
+let theme = 'dark'
 let data = sampleObject
 $: _data = JSON.stringify(data, null)
 

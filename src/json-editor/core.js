@@ -12,6 +12,7 @@ import { iconSort, iconFold, iconType } from './assets/icons.js'
 
 class JsonEditorCore {
 
+  $
   el = { wrap: null, body: null, tree: null }
   options
   context

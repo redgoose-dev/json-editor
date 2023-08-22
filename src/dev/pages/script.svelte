@@ -45,7 +45,7 @@ import '../../json-editor/assets/main.scss'
 
 let self
 let jsonEditor
-let theme = 'system'
+let theme = 'light'
 let data = sampleObject
 
 function changeData(key)
