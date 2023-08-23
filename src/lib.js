@@ -1,4 +1,4 @@
-import Core from './json-editor/core.js'
+import JsonEditor from './json-editor/index.js'
 import './json-editor/assets/main.scss'
 
-export default Core
+export default JsonEditor

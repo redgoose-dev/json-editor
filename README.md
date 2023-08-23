@@ -204,6 +204,9 @@ jsonEditor.destroy()
 jsonEditor.preview = (src) => {
   console.log('updated data', src)
 }
+
+// 클래스의 기능을 확장시킬수도 있습니다.
+JsonEditor.prototype.preview = () => {}
 ```
 
 ### custom context
@@ -225,6 +228,9 @@ jsonEditor.customContext = (body, { node, type, isRoot }, $) => {
   })
   $ul.append($items)
 }
+
+// 클래스의 기능을 확장시킬수도 있습니다.
+JsonEditor.prototype.customContext = () => {}
 ```
 
 - `body`: 열린 컨텍스트 메뉴 영역. 이 엘리먼트에다 항목을 조작하면 됩니다.

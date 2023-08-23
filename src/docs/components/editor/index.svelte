@@ -7,6 +7,9 @@ import { onMount, onDestroy, createEventDispatcher } from 'svelte'
 import { source, theme } from '../../store/service.js'
 import JsonEditor from '../../../lib.js'
 
+JsonEditor.prototype.preview = updateSource
+JsonEditor.prototype.customContext = customContext
+
 const dispatch = createEventDispatcher()
 let _editor
 let editor
@@ -18,6 +21,7 @@ theme.subscribe(value => {
 
 function updateSource(src)
 {
+  console.log('qweqwe')
   source.update(src)
   dispatch('update', { src })
 }
@@ -54,8 +58,6 @@ onMount(() => {
     live: true,
     theme: $theme,
   })
-  editor.preview = updateSource
-  editor.customContext = customContext
   editor.replace($source, false)
   dispatch('init', { instance: editor })
 })

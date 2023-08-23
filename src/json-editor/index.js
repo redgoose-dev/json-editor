@@ -439,10 +439,10 @@ class JsonEditorCore {
     const { open, callback } = options
     $target = $($target)
     // TODO: 노드검사, 올바른 노드인지 검사할 필요가 있다.
-    const { key, value, type } = data
+    const type = (data.type === undefined) ? getTypeName(data.value) : data.type
     // set node item
     const $node = this.#template(type, false)
-    this.#setResourceFromNode($node, { ...data, open })
+    this.#setResourceFromNode($node, { ...data, open, type })
     this.#setEventFromNode($node)
     // add element
     const $ul = $target.find('& > .node__children > ul')
@@ -454,7 +454,7 @@ class JsonEditorCore {
     {
       if (callback && typeof callback === 'function')
       {
-        callback($node.get(0), value)
+        callback($node.get(0), data.value)
       }
     }
     if (useUpdate) this.#update()
@@ -586,8 +586,7 @@ class JsonEditorCore {
   {
     $target = $($target)
     $.each(data, (key, value) => {
-      const type = getTypeName(value)
-      const data = { key, value, type }
+      const data = { key, value }
       const options = {
         open: false,
         callback: (node, value) => this.import(node, value, false, false),

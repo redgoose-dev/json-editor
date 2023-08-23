@@ -39,9 +39,9 @@
 
 <script>
 import { onMount, onDestroy } from 'svelte'
-import JsonEditor from '../../lib.js'
-import { sampleObject, sampleArray } from '../assets/resource.js'
-import '../../json-editor/assets/main.scss'
+import JsonEditor from '../lib.js'
+import { sampleObject, sampleArray } from './assets/resource.js'
+import '../json-editor/assets/main.scss'
 
 let self
 let jsonEditor

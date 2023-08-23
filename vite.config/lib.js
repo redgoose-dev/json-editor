@@ -33,26 +33,6 @@ const buildConfig = {
     },
     configFile: false,
   },
-  webComponent: {
-    publicDir: false,
-    build: {
-      lib: {
-        entry: { 'json-editor.wc': './src/web-component.js' },
-        name: 'JsonEditor',
-        formats: [ 'es', 'umd' ],
-      },
-      outDir: './lib',
-      rollupOptions: {
-        output: {
-          inlineDynamicImports: true,
-          preserveModules: false,
-        },
-      },
-      emptyOutDir: false,
-      minify,
-    },
-    configFile: false,
-  },
   docs: {
     configFile: false,
     root: `${path}/src/docs`,
@@ -86,14 +66,28 @@ const buildConfig = {
 
 function getFrameworkComponentConfig(type)
 {
-  let root, entry, external, plugins
+  let root, entry, external, plugins, resolve
   switch (type)
   {
     case 'web-component':
+      root = `${path}/packages/web-component`
+      entry = { 'json-editor.wc': './src/web-component.js' }
+      resolve = {
+        alias: [
+          { find: '@json-editor', replacement: 'src/json-editor' },
+        ],
+      }
+      external = []
+      plugins = []
       break
     case 'vue':
       root = `${path}/packages/vue`
-      entry = { 'json-editor.vue': './src/json-editor/index.vue' }
+      entry = { 'json-editor.vue': './src/json-editor.vue' }
+      resolve = {
+        alias: [
+          { find: '@json-editor', replacement: 'src/json-editor' },
+        ],
+      }
       external = [ 'vue' ]
       plugins = [ vue() ]
       break
@@ -106,6 +100,7 @@ function getFrameworkComponentConfig(type)
     configFile: false,
     root,
     publicDir: false,
+    resolve,
     build: {
       lib: {
         entry,
@@ -128,16 +123,16 @@ function getFrameworkComponentConfig(type)
 
 // build core
 await build(buildConfig.core)
-fs.copyFileSync(`${path}/src/json-editor/core.d.ts`, `${path}/lib/json-editor.d.ts`)
+fs.copyFileSync(`${path}/src/json-editor/index.d.ts`, `${path}/lib/json-editor.d.ts`)
 
 // build web component
-await build(buildConfig.webComponent)
-
-// build docs
-await build(buildConfig.docs)
+await build(getFrameworkComponentConfig('web-component'))
 
 // build vue component
 await build(getFrameworkComponentConfig('vue'))
+
+// build docs
+await build(buildConfig.docs)
 
 // TODO: build svelte
 // TODO: build react

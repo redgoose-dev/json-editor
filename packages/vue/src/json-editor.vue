@@ -3,16 +3,17 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, defineProps, watch, defineEmits, defineExpose } from 'vue'
-import JsonEditorCore from '../../../../src/json-editor/core.js'
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
+import JsonEditorCore from '@json-editor/index.js'
 
 const $editor = ref()
-let editor
 const props = defineProps({
+  modelValue: { type: [ Object, Array ], default: {} },
   live: { type: Boolean, default: false },
   theme: { type: String, default: 'system' },
 })
-const emits = defineEmits([ 'init', 'preview' ])
+const emits = defineEmits([ 'init', 'update', 'update:modelValue' ])
+let editor
 
 function core()
 {
@@ -24,7 +25,8 @@ onMounted(() => {
     live: props.live,
     theme: props.theme,
   })
-  editor.preview = src => emits('preview', src)
+  editor.preview = _src => emits('update:modelValue', _src)
+  editor.replace(props.modelValue, false)
   emits('init', editor)
 })
 

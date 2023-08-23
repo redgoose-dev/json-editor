@@ -2,60 +2,93 @@
 <article class="layout">
   <header class="header">
     <h1 class="header__title">JSON Editor for vue</h1>
+    <nav class="controller">
+      <menu>
+        <li>
+          <button
+            type="button"
+            @click="state.live = !state.live">
+            Live({{state.live}})
+          </button>
+        </li>
+      </menu>
+      <menu>
+        <li>
+          <button
+            type="button"
+            :disabled="state.theme === 'system'"
+            @click="state.theme = 'system'">
+            system
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            :disabled="state.theme === 'light'"
+            @click="state.theme = 'light'">
+            light
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            :disabled="state.theme === 'dark'"
+            @click="state.theme = 'dark'">
+            dark
+          </button>
+        </li>
+      </menu>
+      <menu>
+        <li>
+          <button type="button" @click="onClickReplace">Replace</button>
+        </li>
+        <li>
+          <button type="button" @click="onClickExport">Export</button>
+        </li>
+      </menu>
+    </nav>
   </header>
-  <nav class="controller">
-    <button type="button" @click="onClickChangeLive">Live({{state.live}})</button>
-    <button type="button" @click="onClickChangeTheme">Theme({{state.theme}})</button>
-    <button type="button" @click="onClickReplace">Replace</button>
-    <button type="button" @click="onClickExport">Export</button>
-    <button type="button" @click="onClickSelectNode">SelectNode</button>
-  </nav>
-  <div class="editor-body">
-    <JsonEditor
-      ref="$editor"
-      :theme="state.theme"
-      :live="state.live"
-      @preview="onUpdateEditor"/>
+  <div class="body">
+    <div :class="[ 'body__editor', state.theme ]">
+      <JsonEditor
+        ref="$editor"
+        v-model="state.src"
+        :theme="state.theme"
+        :live="state.live"
+        @init="onInit"
+        @update:model-value="onUpdateEditor"/>
+    </div>
+    <div class="body__preview">
+      <pre>{{_src}}</pre>
+    </div>
   </div>
 </article>
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from 'vue'
-import JsonEditor from './json-editor/index.vue'
-import '../../../src/json-editor/assets/main.scss'
+import { reactive, ref, computed } from 'vue'
+import JsonEditor from './json-editor.vue'
+import '@json-editor/assets/main.scss'
 
 const $editor = ref(null)
 let editor
 const state = reactive({
+  src: { foo: 'bar' },
   live: true,
-  theme: 'light',
+  theme: 'system',
+})
+const _src = computed(() => {
+  return JSON.stringify(state.src, null, 2)
 })
 
-function onClickChangeLive()
+function onInit(_editor)
 {
-  state.live = !state.live
-}
-
-function onClickChangeTheme()
-{
-  switch (state.theme)
-  {
-    case 'system':
-      state.theme = 'light'
-      break
-    case 'light':
-      state.theme = 'dark'
-      break
-    case 'dark':
-      state.theme = 'system'
-      break
-  }
+  editor = _editor
 }
 
 function onUpdateEditor(src)
 {
-  console.warn('onUpdateEditor', src)
+  // console.warn('onUpdateEditor()', src)
 }
 
 function onClickReplace()
@@ -69,26 +102,16 @@ function onClickReplace()
       e: null,
       r: true,
     },
-  }, false)
+  }, true)
 }
 
 function onClickExport()
 {
   const result = editor.export(undefined, false, 2)
-  console.warn('EXPORT:', result)
+  console.group('<= EXPORT =>')
+  console.warn(result)
+  console.groupEnd()
 }
-
-function onClickSelectNode()
-{
-  // TODO: 메서드 없어졌으니 다른 방법으로 해결하기
-  const node = editor.getNode('li.root')
-  console.warn('SELECT NODE:', node)
-  editor.import(node, { goo: 'se' }, false)
-}
-
-onMounted(() => {
-  editor = $editor.value.core()
-})
 </script>
 
 <style src="./app.scss" scoped></style>

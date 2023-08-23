@@ -1,6 +1,5 @@
-import { checkData } from './json-editor/libs/util.js'
-import Core from './json-editor/core.js'
-import css from './json-editor/assets/main.scss?inline'
+import Core from '@json-editor/index.js'
+import css from '@json-editor/assets/main.scss?inline'
 
 class JsonEditor extends HTMLElement {
 
@@ -16,7 +15,6 @@ class JsonEditor extends HTMLElement {
     this.shadowRoot.adoptedStyleSheets = [ style ]
     this.root = this.shadowRoot.childNodes[0]
     this.ready = false
-    this.data = {}
     this.options = {
       live: false,
       theme: 'system', // system,light,dark
@@ -38,26 +36,19 @@ class JsonEditor extends HTMLElement {
   }
 
   /**
-   * 속성값이 변경됐을때 호출되는 영역
+   * change attributes
    */
   attributeChangedCallback(name, oldValue, newValue)
   {
     if (oldValue === newValue) return
     switch (name)
     {
-      case 'src':
-        this.data = checkData(newValue)
-        if (this.core)
-        {
-          this.core.replace(this.data, false)
-        }
-        break
       case 'theme':
         this.options.theme = newValue
         if (this.core) this.core.options.theme = this.options.theme
         break
       case 'live':
-        this.options.live = [ 'true', '1' ].indexOf(newValue) > -1
+        this.options.live = [ 'true', '1' ].includes(newValue)
         if (this.core) this.core.options.live = this.options.live
         break
     }
@@ -69,9 +60,9 @@ class JsonEditor extends HTMLElement {
   connectedCallback()
   {
     this.core = new Core(this.root, this.options)
-    this.core.replace(this.data, true)
+    this.core.replace(JSON.parse(this.props.src), false)
     this.core.preview = (src) => {
-      this.data = src
+      this.setAttribute('src', JSON.stringify(src))
       this.#event('update', { data: src })
     }
   }
@@ -81,7 +72,6 @@ class JsonEditor extends HTMLElement {
    */
   disconnectedCallback()
   {
-    console.warn('disconnectedCallback()')
     // destroy core
     if (!this.core) return
     this.core.destroy()
@@ -95,6 +85,16 @@ class JsonEditor extends HTMLElement {
     this.dispatchEvent(new CustomEvent(name, {
       detail: src,
     }))
+  }
+
+  /**
+   * change src
+   * @param {object|array} src
+   */
+  change(src)
+  {
+    this.setAttribute('src', JSON.stringify(src))
+    this.core.replace(src, true)
   }
 
 }

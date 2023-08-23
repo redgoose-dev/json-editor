@@ -68,7 +68,7 @@
   }
   &[type=number] {
     border: none;
-    width: 120px;
+    width: 160px;
     &::-webkit-outer-spin-button,
     &::-webkit-inner-spin-button {
       appearance: none;
@@ -249,6 +249,8 @@
       font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
     }
     > .value {
+      position: relative;
+      flex: 1;
       display: flex;
       align-items: center;
       gap: 0 6px;
