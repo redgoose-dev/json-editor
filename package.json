@@ -1,27 +1,59 @@
 {
-  "name": "json-editor",
-  "author": "redgoose",
-  "version": "0.5.1",
-  "description": "easy editing json data",
-  "keywords": [
-    "json",
-    "editor"
-  ],
+  "name": "@redgoose/json-editor",
+  "description": "Easy editing JSON data",
+  "author": "redgoose <scripter@me.com>",
+  "version": "1.0.0",
+  "keywords": [ "json", "editor", "library", "tool" ],
   "license": "MIT",
+  "main": "./lib/json-editor.js",
+  "types": "./lib/json-editor.d.ts",
+  "files": [ "lib" ],
+  "exports": {
+    ".": {
+      "module": "./lib/json-editor.js",
+      "default": "./lib/json-editor.js",
+      "types": "./lib/json-editor.d.ts"
+    },
+    "./css": "./lib/json-editor.css",
+    "./wc": "./lib/json-editor.wc.js",
+    "./vue": "./lib/json-editor.vue.js",
+    "./react": "./lib/json-editor.react.js",
+    "./svelte": "./lib/json-editor.svelte.js",
+    "./lib/*": "./lib/*"
+  },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RedgooseDev/JSONEditor.git"
-  },
-  "dependencies": {},
-  "devDependencies": {
-    "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.0",
-    "gulp-sass": "^2.3.2",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "^1.5.4"
+    "url": "git+https://github.com/redgoose-dev/json-editor.git"
   },
   "bugs": {
-    "url": "https://github.com/RedgooseDev/JSONEditor/issues"
+    "url": "https://github.com/redgoose-dev/json-editor/issues"
   },
-  "homepage": "http://projects.redgoose.me/2014/JSONEditor/"
+  "homepage": "https://redgoose-dev.github.io/json-editor",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --config vite.config/dev.js",
+    "docs": "vite --config vite.config/docs.js",
+    "prebuild": "rm -rf docs && rm -rf lib",
+    "build": "node vite.config/lib.js"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^2.4.4",
+    "cash-dom": "^8.1.5",
+    "feather-icons": "^4.29.0",
+    "sass": "^1.64.2",
+    "svelte": "^4.1.2",
+    "vite": "^4.4.8"
+  }
 }

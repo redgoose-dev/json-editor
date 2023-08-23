@@ -1,0 +1,74 @@
+@use '../../assets/scss/mixins';
+
+.about {
+  display: grid;
+  place-content: center;
+  height: 100%;
+  &__wrap {
+    padding: 60px;
+    box-sizing: border-box;
+  }
+  &__logo {
+    display: grid;
+    gap: 32px;
+    place-content: center;
+    margin: 0;
+    .symbol {
+      display: block;
+      width: 150px;
+      margin: 0 auto;
+      --logo-symbol-wdith: 100%;
+    }
+    .label {
+      display: block;
+      width: 240px;
+      margin: 0 auto;
+      --logo-label-wdith: 100%;
+    }
+  }
+  &__description {
+    margin: 54px 0 0;
+    font-size: 15px;
+    line-height: 1.42;
+  }
+  &__information {}
+  @include mixins.responsive(mobile) {
+    &__wrap {
+      padding: 32px;
+      max-width: 540px;
+    }
+    &__logo {
+      gap: 24px;
+      .symbol {
+        width: 100px;
+      }
+      .label {
+        width: 180px;
+      }
+    }
+  }
+}
+
+.information {
+  margin: 30px 0 0;
+  h2 {
+    margin: 0;
+    font-size: 20px;
+    line-height: 1.15;
+  }
+  ul {
+    display: grid;
+    gap: 2px;
+    margin: 12px 0 0;
+    padding: 0 0 0 18px;
+    font-size: 15px;
+    line-height: 1.42;
+  }
+}
+@include mixins.dark-mode() {
+  .information {
+    ul {
+      li {}
+    }
+  }
+}

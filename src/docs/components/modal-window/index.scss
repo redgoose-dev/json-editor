@@ -1,0 +1,89 @@
+@use '../../assets/scss/mixins';
+
+.modal {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: grid;
+  place-content: center;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: hsla(0 0% 100% / 75%);
+  cursor: zoom-out;
+  @include mixins.background-blur(8px);
+  &__wrap {
+    width: var(--modal-width, 640px);
+    min-width: var(--modal-min-width);
+    max-width: var(--modal-max-width);
+    height: var(--modal-height, 480px);
+    min-height: var(--modal-min-height);
+    max-height: var(--modal-max-height);
+    position: relative;
+    box-sizing: border-box;
+    background: hsl(0 0% 100%);
+    border-radius: 8px;
+    cursor: default;
+    padding: 0;
+    margin: 0 auto;
+    box-shadow:
+      0 1px 3px 0 hsla(0 0% 0% / 4%),
+      0 3px 8px 0 hsla(0 0% 0% / 6%),
+      0 6px 16px 0 hsla(0 0% 0% / 8%),
+      0 12px 32px 0 hsla(0 0% 0% / 10%),
+      0 32px 86px 0 hsla(0 0% 0% / 14%);
+  }
+  &__close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    display: grid;
+    place-content: center;
+    margin: -6px;
+    padding: 6px;
+    font-size: 0;
+    cursor: pointer;
+    background: none;
+    border: none;
+    transition: opacity 120ms ease-out;
+    border-radius: 4px;
+    -webkit-tap-highlight-color: transparent;
+    --icon-size: 24px;
+    --icon-color: var(--color-base);
+    --icon-stroke: 2px;
+    &:focus-visible {
+      outline: 2px solid var(--color-key);
+      outline-offset: -2px;
+    }
+    &:active {
+      opacity: .5;
+    }
+  }
+  @include mixins.responsive(mobile) {
+    display: block;
+    padding: 0;
+    background: none;
+    cursor: auto;
+    &__wrap {
+      --modal-width: 100%;
+      --modal-min-width: auto;
+      --modal-max-width: none;
+      --modal-height: 100%;
+      --modal-min-height: auto;
+      --modal-max-height: none;
+      border-radius: 0;
+      box-shadow: none;
+    }
+  }
+}
+
+@include mixins.dark-mode() {
+  .modal {
+    background: hsla(0 0% 6% / 75%);
+    &__wrap {
+      background: hsl(0 0% 16%);
+    }
+  }
+}

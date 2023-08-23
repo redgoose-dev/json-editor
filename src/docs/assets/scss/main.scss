@@ -1,0 +1,94 @@
+@use 'mixins';
+@import 'normalize';
+
+:root {
+  --color-bg-hsl: 0 0% 100%;
+  --color-base-hsl: 0 0% 13.5%;
+  --color-key-hsl: 168 82% 42%;
+  --color-blur-hsl: 0 0% 52%;
+  --color-invert-hsl: 0 0% 100%;
+  --color-bg: hsl(var(--color-bg-hsl));
+  --color-base: hsl(var(--color-base-hsl));
+  --color-key: hsl(var(--color-key-hsl));
+  --color-blur: hsl(var(--color-blur-hsl));
+  --color-invert: hsl(var(--color-invert-hsl));
+  --font-base: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  --layout-header-height: 44px;
+  --layout-min-width: 640px;
+  color-scheme: light;
+  @include mixins.dark-mode('root') {
+    color-scheme: dark;
+    --color-bg-hsl: 0 0% 13%;
+    --color-base-hsl: 0 0% 94%;
+    --color-key-hsl: 172 92% 40%;
+    --color-blur-hsl: 0 0% 64%;
+    --color-invert-hsl: 0 0% 0%;
+  }
+}
+
+html, body {
+  -webkit-text-size-adjust: none;
+  box-sizing: border-box;
+  text-size-adjust: none;
+}
+html {
+  touch-action: manipulation;
+}
+body {
+  margin: 0;
+  min-width: var(--layout-min-width);
+  background: var(--color-bg);
+  font-size: 16px;
+  line-height: 1.52;
+  color: var(--color-base);
+  box-sizing: border-box;
+}
+body, button, input, textarea, select {
+  font-family: var(--font-base);
+}
+main {
+  box-sizing: border-box;
+}
+a {
+  color: var(--color-key);
+}
+::selection {
+  background: var(--color-key);
+  color: hsl(0 0% 100%);
+}
+
+.opened-modal {
+  overflow: hidden;
+  body {
+    overflow: hidden;
+  }
+}
+
+.scroll-area {
+  overflow: auto;
+  --scroll-size: 15px;
+  --scroll-padding: 5px;
+  --scroll-track: hsl(0 0% 65%);
+  --scroll-track-hover: hsl(0 0% 45%);
+  --scroll-bg: hsla(0 0% 100% / 0%);
+  &::-webkit-scrollbar {
+    width: var(--scroll-size);
+  }
+  &::-webkit-scrollbar-thumb {
+    border: var(--scroll-padding) solid hsla(0 0% 100% / 0%);
+    background-clip: padding-box;
+    border-radius: 9999px;
+    background-color: var(--scroll-track);
+    &:hover {
+      background-color: var(--scroll-track-hover);
+    }
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--scroll-bg);
+  }
+  @include mixins.dark-mode('global') {
+    --scroll-track: hsl(0 0% 72%);
+    --scroll-track-hover: hsl(0 0% 52%);
+  }
+}

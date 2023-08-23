@@ -3,10 +3,12 @@
 .vscode/
 node_modules/
 dist/
+packages/
 
 # files
 .DS_Store
 yarn.lock
 package-lock.json
 bun.lockb
+.env
 .env.local

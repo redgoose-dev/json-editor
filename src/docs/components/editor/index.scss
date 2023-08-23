@@ -1,0 +1,8 @@
+.editor {
+  padding: 24px 24px 48px;
+  box-sizing: border-box;
+  background: var(--color-bg);
+  &__body {
+    min-width: 360px;
+  }
+}

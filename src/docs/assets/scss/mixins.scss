@@ -1,0 +1,75 @@
+// dark mode
+@mixin dark-mode($mode: '')
+{
+  @if ($mode == 'root')
+  {
+    &[data-theme=dark] {
+      @content;
+    }
+    &[data-theme=system],
+    &:not([data-theme]),
+    &[data-theme=""] {
+      @media (prefers-color-scheme: dark) {
+        @content;
+      }
+    }
+  }
+  @else if ($mode == 'global')
+  {
+    html[data-theme=dark] & {
+      @content;
+    }
+    @media (prefers-color-scheme: dark) {
+      html[data-theme=system] &,
+      html:not([data-theme]) &,
+      html[data-theme=""] & {
+        @content;
+      }
+    }
+  }
+  @else
+  {
+    :global(html[data-theme=dark]) {
+      & {
+        @content;
+      }
+    }
+    @media (prefers-color-scheme: dark) {
+      :global(html[data-theme=system]),
+      :global(html:not([data-theme])),
+      :global(html[data-theme=""]) {
+        & {
+          @content;
+        }
+      }
+    }
+  }
+}
+
+// background blur
+@mixin background-blur($size: 8px)
+{
+  @supports (backdrop-filter: blur(#{$size})) or (-webkit-backdrop-filter: blur(#{$size})) {
+    backdrop-filter: blur(#{$size});
+    -webkit-backdrop-filter: blur(#{$size});
+    @content;
+  }
+}
+
+// hover
+@mixin hover()
+{
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+// responsive
+@mixin responsive($range)
+{
+  @if ($range == mobile) { @media (max-width: 768px) { @content; } }
+  //@else if ($range == desktop) { @media (min-width: 1024px) { @content; } }
+  //@else if ($range == desktop-large) { @media (min-width: 1440px) { @content; } }
+}

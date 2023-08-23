@@ -1,0 +1,14 @@
+// dark mode
+@mixin dark-mode($root: false)
+{
+  &[data-theme=dark] {
+    @content;
+  }
+  &[data-theme=system],
+  &:not([data-theme]),
+  &[data-theme=""] {
+    @media (prefers-color-scheme: dark) {
+      @content;
+    }
+  }
+}

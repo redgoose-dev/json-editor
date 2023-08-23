@@ -1,0 +1,102 @@
+@use '../../assets/scss/mixins';
+
+.header {
+  height: var(--layout-header-height);
+  background: hsl(0 0% 100% / 75%);
+  box-shadow:
+    0 2px 16px hsla(0 0% 0% / 20%),
+    0 1px 0 0 hsla(0 0% 0% / 8%);
+  @include mixins.background-blur(16px);
+  &__wrap {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    height: 100%;
+  }
+  &__logo {
+    display: grid;
+    place-content: center;
+    margin: 0 0 0 8px;
+    width: 60px;
+    --logo-symbol-wdith: 36px;
+  }
+  &__body {}
+}
+@include mixins.dark-mode() {
+  .header {
+    background: hsl(0 0% 0% / 75%);
+    box-shadow:
+      0 2px 16px hsla(0 0% 0% / 32%),
+      0 1px 0 0 hsla(0 0% 100% / 6%);
+  }
+}
+
+.gnb {
+  @mixin active-sub-menu() {
+    background-color: var(--gnb-menu-color-active, hsl(0 0% 92%));
+    .gnb__sub {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  height: 100%;
+  gap: 0;
+  &__item {
+    position: relative;
+    transition: background-color 120ms ease-out;
+    &:focus-within {
+      @include active-sub-menu();
+    }
+    &.on {
+      @include active-sub-menu();
+    }
+  }
+  &__button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 0 12px;
+    height: 100%;
+    box-sizing: border-box;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: opacity 120ms ease-out;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    &[type=button] {
+      border: none;
+      border-radius: 0;
+      background: none;
+      &:active {
+        opacity: .5;
+      }
+      &:focus-visible {
+        outline: 2px solid var(--color-key);
+        outline-offset: -2px;
+      }
+    }
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        opacity: .5;
+      }
+    }
+  }
+  &__sub {
+    position: absolute;
+    z-index: 3;
+    left: -10px;
+    top: calc(100% - 4px);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 160ms ease-out;
+  }
+}
+@include mixins.dark-mode() {
+  .gnb {
+    --gnb-menu-color-active: hsl(0 0% 16%);
+  }
+}
