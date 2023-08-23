@@ -58,7 +58,7 @@ jsonEditor.addEventListener('update', e => {
 ```
 
 
-## Access core
+## Access core instance
 
 에디터 코어 메서드나 요소에 접근하여 기능을 사용할 수 있습니다.
 

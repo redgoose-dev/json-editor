@@ -64,7 +64,7 @@ function onUpdate(_src)
 </script>
 ```
 
-## Access core
+## Access core instance
 
 에디터 코어값을 가져와서 조작할 수 있습니다. 다음 예제를 참고해주세요.
 
