@@ -52,15 +52,19 @@ class Context {
     this.el.dialog.on('click', e => e.stopPropagation())
     this.el.dialog.find('button').on('click', e => this.#onClickItem(e))
     // custom context
-    this.#parent.customContext(this.el.dialog.get(0), {
-      node: this.el.node.get(0),
-      type: this.#type,
-      isRoot,
-    }, $)
+    this.#parent.el.wrap.get(0).dispatchEvent(new CustomEvent('context', {
+      detail: {
+        body: this.el.dialog.get(0),
+        node: this.el.node.get(0),
+        type: this.#type,
+        isRoot,
+        $,
+      },
+    }))
     // append
     this.el.type.append(this.el.dialog)
     // set events
-    $('body').on(CONTEXT_EVENT.CLICK, e => this.close(e))
+    $(window).on(CONTEXT_EVENT.CLICK, e => this.close(e))
     $(window).on(CONTEXT_EVENT.KEYUP, e => this.#onKeyupWindow(e))
   }
 
@@ -178,7 +182,7 @@ class Context {
   {
     this.el.type.removeClass('open')
     this.el.dialog.remove()
-    $('body').off(CONTEXT_EVENT.CLICK)
+    $(window).off(CONTEXT_EVENT.CLICK)
     $(window).off(CONTEXT_EVENT.KEYUP)
     delete this.#parent.context
   }

@@ -178,13 +178,12 @@ class JsonEditorCore {
     }
   }
 
-  #update()
+  #updateTick()
   {
     if (!this.options.live) return
-    if (this.preview && typeof this.preview === 'function')
-    {
-      this.preview(this.#output())
-    }
+    this.el.wrap.get(0).dispatchEvent(new CustomEvent('update', {
+      detail: this.#output(),
+    }))
   }
 
   #output($node)
@@ -319,7 +318,7 @@ class JsonEditorCore {
         $this
           .data('value', newValue)
           .find('i').text(newValue.toString().toUpperCase())
-        this.#update()
+        this.#updateTick()
       })
     }
   }
@@ -331,7 +330,7 @@ class JsonEditorCore {
   {
     if (this.#changeInput)
     {
-      this.#update()
+      this.#updateTick()
       this.#changeInput = false
     }
   }
@@ -418,7 +417,7 @@ class JsonEditorCore {
     // clear properties
     this.#drag = undefined
     // call update
-    this.#update()
+    this.#updateTick()
   }
 
   /**
@@ -457,7 +456,7 @@ class JsonEditorCore {
         callback($node.get(0), data.value)
       }
     }
-    if (useUpdate) this.#update()
+    if (useUpdate) this.#updateTick()
   }
 
   /**
@@ -471,7 +470,7 @@ class JsonEditorCore {
     const $parentNode = $node.parent().closest('.node')
     $node.remove()
     this.#setNodeCount($parentNode)
-    if (useUpdate) this.#update()
+    if (useUpdate) this.#updateTick()
   }
 
   /**
@@ -504,7 +503,7 @@ class JsonEditorCore {
     this.#setResourceFromNode($node, src)
     this.#setEventFromNode($node)
     $node.attr('data-type', type)
-    if (useUpdate) this.#update()
+    if (useUpdate) this.#updateTick()
   }
 
   /**
@@ -519,7 +518,7 @@ class JsonEditorCore {
     this.#setEventFromNode($node)
     $target.after($node)
     this.#setNodeCount($target.parent().closest('.node'))
-    if (useUpdate) this.#update()
+    if (useUpdate) this.#updateTick()
   }
 
   /**
@@ -549,7 +548,7 @@ class JsonEditorCore {
     if (!this.el.tree) return
     this.el.body.empty()
     this.replace({}, false)
-    this.#update()
+    this.#updateTick()
   }
 
   destroy()
@@ -572,7 +571,7 @@ class JsonEditorCore {
     data = checkData(data)
     const $item = this.#createRoot(data)
     this.import($item, data, false, false)
-    if (useUpdate) this.#update()
+    if (useUpdate) this.#updateTick()
   }
 
   /**
@@ -594,7 +593,7 @@ class JsonEditorCore {
       this.addNode($target, data, options, false, false)
     })
     if (useUpdateCount) this.#setNodeCount($target)
-    if (useUpdate) this.#update()
+    if (useUpdate) this.#updateTick()
   }
 
   /**
@@ -619,16 +618,6 @@ class JsonEditorCore {
       return data
     }
   }
-
-  /**
-   * preview
-   * @param {array|object} src
-   */
-  preview(src)
-  {}
-
-  customContext(body, { node, type, isRoot }, $)
-  {}
 
 }
 

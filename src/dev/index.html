@@ -3,10 +3,43 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width"/>
-<title>JSON Editor DEV</title>
+<title>@json-editor / development</title>
 <script type="module" src="./main.js"></script>
 </head>
-<body ontouchstart="">
-<main id="app"></main>
+<body>
+<main class="layout">
+  <header class="header">
+    <h1 class="header__title">json-editor / #DEV</h1>
+    <nav id="gnb" class="header__gnb">
+      <menu>
+        <li><button type="button" data-action="theme-system">system</button></li>
+        <li><button type="button" data-action="theme-light">light</button></li>
+        <li><button type="button" data-action="theme-dark">dark</button></li>
+      </menu>
+      <menu>
+        <li><button type="button" data-action="clear">Clear</button></li>
+        <li><button type="button" data-action="random-pick">Random Pick</button></li>
+        <li><button type="button" data-action="export">Export</button></li>
+      </menu>
+      <menu>
+        <li><button type="button" data-action="preview">Preview</button></li>
+      </menu>
+    </nav>
+  </header>
+  <div class="container">
+    <article class="editor">
+      <header class="content-header editor__header">
+        <h1>Editor</h1>
+      </header>
+      <div id="editor" class="editor__body"></div>
+    </article>
+    <article class="preview">
+      <header class="content-header preview__header">
+        <h1>Preview</h1>
+      </header>
+      <pre id="preview" class="preview__body"></pre>
+    </article>
+  </div>
+</main>
 </body>
 </html>

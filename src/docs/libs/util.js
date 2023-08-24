@@ -7,15 +7,6 @@ export function selectText(element)
   selection.addRange(range)
 }
 
-export function copyClipboard(text)
-{
-  return new Promise((resolve, reject) => {
-    navigator.clipboard.writeText(text)
-      .then(resolve)
-      .catch(reject)
-  })
-}
-
 export function saveFileText(src, filename = 'data.json')
 {
   const blob = new Blob([src], { type: 'application/json' })
@@ -60,6 +51,19 @@ export function pureObject(src)
     return JSON.parse(JSON.stringify(src))
   }
   catch(_)
+  {
+    return null
+  }
+}
+
+export async function getRandomApi()
+{
+  try
+  {
+    const res = await fetch('https://random-data-api.com/api/v2/beers')
+    return await res.json()
+  }
+  catch (e)
   {
     return null
   }

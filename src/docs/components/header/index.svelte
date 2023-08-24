@@ -18,11 +18,10 @@
           <div class="gnb__sub">
             <SubMenu
               items={[
-                { key: 'new', label: 'New', icon: 'file' },
+                { key: 'new', label: 'Clear', icon: 'file' },
                 { key: 'import', label: 'Import', icon: 'download' },
                 { key: 'export', label: 'Export', icon: 'upload' },
-                _useClipboard && { key: 'clipboard', label: 'Copy Clipboard', icon: 'copy' },
-              ].filter(Boolean)}
+              ]}
               on:select={e => selectMenuItem('data', e)}/>
           </div>
         </li>
@@ -111,8 +110,6 @@ const dispatch = createEventDispatcher()
 
 let focusMenuItem
 
-$: _useClipboard = window.isSecureContext
-
 function selectMenuItem(main, e)
 {
   let sub
@@ -138,10 +135,10 @@ function deselect()
 }
 
 onMount(() => {
-  document.body.addEventListener('click', deselect)
+  window.addEventListener('click', deselect)
 })
 onDestroy(() => {
-  document.body.removeEventListener('click', deselect)
+  window.removeEventListener('click', deselect)
 })
 </script>
 

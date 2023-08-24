@@ -53,11 +53,12 @@
 {/if}
 
 <script>
+import { onMount } from 'svelte'
 import { fade } from 'svelte/transition'
 import { cubicInOut } from 'svelte/easing'
 import { visiblePreview, visibleAbout } from './store/visible.js'
 import { theme, source } from './store/service.js'
-import { copyClipboard } from './libs/util.js'
+import { getRandomApi } from './libs/util.js'
 import Header from './components/header/index.svelte'
 import Editor from './components/editor/index.svelte'
 import Preview from './components/preview/index.svelte'
@@ -81,7 +82,7 @@ function menuRouting(e)
       switch (sub)
       {
         case 'new':
-          editor.replace({})
+          editor.clear()
           break
         case 'import':
           dataImport.source = ''
@@ -92,17 +93,6 @@ function menuRouting(e)
           dataExport.source = Object.assign({}, $source)
           dataExport.node = undefined
           dataExport.visible = true
-          break
-        case 'clipboard':
-          try
-          {
-            copyClipboard(JSON.stringify($source, null, 2))
-              .then(() => alert('Success copy clipboard.'))
-          }
-          catch (e)
-          {
-            alert('Failed copy clipboard.')
-          }
           break
       }
       break
@@ -177,6 +167,14 @@ function onUpdateEditor(e)
   const { src } = e.detail
   // console.log('onUpdateEditor() in app.svelte', src)
 }
+
+onMount(async () => {
+  if (!source.existStorageData())
+  {
+    const json = await getRandomApi()
+    if (json) editor.replace(json)
+  }
+})
 </script>
 
 <style lang="scss">

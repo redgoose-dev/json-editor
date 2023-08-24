@@ -38,6 +38,6 @@ export let dropdown = false
   margin: 0 -4px 0 -2px;
   --icon-size: 16px;
   --icon-stroke: 2;
-  --icon-color: var(--color-blur);
+  --icon-color: var(--color-base);
 }
 </style>

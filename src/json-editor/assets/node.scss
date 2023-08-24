@@ -48,7 +48,7 @@
   min-width: var(--label-min-width, unset);
   min-height: 24px;
   outline: none;
-  font-size: var(--json-editor-font-size);
+  font-size: 13px;
   color: var(--json-editor-color-base);
   line-height: 1.42;
   box-sizing: border-box;
@@ -82,7 +82,7 @@
   font-style: normal;
   letter-spacing: -.5px;
   user-select: none;
-  font-size: var(--json-editor-font-size);
+  font-size: 13px;
 }
 .label-switch {
   --switch-width: 36px;
@@ -254,7 +254,7 @@
       display: flex;
       align-items: center;
       gap: 0 6px;
-      font-size: var(--json-editor-font-size);
+      font-size: 13px;
       line-height: 1.42;
       --label-min-width: 78px;
       &:before {

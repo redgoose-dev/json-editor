@@ -5,10 +5,7 @@
 <script>
 import { onMount, onDestroy, createEventDispatcher } from 'svelte'
 import { source, theme } from '../../store/service.js'
-import JsonEditor from '../../../lib.js'
-
-JsonEditor.prototype.preview = updateSource
-JsonEditor.prototype.customContext = customContext
+import JsonEditor from '../../../json-editor/exports.js'
 
 const dispatch = createEventDispatcher()
 let _editor
@@ -19,14 +16,13 @@ theme.subscribe(value => {
   editor.options.theme = value
 })
 
-function updateSource(src)
+function updateSource({ detail })
 {
-  console.log('qweqwe')
-  source.update(src)
-  dispatch('update', { src })
+  source.update(detail)
+  dispatch('update', { src: detail })
 }
 
-function customContext(body, { node, type, isRoot }, $)
+function customContext({ detail: { body, node, type, isRoot, $ } })
 {
   if (![ 'object', 'array' ].includes(type)) return
   const menuItems = [
@@ -59,6 +55,8 @@ onMount(() => {
     theme: $theme,
   })
   editor.replace($source, false)
+  _editor.addEventListener('update', updateSource)
+  _editor.addEventListener('context', customContext)
   dispatch('init', { instance: editor })
 })
 

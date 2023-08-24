@@ -1,0 +1,37 @@
+:root {
+  --dev-color-bg: hsl(200 5% 92%);
+  --dev-color-base: hsl(0 0% 10%);
+  --dev-color-key: hsl(175 92% 40%);
+  --dev-color-white: hsl(0 0% 100%);
+  --font-base: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --font-code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  color-scheme: light;
+}
+
+html, body {
+  -webkit-text-size-adjust: none;
+  box-sizing: border-box;
+  text-size-adjust: none;
+}
+html {
+  touch-action: manipulation;
+}
+body {
+  margin: 0;
+  padding: 0 42px;
+  background: var(--dev-color-bg);
+  font-size: 16px;
+  line-height: 1.62;
+  color: var(--dev-color-base);
+  box-sizing: border-box;
+}
+body, button {
+  font-family: var(--font-base);
+}
+a {
+  color: var(--dev-color-key);
+}
+::selection {
+  background: var(--dev-color-key);
+  color: hsl(0 0% 100%);
+}

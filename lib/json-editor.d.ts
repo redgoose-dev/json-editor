@@ -7,7 +7,7 @@ declare module 'json-editor' {
   type typeData = any[] | object
   type typeAddNodeOptions = {
     open?: boolean
-    callback?: function
+    callback?: Function
   }
   type typeNames = 'object' | 'array' | 'string' | 'number' | 'boolean' | 'null'
   type typeCustomContextOptions = {
@@ -23,7 +23,7 @@ declare module 'json-editor' {
     // class units
     constructor(wrap: HTMLElement, options?: typeOptions)
     // public methods
-    addNode(target: HTMLElement, data: typeData, options?: typeAddNodeOptions, useUpdate?: boolean): void
+    addNode(target: HTMLElement, data: typeData, options?: typeAddNodeOptions, useUpdate?: boolean, useUpdateCount?: boolean): void
     removeNode(node: HTMLElement, useUpdate?: boolean): void
     changeType(node: HTMLElement, type: typeNames, useUpdate?: boolean): void
     duplicate(target: HTMLElement, useUpdate?: boolean): void
@@ -33,7 +33,7 @@ declare module 'json-editor' {
     replace(data: typeData, useUpdate?: boolean): void
     import(target: HTMLElement, data: typeData, useUpdate?: boolean): void
     export(node: HTMLElement, json?: boolean, space?: number): any[]|object
-    preview(src?: typeData): void
+    update(src?: typeData): void
     customContext(body?: HTMLElement, options?: typeCustomContextOptions, $?: unknown): void
   }
 

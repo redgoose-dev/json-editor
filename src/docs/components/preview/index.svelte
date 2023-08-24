@@ -1,6 +1,4 @@
-<article
-  class="preview"
-  class:preview--fold={$foldPreview}>
+<article class="preview">
   <div class="preview__wrap">
     <header class="preview__header">
       <h1>
@@ -8,17 +6,14 @@
         <span>Preview</span>
       </h1>
     </header>
-    {#if !$foldPreview}
-      <div class="preview__body scroll-area">
-        <pre>{_data}</pre>
-      </div>
-    {/if}
+    <div class="preview__body scroll-area">
+      <pre>{_data}</pre>
+    </div>
   </div>
 </article>
 
 <script>
 import { source } from '../../store/service.js'
-import { foldPreview } from '../../store/visible.js'
 import Icon from '../assets/icon.svelte'
 
 $: _data = JSON.stringify($source, null, 2)

@@ -2,7 +2,7 @@
 
 .preview {
   --preview-padding: 24px;
-  --preview-header-height: 36px;
+  --preview-header-height: 26px;
   position: fixed;
   top: var(--layout-header-height);
   right: 0;
@@ -22,31 +22,31 @@
     box-shadow:
       0 0 0 1px hsla(0 0% 0% / 10%),
       0 4px 32px 0 hsla(0 0% 0% / 20%);
-    border-radius: 6px;
+    border-radius: 4px;
     overflow: hidden;
   }
   &__header {
     height: var(--preview-header-height);
     padding: 0 16px;
-    background: hsl(0 0% 60% / 85%);
+    background: hsl(0 0% 24%);
     user-select: none;
     h1 {
       display: flex;
       align-items: center;
       height: 100%;
-      gap: 8px;
+      gap: 4px;
       margin: 0;
-      font-size: 14px;
+      font-size: 12px;
       line-height: 1.05;
       color: hsl(0 0% 100%);
-      font-weight: 500;
-      --icon-size: 16px;
+      font-weight: 400;
+      --icon-size: 14px;
       --icon-color: hsl(0 0% 100%);
     }
   }
   &__body {
     flex: 1;
-    padding: 24px;
+    padding: 16px;
     box-sizing: border-box;
     background: hsla(0 0% 90% / 75%);
     pre {
@@ -66,14 +66,14 @@
   .preview {
     &__wrap {
       box-shadow:
-        0 0 0 1px hsla(0 0% 100% / 10%),
+        0 0 0 1px hsla(0 0% 5% / 100%),
         0 4px 32px 0 hsla(0 0% 0% / 25%);
     }
     &__body {
       background: hsla(0 0% 20% / 75%);
     }
     &__header {
-      background: hsl(0 0% 36%);
+      background: hsl(0 0% 5%);
     }
   }
 }

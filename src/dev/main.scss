@@ -1,97 +1,133 @@
-@use '../json-editor/assets/mixins';
+@import './assets/global';
 
-:root {
-  --dev-color-key: hsl(168 60% 58%);
-  --dev-padding: 16px;
+.layout {
+  margin: 0 auto;
+  max-width: 1400px;
 }
 
-body {
-  margin: 0;
-  padding: var(--dev-padding);
-}
-body, button, input {
-  font-family: 'Pretendard', 'Helvetica Neue', sans-serif;
-}
-
-.controller {
-  position: sticky;
-  z-index: 10;
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: -10px calc(var(--dev-padding) * -1) 0;
-  padding: 10px var(--dev-padding);
-  background: var(--dev-color-key);
-  &__wrap {
-    display: flex;
-    flex-wrap: wrap;
+.header {
+  text-align: center;
+  padding: 36px 0 0 0;
+  &__title {
     margin: 0;
-    gap: 4px 4px;
+    color: var(--dev-color-base);
+    font-size: 32px;
+    letter-spacing: -1px;
+    text-transform: uppercase;
+    font-weight: 900;
+    line-height: 1.05;
+    user-select: none;
   }
-  button {
-    display: block;
-    margin: 0;
-    padding: 0 12px;
-    box-sizing: border-box;
-    height: 26px;
-    background-color: hsl(0 0% 100%);
-    border: none;
-    font-size: 12px;
-    font-weight: 600;
-    font-family: 'Pretendard', 'Helvetica Neue', sans-serif;
-    cursor: pointer;
-    border-radius: 2px;
-    color: hsl(0 0% 0%);
-    &:disabled {
-      cursor: default;
-      color: var(--dev-color-key);
-    }
-    &:hover:not(:disabled),
-    &:active:not(:disabled) {
-      opacity: .85;
-    }
-  }
-  p {
+  &__gnb {
     display: flex;
-    margin: 0;
-    gap: 1px;
-    > * {
-      border-radius: 0;
-      &:first-child {
-        border-top-left-radius: 2px;
-        border-bottom-left-radius: 2px;
+    align-items: center;
+    justify-content: center;
+    gap: 4px 6px;
+    margin: 12px 0 0;
+    menu {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px 1px;
+    }
+    li {}
+    button {
+      display: block;
+      margin: 0;
+      padding: 0 12px;
+      height: 28px;
+      background: var(--dev-color-key);
+      font-size: 14px;
+      line-height: 1;
+      color: var(--dev-color-white);
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      &:active {
+        opacity: .5;
       }
-      &:last-child {
-        border-top-right-radius: 2px;
-        border-bottom-right-radius: 2px;
+      &:disabled {
+        opacity: .5;
+        cursor: default;
       }
     }
   }
 }
 
 .container {
-  margin: 16px 0 0;
-  padding: 24px;
-  box-sizing: border-box;
-  border-width: 2px;
-  border-style: dashed;
-  border-radius: 4px;
-  &.theme {
-    &--system {
-      background: #fff;
-      border-color: #ddd;
-      @media (prefers-color-scheme: dark) {
-        background: #333;
-        border-color: #333;
-      }
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin: 42px 0 0;
+  gap: 16px;
+  &.hide-preview {
+    grid-template-columns: 1fr;
+    .preview {
+      display: none;
     }
-    &--light {
-      background: #fff;
-      border-color: #ddd;
-    }
-    &--dark {
-      background: #000;
-      border-color: #000;
-    }
+  }
+}
+
+.editor {
+  --dev-editor-color-bg: #fff;
+  background: var(--dev-editor-color-bg);
+  @media (prefers-color-scheme: dark) {
+    --dev-editor-color-bg: #333;
+  }
+  &--light {
+    --dev-editor-color-bg: #fff;
+  }
+  &--dark {
+    --dev-editor-color-bg: #333;
+  }
+  &__header {
+    background: var(--dev-color-key);
+  }
+  &__body {
+    min-height: 120px;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+}
+
+.preview {
+  background: var(--dev-color-white);
+  &__header {
+    background: hsl(0 0% 24%);
+  }
+  &__body {
+    min-height: 120px;
+    padding: 16px;
+    box-sizing: border-box;
+    margin: 0;
+    font-size: 12px;
+    font-family: var(--font-code);
+    line-height: 1.6;
+  }
+}
+
+.editor,
+.preview {
+  border-radius: 2px;
+  box-shadow:
+    0 4.5px 3.6px rgba(0, 0, 0, 0.042),
+    0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 30.1px 24.1px rgba(0, 0, 0, 0.078),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+}
+
+.content-header {
+  margin: 0;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 2px;
+  h1 {
+    margin: 0;
+    padding: 4px 0 4px 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--dev-color-white);
+    line-height: 1;
   }
 }

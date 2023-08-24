@@ -2,8 +2,8 @@ import { writable } from 'svelte/store'
 import * as storage from '../libs/storage.js'
 
 export const visiblePreview = (() => {
-  const storageKey = 'preview'
-  const { subscribe, update } = writable(storage.get(storageKey) === 'true')
+  const storageKey = 'json-editor-preview'
+  const { subscribe, update } = writable(storage.get(storageKey) !== 'false')
   return {
     subscribe,
     change: newValue => update(value => {
@@ -13,6 +13,5 @@ export const visiblePreview = (() => {
     }),
   }
 })()
-export const foldPreview = writable(false)
 
 export const visibleAbout = writable(false)

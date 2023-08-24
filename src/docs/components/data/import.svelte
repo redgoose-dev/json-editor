@@ -34,19 +34,18 @@
             on:change={onChangeJsonUploader}>
           <Button
             type="button"
-            color="key"
             on:click={onClickUpload}>
             <Icon name="upload"/>
-            <span>Upload JSON File</span>
+            <span>JSON File</span>
+          </Button>
+          <Button
+            type="button"
+            on:click={onClickGetRandom}>
+            <Icon name="upload"/>
+            <span>Get random</span>
           </Button>
         </div>
         <div>
-          <Button
-            type="button"
-            on:click={() => dispatch('close')}>
-            <Icon name="x"/>
-            <span>Close</span>
-          </Button>
           <Button
             type="submit"
             color="key">
@@ -61,6 +60,7 @@
 
 <script>
 import { createEventDispatcher } from 'svelte'
+import { getRandomApi } from '../../libs/util.js'
 import Button from '../assets/button.svelte'
 import Icon from '../assets/icon.svelte'
 
@@ -107,6 +107,21 @@ function onChangeJsonUploader(e)
     target.value = ''
   }
   reader.readAsText(file)
+}
+
+async function onClickGetRandom()
+{
+  try
+  {
+    const json = await getRandomApi()
+    if (!json) throw new Error('There is no data.')
+    source = JSON.stringify(json, null, 2)
+  }
+  catch (e)
+  {
+    alert(e.message)
+    console.error(e)
+  }
 }
 
 function onSubmit()

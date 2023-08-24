@@ -15,11 +15,7 @@
       "types": "./lib/json-editor.d.ts"
     },
     "./css": "./lib/json-editor.css",
-    "./wc": "./lib/json-editor.wc.js",
-    "./vue": "./lib/json-editor.vue.js",
-    "./react": "./lib/json-editor.react.js",
-    "./svelte": "./lib/json-editor.svelte.js",
-    "./lib/*": "./lib/*"
+    "./umd": "./lib/json-editor.umd.cjs"
   },
   "repository": {
     "type": "git",
@@ -42,11 +38,6 @@
   ],
   "engines": {
     "node": ">=20"
-  },
-  "workspaces": {
-    "packages": [
-      "packages/*"
-    ]
   },
   "devDependencies": {
     "@sveltejs/vite-plugin-svelte": "^2.4.4",
