@@ -10,11 +10,6 @@ declare module 'json-editor' {
     callback?: Function
   }
   type typeNames = 'object' | 'array' | 'string' | 'number' | 'boolean' | 'null'
-  type typeCustomContextOptions = {
-    node?: HTMLElement,
-    type?: typeNames,
-    isRoot?: boolean,
-  }
 
   class JsonEditor {
     // properties
@@ -33,8 +28,6 @@ declare module 'json-editor' {
     replace(data: typeData, useUpdate?: boolean): void
     import(target: HTMLElement, data: typeData, useUpdate?: boolean): void
     export(node: HTMLElement, json?: boolean, space?: number): any[]|object
-    update(src?: typeData): void
-    customContext(body?: HTMLElement, options?: typeCustomContextOptions, $?: unknown): void
   }
 
   class Context {
