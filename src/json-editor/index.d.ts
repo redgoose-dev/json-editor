@@ -1,4 +1,4 @@
-declare module 'json-editor' {
+declare module '@redgoose/json-editor' {
 
   type typeOptions = {
     live?: boolean
