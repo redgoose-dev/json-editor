@@ -29,7 +29,7 @@ export let dropdown = false
   display: block;
   flex: 1;
   font-size: 14px;
-  font-weight: 700;
+  font-weight: 600;
   color: var(--color-base);
   line-height: 1;
 }

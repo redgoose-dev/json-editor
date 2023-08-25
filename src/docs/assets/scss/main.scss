@@ -34,6 +34,11 @@ html, body {
 }
 html {
   touch-action: manipulation;
+  &.transition-theme {
+    * {
+      transition: background-color 160ms ease-out;
+    }
+  }
 }
 body {
   margin: 0;

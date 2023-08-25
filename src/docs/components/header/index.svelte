@@ -49,41 +49,6 @@
               on:select={e => selectMenuItem('view', e)}/>
           </div>
         </li>
-        <li
-          class="gnb__item"
-          class:on={focusMenuItem === 'theme'}
-          on:click|stopPropagation>
-          <div
-            data-name="theme"
-            class="gnb__button"
-            on:click={onClickDropdown}>
-            <MenuItem icon="monitor" label="Theme" dropdown={true}/>
-          </div>
-          <div class="gnb__sub">
-            <SubMenu
-              items={[
-                {
-                  key: 'system',
-                  label: 'System',
-                  icon: 'droplet',
-                  active: $theme === 'system',
-                },
-                {
-                  key: 'light',
-                  label: 'Light',
-                  icon: 'sun',
-                  active: $theme === 'light',
-                },
-                {
-                  key: 'dark',
-                  label: 'Dark',
-                  icon: 'moon',
-                  active: $theme === 'dark',
-                },
-              ]}
-              on:select={e => selectMenuItem('theme', e)}/>
-          </div>
-        </li>
         <li class="gnb__item">
           <button
             type="button"
@@ -94,17 +59,19 @@
         </li>
       </menu>
     </nav>
+    <nav class="header__side">
+      <Theme/>
+    </nav>
   </div>
 </header>
 
 <script>
 import { createEventDispatcher, onMount, onDestroy } from 'svelte'
 import { visiblePreview } from '../../store/visible.js'
-import { theme } from '../../store/service.js'
 import LogoSymbol from '../assets/logo-symbol.svelte'
-import Icon from '../assets/icon.svelte'
 import MenuItem from './menu-item.svelte'
 import SubMenu from './sub-menu.svelte'
+import Theme from './theme.svelte'
 
 const dispatch = createEventDispatcher()
 
@@ -122,11 +89,6 @@ function onClickDropdown(e)
 {
   const { name } = e.currentTarget.dataset
   focusMenuItem = (focusMenuItem === name) ? undefined : name
-}
-
-function togglePreview()
-{
-  dispatch('select-menu', { main: 'view', sub: 'toggle-live-preview' })
 }
 
 function deselect()

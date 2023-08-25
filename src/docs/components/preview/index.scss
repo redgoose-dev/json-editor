@@ -1,7 +1,7 @@
 @use '../../assets/scss/mixins';
 
 .preview {
-  --preview-padding: 24px;
+  --preview-padding: 20px;
   --preview-header-height: 26px;
   position: fixed;
   top: var(--layout-header-height);

@@ -259,3 +259,12 @@ wrap.addEventListener('context', ({ detail: { body, node, type, isRoot, $ } }) =
 - `@redgoose/json-editor`: 코어 라이브러리
 - `@redgoose/json-editor/css`: 스타일시트
 - `@redgoose/json-editor/lib/umd`: 코어 라이브러리 UMD
+
+
+
+## Developing a wrapper.
+
+`JSON Editor` 에디터를 `web component`, `react`, `vue`, `svelte` 같은 환경에서 사용할 수 있도록 컴포넌트를 래핑할 수 있습니다.  
+그에대한 가이드를 위키로 따로 안내하겠습니다.
+
+// TODO: 위키작성 예정

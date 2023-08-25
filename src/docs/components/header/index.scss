@@ -20,6 +20,11 @@
     --logo-symbol-wdith: 36px;
   }
   &__body {}
+  &__side {
+    display: flex;
+    align-items: center;
+    padding: 0 20px 0 0;
+  }
 }
 @include mixins.dark-mode() {
   .header {
@@ -52,6 +57,13 @@
     }
     &.on {
       @include active-sub-menu();
+      .gnb__button {
+        @media (hover: hover) and (pointer: fine) {
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
     }
   }
   &__button {

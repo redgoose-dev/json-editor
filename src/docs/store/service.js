@@ -8,8 +8,8 @@ const storageKeyName = {
 
 export const theme = (() => {
   const $html = document.querySelector('html')
-  const defaultValue = storage.get(storageKeyName.theme) || $html.dataset.theme || 'system'
-  const values = [ 'system', 'light', 'dark' ]
+  const defaultValue = storage.get(storageKeyName.theme) || $html.dataset.theme || 'light'
+  const values = [ 'light', 'dark' ]
   const { subscribe, set, update } = writable(defaultValue)
   function updateHtmlClass(name)
   {
@@ -22,6 +22,9 @@ export const theme = (() => {
     change: newValue => update(value => {
       if (!values.includes(newValue)) return value
       if (value === newValue) return value
+      const html = document.querySelector('html')
+      html.classList.add('transition-theme')
+      setTimeout(() => html.classList.remove('transition-theme'), 160)
       updateHtmlClass(newValue)
       return newValue
     }),
