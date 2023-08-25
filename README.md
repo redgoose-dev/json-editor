@@ -10,13 +10,9 @@
 - 데스크탑
 - 큰 화면의 태블릿
 
+에디터가 어떻게 사용되는지 데모를 확인해볼 수 있습니다. 데모페이지에서 임시로 에디터로 사용할 수 있습니다.
 
-## Demo
-
-`JSON Editor`가 어떻게 사용되는지 데모를 확인해볼 수 있습니다.  
-데모페이지에서 임시로 에디터로 사용할 수 있습니다.
-
-> 링크: https://redgoose-dev.github.io/json-editor/
+> 데모링크: https://redgoose-dev.github.io/json-editor/
 
 
 ## Using
@@ -265,7 +261,7 @@ wrap.addEventListener('context', ({ detail: { body, node, type, isRoot, $ } }) =
 - `$`: 컴포넌트 내부에서 사용하는 [Cash](https://github.com/fabiospampinato/cash)를 이용하여 손쉽게 dom을 다룰 수 있습니다.
 
 
-## exports guide
+## Exports guide
 
 다음 경로를 참고하여 모듈들을 import 기능을 이용하는데 참고할 수 있습니다.
 
@@ -274,10 +270,12 @@ wrap.addEventListener('context', ({ detail: { body, node, type, isRoot, $ } }) =
 - `@redgoose/json-editor/lib/umd`: 코어 라이브러리 UMD
 
 
-
-## Developing a wrapper.
+## Developing a wrapper
 
 `JSON Editor` 에디터를 `web component`, `react`, `vue`, `svelte` 같은 환경에서 사용할 수 있도록 컴포넌트를 래핑할 수 있습니다.  
-그에대한 가이드를 위키로 따로 안내하겠습니다.
+다음 링크를 참고하여 개발할 수 있습니다.
 
-// TODO: 위키작성 예정
+- [web component](https://github.com/redgoose-dev/json-editor/wiki/web-component)
+- [react](https://github.com/redgoose-dev/json-editor/wiki/react-component)
+- [vue](https://github.com/redgoose-dev/json-editor/wiki/vue-component)
+- [svelte](https://github.com/redgoose-dev/json-editor/wiki/svelte-component)
