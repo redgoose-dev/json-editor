@@ -275,7 +275,7 @@ wrap.addEventListener('context', ({ detail: { body, node, type, isRoot, $ } }) =
 `JSON Editor` 에디터를 `web component`, `react`, `vue`, `svelte` 같은 환경에서 사용할 수 있도록 컴포넌트를 래핑할 수 있습니다.  
 다음 링크를 참고하여 개발할 수 있습니다.
 
-- [web component](https://github.com/redgoose-dev/json-editor/wiki/web-component)
-- [react](https://github.com/redgoose-dev/json-editor/wiki/react-component)
-- [vue](https://github.com/redgoose-dev/json-editor/wiki/vue-component)
-- [svelte](https://github.com/redgoose-dev/json-editor/wiki/svelte-component)
+- [web component](https://github.com/redgoose-dev/json-editor/wiki/json%E2%80%90editor-for-web-component)
+- [react](https://github.com/redgoose-dev/json-editor/wiki/json%E2%80%90editor-for-react)
+- [vue](https://github.com/redgoose-dev/json-editor/wiki/json%E2%80%90editor-for-vue)
+- [svelte](https://github.com/redgoose-dev/json-editor/wiki/json%E2%80%90editor-for-svelte)
