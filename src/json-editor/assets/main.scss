@@ -1,23 +1,54 @@
 @use 'mixins';
 
 .json-editor {
-  --json-editor-font-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-  --json-editor-color-base: hsl(0 0% 13%);
-  --json-editor-color-blur: hsl(0 0% 67%);
-  --json-editor-color-object: hsl(168 73% 43%);
-  --json-editor-color-array: hsl(191 75% 53%);
-  --json-editor-color-string: hsl(5 87% 59%);
-  --json-editor-color-number: hsl(33 89% 55%);
-  --json-editor-color-boolean: hsl(45 89% 54%);
-  --json-editor-color-null: hsl(0 0% 58%);
-  --json-editor-color-active: hsla(0 0% 0% / 6%);
-  --json-editor-color-focus: hsl(10, 95%, 54%);
-  --json-editor-color-error: hsl(0 96% 52%);
+  --font-base: var(--json-editor-font, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol');
+  --font-code: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
 
-  font-family: var(--json-editor-font-base);
-  color: var(--json-editor-color-base);
+  // basic colors
+  --color-base: var(--json-editor-color-base, hsl(0 0% 13%));
+  --color-input-empty: var(--json-editor-color-input-empty, hsl(0 0% 78%));
+  --color-input-hover: var(--json-editor-color-input-active, hsla(0 0% 0% / 6%));
+  --color-focus: var(--json-editor-color-focus, hsl(10, 95%, 54%));
+  --color-count: var(--json-editor-color-count, hsl(0 0% 67%));
+  --color-bullet: var(--json-editor-color-bullet, hsl(0 0% 13%));
+  --color-tree: var(--json-editor-color-tree, hsl(0 0% 67%));
+  --color-null: var(--json-editor-color-null, hsl(0 0% 72%));
+
+  // types
+  --object: var(--json-editor-object, hsl(168 73% 43%));
+  --array: var(--json-editor-array, hsl(191 75% 53%));
+  --string: var(--json-editor-string, hsl(5 87% 59%));
+  --number: var(--json-editor-number, hsl(33 89% 55%));
+  --boolean: var(--json-editor-boolean, hsl(45 89% 54%));
+  --null: var(--json-editor-null, hsl(0 0% 58%));
+
+  // drag
+  --color-drag-target-bg: var(--json-editor-color-drag-target-bg, hsla(0 0% 0% / 6%));
+  --color-drag-line: var(--json-editor-color-drag-line, hsl(0 0% 65%));
+
+  // switch
+  --switch-bg: var(--json-editor-switch-bg, hsla(0 0% 100% / 0%));
+  --switch-outline: var(--json-editor-switch-outline, hsl(0 0% 67%));
+  --switch-outline-active: var(--json-editor-switch-outline-active, hsla(0 0% 67% / 50%));
+  --switch-ball: var(--json-editor-switch-ball, hsl(0 0% 56%));
+  --switch-ball-active: var(--json-editor-switch-ball-active, hsl(0 0% 13%));
+
+  // context
+  --context-color-bg: var(--json-editor-context-color-bg, hsl(0 0% 100%));
+  --context-color-inner: var(--json-editor-context-color-inner, hsl(0 0% 88%));
+  --context-color-active: var(--json-editor-context-color-active, hsl(0 0% 92%));
+  --context-color-remove: var(--json-editor-context-color-remove, hsl(0 96% 52%));
+  --context-color-text: var(--json-editor-context-color-text, hsl(0 0% 13%));
+  --context-color-bullet: var(--json-editor-context-color-bullet, hsl(0 0% 13%));
+  --context-shadow: var(--json-editor-context-shadow, 0 4px 36px 0 hsla(0 0% 0% / 12%), 0 2px 12px 0 hsla(0 0% 0% / 20%), 0 0 0 1px hsla(0 0% 0% / 8%));
+  --context-radius: var(--json-editor-radius, 2px);
+
+  color: var(--color-base);
   font-size: 16px;
   line-height: 1.15;
+  &, button, input, select {
+    font-family: var(--font-base);
+  }
   > ul {
     position: relative;
     margin: -4px 0;
@@ -33,11 +64,34 @@
     }
   }
   @include mixins.dark-mode(true) {
-    --json-editor-color-base: hsl(0 0% 95%);
-    --json-editor-color-blur: hsl(0 0% 72%);
-    --json-editor-color-active: hsla(0 0% 100% / 15%);
-    --json-editor-color-error: hsl(0, 100%, 60%);
-    --json-editor-color-focus: hsl(161, 94%, 55%);
+    // basic colors
+    --color-base: var(--json-editor-color-base, hsl(0 0% 92%));
+    --color-input-empty: var(--json-editor-color-input-empty, hsl(0 0% 48%));
+    --color-input-hover: var(--json-editor-color-input-active, hsla(0 0% 100% / 12%));
+    --color-count: var(--json-editor-color-count, hsl(0 0% 56%));
+    --color-bullet: var(--json-editor-color-bullet, hsl(0 0% 92%));
+    --color-tree: var(--json-editor-color-tree, hsl(0 0% 42%));
+    --color-null: var(--json-editor-color-null, hsl(0 0% 48%));
+
+    // drag
+    --color-drag-target-bg: var(--json-editor-color-drag-target-bg, hsla(0 0% 100% / 8%));
+    --color-drag-line: var(--json-editor-color-drag-line, hsl(0 0% 75%));
+
+    // switch
+    --switch-bg: var(--json-editor-switch-bg, hsla(0 0% 0% / 0%));
+    --switch-outline: var(--json-editor-switch-outline, hsl(0 0% 78%));
+    --switch-outline-active: var(--json-editor-switch-outline-active, hsla(0 0% 62% / 50%));
+    --switch-ball: var(--json-editor-switch-ball, hsl(0 0% 54%));
+    --switch-ball-active: var(--json-editor-switch-ball-active, hsl(0 0% 100%));
+
+    // context
+    --context-color-bg: var(--json-editor-context-color-bg, hsl(0 0% 24%));
+    --context-color-inner: var(--json-editor-context-color-inner, hsl(0 0% 16%));
+    --context-color-active: var(--json-editor-context-color-active, hsl(0 0% 36%));
+    --context-color-remove: var(--json-editor-context-color-remove, hsl(0 98% 60%));
+    --context-color-text: var(--json-editor-context-color-text, hsl(0 0% 92%));
+    --context-color-bullet: var(--json-editor-context-color-bullet, hsl(0 0% 92%));
+    --context-shadow: var(--json-editor-context-shadow, 0 4px 36px 0 hsla(0 0% 0% / 32%), 0 2px 8px 0 hsla(0 0% 0% / 52%), 0 0 0 1px hsla(0 0% 0% / 75%));
   }
 
   @import 'node';

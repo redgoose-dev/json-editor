@@ -74,7 +74,7 @@
   --dev-editor-color-bg: #fff;
   background: var(--dev-editor-color-bg);
   @media (prefers-color-scheme: dark) {
-    --dev-editor-color-bg: #333;
+    --dev-editor-color-bg: #222;
   }
   &--light {
     --dev-editor-color-bg: #fff;
@@ -87,7 +87,7 @@
   }
   &__body {
     min-height: 120px;
-    padding: 16px;
+    padding: 24px;
     box-sizing: border-box;
   }
 }
@@ -99,7 +99,7 @@
   }
   &__body {
     min-height: 120px;
-    padding: 16px;
+    padding: 24px;
     box-sizing: border-box;
     margin: 0;
     font-size: 12px;

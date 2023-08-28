@@ -1,19 +1,10 @@
-// context
-
 @use 'mixins';
 
+// context
 .context {
-  --context-border-radius: 4px;
-  --context-color-line: hsl(0 0% 88%);
-  --context-color-item-active: hsl(0 0% 92%);
-  --context-color-bg: hsl(0 0% 100%);
-  --context-shadow:
-    0 4px 36px 0 hsla(0 0% 0% / 12%),
-    0 2px 12px 0 hsla(0 0% 0% / 20%),
-    0 0 0 1px hsla(0 0% 0% / 8%);
   position: absolute;
   top: -8px;
-  right: -8px;
+  right: -6px;
   z-index: 2;
   &.is-root {
     left: 28px;
@@ -24,8 +15,8 @@
     margin: 0;
     padding: 0;
     list-style: none;
-    background: var(--context-color-line);
-    border-radius: var(--context-border-radius);
+    background: var(--context-color-inner);
+    border-radius: var(--context-radius);
     box-shadow: var(--context-shadow);
   }
   li {
@@ -34,12 +25,12 @@
       margin-top: 1px;
     }
     &:first-child > button {
-      border-top-left-radius: var(--context-border-radius);
-      border-top-right-radius: var(--context-border-radius);
+      border-top-left-radius: var(--context-radius);
+      border-top-right-radius: var(--context-radius);
     }
     &:last-child > button {
-      border-bottom-left-radius: var(--context-border-radius);
-      border-bottom-right-radius: var(--context-border-radius);
+      border-bottom-left-radius: var(--context-radius);
+      border-bottom-right-radius: var(--context-radius);
     }
     > div {
       > ol {}
@@ -59,7 +50,7 @@
       &:hover,
       &:focus-within {
         > button {
-          background-color: var(--context-color-item-active);
+          background-color: var(--context-color-active);
         }
         > .children {
           opacity: 1;
@@ -72,7 +63,7 @@
     }
     &.remove {
       .label {
-        color: var(--json-editor-color-error);
+        color: var(--context-color-remove);
       }
     }
   }
@@ -89,18 +80,19 @@
     cursor: pointer;
     border-radius: 0;
     transition: background-color 120ms ease-out;
-    font-family: var(--json-editor-font-base);
     font-size: 12px;
     letter-spacing: -.25px;
     outline: none;
-    color: var(--json-editor-color-base);
+    color: var(--context-color-text);
     -webkit-tap-highlight-color: transparent;
     &:hover,
     &:active {
-      background-color: var(--context-color-item-active);
+      &:not(:disabled) {
+        background-color: var(--context-color-active);
+      }
     }
     &:not(.parent):focus-visible {
-      outline: 2px solid var(--json-editor-color-focus);
+      outline: 2px solid var(--color-focus);
       outline-offset: -2px;
     }
     &:disabled {
@@ -124,6 +116,8 @@
     svg {
       display: block;
       width: 16px;
+      color: var(--color-bullet);
+      stroke-width: 1.5;
     }
   }
   .children {
@@ -138,18 +132,5 @@
       top: 0;
       left: 0;
     }
-  }
-}
-
-// dark mode
-@include mixins.dark-mode() {
-  .context {
-    --context-color-line: hsl(0 0% 0%);
-    --context-color-bg: hsl(0 0% 16%);
-    --context-color-item-active: hsl(0 0% 24%);
-    --context-shadow:
-      0 4px 36px 0 hsla(0 0% 0% / 24%),
-      0 2px 8px 0 hsla(0 0% 0% / 32%),
-      0 0 0 1px hsla(0 0% 0% / 20%);
   }
 }
