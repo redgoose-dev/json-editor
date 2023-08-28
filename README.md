@@ -270,6 +270,27 @@ wrap.addEventListener('context', ({ detail: { body, node, type, isRoot, $ } }) =
 - `@redgoose/json-editor/lib/umd`: 코어 라이브러리 UMD
 
 
+## Custom style
+
+에디터의 디자인을 수정할 수 있는 요소들을 변수화 시켰습니다.  
+다음과 같이 외부 영역에서 에디터 스타일을 커스터마이즈 할 수 있습니다.
+
+```css
+.editor {
+  --json-editor-color-base: red;
+  --json-editor-color-focus: blue;
+}
+@media (prefers-color-scheme: dark) {
+  .editor {
+    --json-editor-color-base: green;
+    --json-editor-color-focus: yellow;
+  }
+}
+```
+
+[main.scss](https://github.com/redgoose-dev/json-editor/blob/main/src/json-editor/assets/main.scss) 파일의 코드를 참고하여 직접 스타일을 편집할 수 있습니다.
+
+
 ## Developing a wrapper
 
 `JSON Editor` 에디터를 `web component`, `react`, `vue`, `svelte` 같은 환경에서 사용할 수 있도록 컴포넌트를 래핑할 수 있습니다.  
