@@ -21,6 +21,8 @@ declare module '@redgoose/json-editor' {
     addNode(target: HTMLElement, data: typeData, options?: typeAddNodeOptions, useUpdate?: boolean, useUpdateCount?: boolean): void
     removeNode(node: HTMLElement, useUpdate?: boolean): void
     changeType(node: HTMLElement, type: typeNames, useUpdate?: boolean): void
+    changeKey(node: HTMLElement, keyword: string): void
+    changeValue(node: HTMLElement, value: string|number|boolean|null): void
     duplicate(target: HTMLElement, useUpdate?: boolean): void
     fold(node: HTMLElement, sw?: boolean): void
     clear(): void
