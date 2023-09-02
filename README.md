@@ -113,6 +113,28 @@ jsonEditor.changeType(node, type, useUpdate)
 jsonEditor.changeType(node, 'boolean', true)
 ```
 
+### changeKey
+
+노드의 `key`를 변경합니다.
+
+```javascript
+jsonEditor.changeKey(node, keyword)
+```
+
+- `node`: 타입을 변경할 노드 엘리먼트
+- `keyword`: 키워드
+
+### changeValue
+
+노드의 `value`를 변경합니다.
+
+```javascript
+jsonEditor.changeValue(node, value)
+```
+
+- `node`: 타입을 변경할 노드 엘리먼트
+- `value`: 값
+
 ### duplicate
 
 노드를 복제합니다.

@@ -16,11 +16,11 @@ const editor = document.getElementById('editor')
 const preview = document.getElementById('preview')
 
 // set json-editor
-const jsonEditor = new JsonEditor(editor, {
+window.jsonEditor = new JsonEditor(editor, {
   theme: options.theme,
   live: options.live,
 })
-$ = jsonEditor.$
+$ = window.$ = jsonEditor.$
 initJsonEditor()
 
 // setup menu

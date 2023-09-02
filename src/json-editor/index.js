@@ -506,6 +506,20 @@ class JsonEditorCore {
     if (useUpdate) this.#updateTick()
   }
 
+  changeKey(node, keyword)
+  {
+    const $node = $(node)
+    $node.find('.key > div').text(keyword)
+    this.#updateTick()
+  }
+
+  changeValue(node, value)
+  {
+    const $node = $(node)
+    $node.find('.value > div').text(value)
+    this.#updateTick()
+  }
+
   /**
    * duplicate
    * @param {HTMLElement} $target
