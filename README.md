@@ -26,6 +26,7 @@ import '@redgoose/json-editor/css'
 const jsonEditor = new JsonEditor(document.getElementById('target'), {
   live: true,
   theme: 'system',
+  edit: 'all',
 })
 ```
 
@@ -38,6 +39,8 @@ const jsonEditor = new JsonEditor(document.getElementById('target'), {
   이 값을 사용하면 데이터가 업데이트 될때마다 `update` 메서드가 호출되면서 업데이트 이벤트를 호출합니다.
 - `theme` / (system,light,dark)  
   다크모드를 사용하는지에 대한 값입니다.
+- `edit` / (all,value,none)  
+  컨트롤할 수 있는 범위를 정합니다.
 
 
 ## Methods

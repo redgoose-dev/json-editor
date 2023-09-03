@@ -30,6 +30,7 @@ class JsonEditorCore {
     })
     this.el.wrap.append(this.el.body)
     this.#changeTheme(this.options.theme)
+    this.#changeEdit(this.options.edit)
     this.replace({}, false)
   }
 
@@ -40,6 +41,9 @@ class JsonEditorCore {
     {
       case 'theme':
         this.#changeTheme(value)
+        break
+      case 'edit':
+        this.#changeEdit(value)
         break
     }
     return true
@@ -233,7 +237,14 @@ class JsonEditorCore {
     $node = $($node)
     const $rootNode = ($node?.length > 0) ? $node : this.el.tree.children('.node')
     const type = this.#getType($rootNode)
-    return [ TYPES.OBJECT, TYPES.ARRAY ].includes(type) ? nest($rootNode, type) : undefined
+    if ([ TYPES.OBJECT, TYPES.ARRAY ].includes(type))
+    {
+      return nest($rootNode, type)
+    }
+    else
+    {
+      return undefined
+    }
   }
 
   #setNodeCount($node)
@@ -243,6 +254,18 @@ class JsonEditorCore {
     if (!(type === 'object' || type === 'array')) return
     const count = $node.find('& > .node__children > ul > li').length
     if (!isNaN(count)) $node.find('& > .node__body > .count').text(count)
+  }
+
+  #changeEdit(value)
+  {
+    if (value === 'all')
+    {
+      this.el.body.removeAttr('data-edit')
+    }
+    else
+    {
+      this.el.body.attr('data-edit', value)
+    }
   }
 
   /**
@@ -259,8 +282,9 @@ class JsonEditorCore {
     }
     // type
     $node.find('.type > button').on('click', async e => {
-      const $this = $(e.currentTarget)
       e.stopPropagation()
+      if (this.options.edit !== 'all') return
+      const $this = $(e.currentTarget)
       if ($this.parent().hasClass('open'))
       {
         if (this.context) this.context.close()
@@ -285,6 +309,7 @@ class JsonEditorCore {
     {
       $key
         .on('keydown', e => {
+          if (this.options.edit !== 'all') e.preventDefault()
           if (e.keyCode === 13) return e.preventDefault()
           if (checkFontShortcut(e)) return e.preventDefault()
         })
@@ -297,6 +322,7 @@ class JsonEditorCore {
     {
       $valueString
         .on('keydown', e => {
+          if (this.options.edit === 'none') e.preventDefault()
           if (checkFontShortcut(e)) return e.preventDefault()
         })
         .on('input', e => this.#onInputTextField(e))
@@ -306,6 +332,9 @@ class JsonEditorCore {
     if (!!$valueNumber.length)
     {
       $valueNumber
+        .on('keydown', e => {
+          if (this.options.edit === 'none') e.preventDefault()
+        })
         .on('input', e => this.#onInputTextField(e))
         .on('blur', e => this.#onBlurTextField(e))
     }
@@ -313,6 +342,7 @@ class JsonEditorCore {
     if (!!$valueSwitch.length)
     {
       $valueSwitch.on('click', e => {
+        if (this.options.edit === 'none') return
         const $this = $(e.currentTarget)
         const newValue = !$this.data('value')
         $this

@@ -158,7 +158,9 @@
 
 .node {
   position: relative;
-  -webkit-user-select: none;
+  @supports (-webkit-touch-callout: none) {
+    -webkit-user-select: none;
+  }
   &__body {
     position: relative;
     display: flex;
@@ -398,4 +400,46 @@
 }
 .drag-select {
   background-color: var(--color-drag-target-bg);
+}
+
+// edit mode
+@mixin disabled-label-filed() {
+  .label-field {
+    caret-color: transparent;
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background-color: unset;
+      }
+    }
+    &:focus {
+      outline: unset;
+    }
+  }
+}
+&:is([data-edit=none], [data-edit=value]) {
+  .node {
+    &__body {
+      > .sort {
+        display: none;
+      }
+      > .type {
+        > button {
+          opacity: unset;
+          cursor: default;
+        }
+      }
+      > .key {
+        @include disabled-label-filed();
+      }
+    }
+  }
+}
+&[data-edit=none] {
+  .node {
+    &__body {
+      > .value {
+        @include disabled-label-filed();
+      }
+    }
+  }
 }

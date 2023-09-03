@@ -3,6 +3,7 @@ declare module '@redgoose/json-editor' {
   type typeOptions = {
     live?: boolean
     theme?: 'system' | 'light' | 'dark'
+    edit?: 'all' | 'value' | 'none'
   }
   type typeData = any[] | object
   type typeAddNodeOptions = {

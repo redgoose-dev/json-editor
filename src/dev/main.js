@@ -8,7 +8,8 @@ import './main.scss'
 let $
 let options = {
   theme: 'system',
-  live: true
+  live: true,
+  edit: 'none', // all,value,none
 }
 const gnb = document.getElementById('gnb')
 const container = document.querySelector('.container')
@@ -19,6 +20,7 @@ const preview = document.getElementById('preview')
 window.jsonEditor = new JsonEditor(editor, {
   theme: options.theme,
   live: options.live,
+  edit: options.edit,
 })
 $ = window.$ = jsonEditor.$
 initJsonEditor()
