@@ -404,17 +404,7 @@
 
 // edit mode
 @mixin disabled-label-filed() {
-  .label-field {
-    caret-color: transparent;
-    @media (hover: hover) and (pointer: fine) {
-      &:hover {
-        background-color: unset;
-      }
-    }
-    &:focus {
-      outline: unset;
-    }
-  }
+
 }
 &:is([data-edit=none], [data-edit=value]) {
   .node {
@@ -426,10 +416,24 @@
         > button {
           opacity: unset;
           cursor: default;
+          outline: unset;
         }
       }
+      > .fold {
+        outline: unset;
+      }
       > .key {
-        @include disabled-label-filed();
+        .label-field {
+          caret-color: transparent;
+          @media (hover: hover) and (pointer: fine) {
+            &:hover {
+              background-color: unset;
+            }
+          }
+          &:focus {
+            outline: unset;
+          }
+        }
       }
     }
   }
@@ -438,7 +442,20 @@
   .node {
     &__body {
       > .value {
-        @include disabled-label-filed();
+        .label-field {
+          caret-color: transparent;
+          @media (hover: hover) and (pointer: fine) {
+            &:hover {
+              background-color: unset;
+            }
+          }
+          &:focus {
+            outline: unset;
+          }
+        }
+        .label-switch {
+          cursor: default;
+        }
       }
     }
   }
