@@ -83,6 +83,7 @@ class JsonEditorCore {
       value: data,
       type,
       open: true,
+      depth: 0,
     })
     this.#setEventFromNode($node)
     this.el.tree = $('<ul/>')
@@ -113,7 +114,7 @@ class JsonEditorCore {
 
   #setResourceFromNode($node, opt)
   {
-    const { key, value, type, open } = opt
+    const { key, value, type, open, depth } = opt
     const isRoot = $node.hasClass('root')
     const $body = $node.children('.node__body')
     // type
@@ -123,6 +124,8 @@ class JsonEditorCore {
     {
       this.fold($node, open)
     }
+    // depth
+    if (depth !== undefined) $node.attr('data-depth', depth)
     if (!isRoot)
     {
       // key name
@@ -467,11 +470,15 @@ class JsonEditorCore {
     options = { ...defaultAddNodeOptions, ...options }
     const { open, callback } = options
     $target = $($target)
-    // TODO: 노드검사, 올바른 노드인지 검사할 필요가 있다.
     const type = (data.type === undefined) ? getTypeName(data.value) : data.type
     // set node item
     const $node = this.#template(type, false)
-    this.#setResourceFromNode($node, { ...data, open, type })
+    this.#setResourceFromNode($node, {
+      ...data,
+      open,
+      type,
+      depth: $target.data('depth') + 1,
+    })
     this.#setEventFromNode($node)
     // add element
     const $ul = $target.find('& > .node__children > ul')
@@ -518,10 +525,10 @@ class JsonEditorCore {
       value: this.#getValue($node),
       type,
       open: $node.hasClass('open'),
+      depth: $node.data('depth'),
     }
     const children = $node.find(`& > .node__children > .tree`).html()
     const isRoot = $node.hasClass('root')
-    // const isRoot =
     // clear
     $node.empty()
     // reset node

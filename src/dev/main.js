@@ -9,7 +9,7 @@ let $
 let options = {
   theme: 'system',
   live: true,
-  edit: 'none', // all,value,none
+  edit: 'all', // all,value,none
 }
 const gnb = document.getElementById('gnb')
 const container = document.querySelector('.container')
