@@ -5,7 +5,8 @@ export const sampleStudent = {
   "major": "Computer Science",
   "email": "alice.kim@example.com",
   "phone": "010-1234-5678",
-  "graduated": false
+  "graduatedA": true,
+  "graduatedB": false
 }
 
 export const sampleMovie = {
@@ -33,12 +34,14 @@ export const sampleCats = [
     "name": "Mew",
     "color": "white",
     "age": 3,
+    "human": true,
     "hobbies": ["chasing toys", "sleeping", "purring"]
   },
   {
     "name": "Whiskers",
     "color": "gray",
     "age": 5,
+    "human": false,
     "hobbies": ["climbing", "watching birds", "playing with Mew"]
   }
 ]

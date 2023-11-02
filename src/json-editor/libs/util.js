@@ -71,13 +71,36 @@ export function checkFontShortcut(e)
 {
   if (e.ctrlKey || e.metaKey)
   {
-    switch (e.keyCode)
+    switch (e.code)
     {
-      case 66: case 98: // ctrl+b
-      case 73: case 105: // ctrl+i
-      case 85: case 117: // ctrl+u
+      case 'KeyB': // ctrl+b
+      case 'KeyI': // ctrl+i
+      case 'KeyU': // ctrl+u
         return true
     }
   }
   return false
+}
+
+/**
+ * select element text
+ * @param {MouseEvent} e
+ */
+export function selectText(e)
+{
+  e.preventDefault()
+  const el = e.currentTarget
+  const range = document.createRange()
+  range.selectNodeContents(el)
+  const selection = window.getSelection()
+  selection.removeAllRanges()
+  selection.addRange(range)
+}
+
+export function pastePlainText(e)
+{
+  e.preventDefault()
+  const clipboardData = (e.originalEvent || e).clipboardData
+  let text = clipboardData.getData('text/plain')
+  document.execCommand('insertText', false, text)
 }

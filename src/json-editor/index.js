@@ -1,6 +1,6 @@
 import $ from 'cash-dom'
 import Context from './context.js'
-import { getTypeName, checkData, getCountProperty, checkFontShortcut } from './libs/util.js'
+import { getTypeName, checkData, getCountProperty, checkFontShortcut, selectText, pastePlainText } from './libs/util.js'
 import { defaultOptions, defaultAddNodeOptions, TYPES, DRAG_EVENT, DRAG_HOVER_NODE_CLASS, CONTEXT_EVENT } from './libs/assets.js'
 import { iconSort, iconFold, iconType } from './assets/icons.js'
 
@@ -312,12 +312,20 @@ class JsonEditorCore {
     {
       $key
         .on('keydown', e => {
-          if (this.options.edit !== 'all') e.preventDefault()
-          if (e.keyCode === 13) return e.preventDefault()
+          if (this.options.edit !== 'all') return
+          if (e.code === 'Enter') return e.preventDefault()
           if (checkFontShortcut(e)) return e.preventDefault()
         })
         .on('input', e => this.#onInputTextField(e))
         .on('blur', e => this.#onBlurTextField(e))
+      if (this.options.edit !== 'all')
+      {
+        $key.on('dblclick', selectText)
+      }
+      else
+      {
+        $key.on('paste', pastePlainText)
+      }
     }
     // value
     const $valueString = $node.find('.value > .type-string')
@@ -325,11 +333,19 @@ class JsonEditorCore {
     {
       $valueString
         .on('keydown', e => {
-          if (this.options.edit === 'none') e.preventDefault()
+          if (this.options.edit === 'none') return
           if (checkFontShortcut(e)) return e.preventDefault()
         })
         .on('input', e => this.#onInputTextField(e))
         .on('blur', e => this.#onBlurTextField(e))
+      if (this.options.edit === 'none')
+      {
+        $valueString.on('dblclick', selectText)
+      }
+      else
+      {
+        $valueString.on('paste', pastePlainText)
+      }
     }
     const $valueNumber = $node.find('.value > .type-number')
     if (!!$valueNumber.length)

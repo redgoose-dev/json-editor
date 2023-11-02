@@ -156,6 +156,7 @@
   }
 }
 
+// node
 .node {
   position: relative;
   @supports (-webkit-touch-callout: none) {
@@ -403,9 +404,6 @@
 }
 
 // edit mode
-@mixin disabled-label-filed() {
-
-}
 &:is([data-edit=none], [data-edit=value]) {
   .node {
     &__body {
@@ -455,6 +453,13 @@
         }
         .label-switch {
           cursor: default;
+          span {
+            box-shadow: inset 0 0 0 1px var(--switch-outline);
+          }
+          i {
+            width: var(--switch-unit-size);
+            transform: translateX(var(--switch-unit-x));
+          }
         }
       }
     }
