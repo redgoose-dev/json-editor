@@ -13,14 +13,14 @@
             data-name="data"
             class="gnb__button"
             on:click={onClickDropdown}>
-            <MenuItem icon="database" label="Data" dropdown={true}/>
+            <MenuItem icon="database" label={$_language.data} dropdown={true}/>
           </div>
           <div class="gnb__sub">
             <SubMenu
               items={[
-                { key: 'new', label: 'Clear', icon: 'file' },
-                { key: 'import', label: 'Import', icon: 'download' },
-                { key: 'export', label: 'Export', icon: 'upload' },
+                { key: 'new', label: $_language.clear, icon: 'file' },
+                { key: 'import', label: $_language.import, icon: 'download' },
+                { key: 'export', label: $_language.export, icon: 'upload' },
               ]}
               on:select={e => selectMenuItem('data', e)}/>
           </div>
@@ -33,20 +33,36 @@
             data-name="view"
             class="gnb__button"
             on:click={onClickDropdown}>
-            <MenuItem icon="eye" label="View" dropdown={true}/>
+            <MenuItem icon="eye" label={$_language.view} dropdown={true}/>
           </div>
           <div class="gnb__sub">
             <SubMenu
               items={[
-                { key: 'fold', label: 'Fold tree', icon: 'minimize-2' },
-                { key: 'unfold', label: 'Unfold tree', icon: 'maximize-2' },
+                { key: 'fold', label: $_language.fold, icon: 'minimize-2' },
+                { key: 'unfold', label: $_language.unfold, icon: 'maximize-2' },
                 {
                   key: 'toggle-live-preview',
-                  label: $visiblePreview ? 'Hide live preview' : 'Show live preview',
+                  label: $visiblePreview ? $_language.hidePreview : $_language.showPreview,
                   icon: 'code',
                 },
               ]}
               on:select={e => selectMenuItem('view', e)}/>
+          </div>
+        </li>
+        <li
+          class="gnb__item"
+          class:on={focusMenuItem === 'language'}
+          on:click|stopPropagation>
+          <div
+            data-name="language"
+            class="gnb__button"
+            on:click={onClickDropdown}>
+            <MenuItem icon="globe" label={$_language.language} dropdown={true}/>
+          </div>
+          <div class="gnb__sub">
+            <SubMenu
+              items={menus.map(o => ({ ...o, active: $language === o.key }))}
+              on:select={e => selectMenuItem('language', e)}/>
           </div>
         </li>
         <li class="gnb__item">
@@ -54,7 +70,7 @@
             type="button"
             class="gnb__button"
             on:click={() => selectMenuItem('about')}>
-            <MenuItem icon="cloud" label="About" dropdown={false}/>
+            <MenuItem icon="cloud" label={$_language.about} dropdown={false}/>
           </button>
         </li>
       </menu>
@@ -68,13 +84,14 @@
 <script>
 import { createEventDispatcher, onMount, onDestroy } from 'svelte'
 import { visiblePreview } from '../../store/visible.js'
+import { language, _language } from '../../store/service.js'
+import { menus } from '../../libs/lang.js'
 import LogoSymbol from '../assets/logo-symbol.svelte'
 import MenuItem from './menu-item.svelte'
 import SubMenu from './sub-menu.svelte'
 import Theme from './theme.svelte'
 
 const dispatch = createEventDispatcher()
-
 let focusMenuItem
 
 function selectMenuItem(main, e)

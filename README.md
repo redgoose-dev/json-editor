@@ -2,7 +2,6 @@
 
 "json-editor"는 웹브라우저에서 json 데이터를 편집하는 에디터입니다.  
 텍스트 편집툴을 사용할 수 없거나 json 데이터를 손쉽게 다루기 위하여 만들어진 프로그램 입니다.
-
 이 에디터는 독립적으로 동작하며 메서드를 실행하여 에디터의 기능을 조작할 수 있습니다.
 
 권장되는 사용환경은 다음과 같습니다.
@@ -314,6 +313,32 @@ wrap.addEventListener('context', ({ detail: { body, node, type, isRoot, $ } }) =
 ```
 
 [main.scss](https://github.com/redgoose-dev/json-editor/blob/main/src/json-editor/assets/main.scss) 파일의 코드를 참고하여 직접 스타일을 편집할 수 있습니다.
+
+
+## Extention language
+
+클래스 메서드를 교체하여 에디터 텍스트를 변경할 수 있습니다.
+
+```javascript
+JsonEditor.prototype.updateLanguage = function()
+{
+  this.lang = Object.assign(this.lang, {
+    nodeChangeSort: '노드 순서변경',
+    nodeContextMenu: '노드메뉴',
+    nodeFold: '접기/펼치기',
+    contextChangeType: '타입변경',
+    contextInsertNode: '노드추가',
+    contextTypeObject: '객체',
+    contextTypeArray: '배열',
+    contextTypeString: '문자',
+    contextTypeNumber: '번호',
+    contextTypeBoolean: '부울',
+    contextTypeNull: '널',
+    contextDuplicate: '노드복제',
+    contextRemove: '노드삭제',
+  })
+}
+```
 
 
 ## Developing a wrapper

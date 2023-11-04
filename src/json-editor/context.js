@@ -2,35 +2,6 @@ import $ from 'cash-dom'
 import { TYPES, CONTEXT_EVENT } from './libs/assets.js'
 import { iconArrow, iconType } from './assets/icons.js'
 
-const tree = [
-  {
-    key : 'change-type',
-    label: 'Change type',
-    children : [
-      { key: TYPES.OBJECT, label: 'Object' },
-      { key: TYPES.ARRAY, label : 'Array' },
-      { key: TYPES.STRING, label : 'String' },
-      { key: TYPES.NUMBER, label : 'Number' },
-      { key: TYPES.BOOLEAN, label : 'Boolean' },
-      { key: TYPES.NULL, label : 'Null' },
-    ]
-  },
-  {
-    key: 'insert',
-    label : 'Insert',
-    children : [
-      { key: TYPES.OBJECT, label: 'Object' },
-      { key: TYPES.ARRAY, label : 'Array' },
-      { key: TYPES.STRING, label : 'String' },
-      { key: TYPES.NUMBER, label : 'Number' },
-      { key: TYPES.BOOLEAN, label : 'Boolean' },
-      { key: TYPES.NULL, label : 'Null' },
-    ]
-  },
-  { key: 'duplicate', label : 'Duplicate' },
-  { key: 'remove', label : 'Remove' },
-]
-
 class Context {
 
   #parent
@@ -48,7 +19,7 @@ class Context {
     this.#type = String(this.el.node.data('type'))
     this.el.type = this.el.node.find('& > .node__body > .type')
     this.el.type.addClass('open')
-    this.el.dialog = this.#template(tree, this.#type, isRoot)
+    this.el.dialog = this.#template(this.#setupTree(), this.#type, isRoot)
     this.el.dialog.on('click', e => e.stopPropagation())
     this.el.dialog.find('button').on('click', e => this.#onClickItem(e))
     // custom context
@@ -66,6 +37,81 @@ class Context {
     // set events
     $(window).on(CONTEXT_EVENT.CLICK, e => this.close(e))
     $(window).on(CONTEXT_EVENT.KEYUP, e => this.#onKeyupWindow(e))
+  }
+
+  #setupTree()
+  {
+    const { lang } = this.#parent
+    return [
+      {
+        key : 'change-type',
+        label: lang.contextChangeType, // Change type
+        children : [
+          {
+            key: TYPES.OBJECT,
+            label: lang.contextTypeObject, // Object
+          },
+          {
+            key: TYPES.ARRAY,
+            label : lang.contextTypeArray, // Array
+          },
+          {
+            key: TYPES.STRING,
+            label : lang.contextTypeString, // String
+          },
+          {
+            key: TYPES.NUMBER,
+            label : lang.contextTypeNumber, // Number
+          },
+          {
+            key: TYPES.BOOLEAN,
+            label : lang.contextTypeBoolean, // Boolean
+          },
+          {
+            key: TYPES.NULL,
+            label : lang.contextTypeNull, // Null
+          },
+        ]
+      },
+      {
+        key: 'insert',
+        label : lang.contextInsertNode, // Insert
+        children : [
+          {
+            key: TYPES.OBJECT,
+            label: lang.contextTypeObject, // Object
+          },
+          {
+            key: TYPES.ARRAY,
+            label : lang.contextTypeArray, // Array
+          },
+          {
+            key: TYPES.STRING,
+            label : lang.contextTypeString, // String
+          },
+          {
+            key: TYPES.NUMBER,
+            label : lang.contextTypeNumber, // Number
+          },
+          {
+            key: TYPES.BOOLEAN,
+            label : lang.contextTypeBoolean, // Boolean
+          },
+          {
+            key: TYPES.NULL,
+            label : lang.contextTypeNull, // Null
+          },
+        ]
+      },
+      {
+        key: 'duplicate',
+        label : lang.contextDuplicate, // Duplicate
+      },
+      {
+        key: 'remove',
+        label : lang.contextRemove, // Remove
+      },
+    ]
   }
 
   #template(src, type, isRoot = false)

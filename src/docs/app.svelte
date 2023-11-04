@@ -57,7 +57,7 @@ import { onMount } from 'svelte'
 import { fade } from 'svelte/transition'
 import { cubicInOut } from 'svelte/easing'
 import { visiblePreview, visibleAbout } from './store/visible.js'
-import { theme, source } from './store/service.js'
+import { theme, source, language } from './store/service.js'
 import { getRandomApi } from './libs/util.js'
 import Header from './components/header/index.svelte'
 import Editor from './components/editor/index.svelte'
@@ -108,6 +108,9 @@ function menuRouting(e)
           visiblePreview.change(!$visiblePreview)
           break
       }
+      break
+    case 'language':
+      language.change(sub)
       break
     case 'theme':
       theme.change(sub)

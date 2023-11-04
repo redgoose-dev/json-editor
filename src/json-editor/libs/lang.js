@@ -1,0 +1,15 @@
+export default {
+  nodeChangeSort: 'Change node sort',
+  nodeContextMenu: 'Node context menu',
+  nodeFold: 'Collapse/Expand',
+  contextChangeType: 'Change type',
+  contextInsertNode: 'Insert',
+  contextTypeObject: 'Object',
+  contextTypeArray: 'Array',
+  contextTypeString: 'String',
+  contextTypeNumber: 'Number',
+  contextTypeBoolean: 'Boolean',
+  contextTypeNull: 'Null',
+  contextDuplicate: 'Duplicate',
+  contextRemove: 'Remove',
+}

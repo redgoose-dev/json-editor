@@ -1,11 +1,8 @@
 <article class="data">
   <div class="data__wrap">
     <header class="data__header">
-      <h1>Import JSON Data</h1>
-      <p>
-        Bring the JSON data into the editor.<br/>
-        Please enter the JSON formatted text in the following input field or attach a file.
-      </p>
+      <h1>{$_language.importTitle}</h1>
+      <p>{@html $_language.importDescription}</p>
     </header>
     <form
       class="form"
@@ -14,7 +11,7 @@
         <legend>source code field</legend>
         <textarea
           bind:value={source}
-          placeholder="JSON source code"
+          placeholder={$_language.importPlaceholder}
           class="scroll-area"
           on:keydown={onKeydownSource}/>
         {#if error}
@@ -32,25 +29,19 @@
             accept="application/json"
             class="json-uploader__file"
             on:change={onChangeJsonUploader}>
-          <Button
-            type="button"
-            on:click={onClickUpload}>
+          <Button type="button" on:click={onClickUpload}>
             <Icon name="upload"/>
-            <span>JSON File</span>
+            <span>{$_language.jsonFile}</span>
           </Button>
-          <Button
-            type="button"
-            on:click={onClickGetRandom}>
+          <Button type="button" on:click={onClickGetRandom}>
             <Icon name="upload"/>
-            <span>Get random</span>
+            <span>{$_language.getRandomCode}</span>
           </Button>
         </div>
         <div>
-          <Button
-            type="submit"
-            color="key">
+          <Button type="submit" color="key">
             <Icon name="check"/>
-            <span>Load Data</span>
+            <span>{$_language.loadData}</span>
           </Button>
         </div>
       </nav>
@@ -60,6 +51,7 @@
 
 <script>
 import { createEventDispatcher } from 'svelte'
+import { _language } from '../../store/service.js'
 import { getRandomApi } from '../../libs/util.js'
 import Button from '../assets/button.svelte'
 import Icon from '../assets/icon.svelte'

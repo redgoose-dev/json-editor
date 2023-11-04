@@ -9,12 +9,33 @@ let $
 let options = {
   theme: 'system',
   live: true,
-  edit: 'none', // all,value,none
+  edit: 'all', // all,value,none
 }
+const lang = {}
 const gnb = document.getElementById('gnb')
 const container = document.querySelector('.container')
 const editor = document.getElementById('editor')
 const preview = document.getElementById('preview')
+
+// set language
+JsonEditor.prototype.updateLanguage = function()
+{
+  this.lang = Object.assign(this.lang, {
+    nodeChangeSort: '노드 순서변경',
+    nodeContextMenu: '노드메뉴',
+    nodeFold: '접기/펼치기',
+    contextChangeType: '타입변경',
+    contextInsertNode: '노드추가',
+    contextTypeObject: '객체',
+    contextTypeArray: '배열',
+    contextTypeString: '문자',
+    contextTypeNumber: '번호',
+    contextTypeBoolean: '부울',
+    contextTypeNull: '널',
+    contextDuplicate: '노드복제',
+    contextRemove: '노드삭제',
+  })
+}
 
 // set json-editor
 window.jsonEditor = new JsonEditor(editor, {

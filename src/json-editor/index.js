@@ -3,6 +3,7 @@ import Context from './context.js'
 import { getTypeName, checkData, getCountProperty, checkFontShortcut, selectText, pastePlainText } from './libs/util.js'
 import { defaultOptions, defaultAddNodeOptions, TYPES, DRAG_EVENT, DRAG_HOVER_NODE_CLASS, CONTEXT_EVENT } from './libs/assets.js'
 import { iconSort, iconFold, iconType } from './assets/icons.js'
+import lang from './libs/lang.js'
 
 /**
  * json editor core class
@@ -18,6 +19,9 @@ class JsonEditorCore {
   context
   #drag
   #changeInput = false
+  lang = lang
+
+  static foo = 'bar'
 
   constructor(wrap, options = {})
   {
@@ -28,6 +32,7 @@ class JsonEditorCore {
       get: (obj, prop) => (obj[prop]),
       set: this.#setOptions.bind(this),
     })
+    this.updateLanguage()
     this.el.wrap.append(this.el.body)
     this.#changeTheme(this.options.theme)
     this.#changeEdit(this.options.edit)
@@ -57,13 +62,14 @@ class JsonEditorCore {
 
   #template(type, isRoot = false)
   {
+    const { lang } = this
     let str = `<li data-type="${type}" class="node${isRoot ? ' root' : ''}">`
     str += `<div class="node__body">`
-    if (!isRoot) str += `<div class="sort">${iconSort}</div>`
-    str += `<div class="type"><button type="button"></button></div>`
+    if (!isRoot) str += `<div class="sort" title="${lang.nodeChangeSort}">${iconSort}</div>`
+    str += `<div class="type"><button type="button" title="${lang.nodeContextMenu}"></button></div>`
     if (type === TYPES.OBJECT || type === TYPES.ARRAY)
     {
-      str += `<button type="button" class="fold">${iconFold}</button>`
+      str += `<button type="button" title="${lang.nodeFold}" class="fold">${iconFold}</button>`
     }
     if (!isRoot) str += `<div class="key"></div>`
     str += `<em class="count"></em>`
@@ -685,6 +691,12 @@ class JsonEditorCore {
       return data
     }
   }
+
+  /**
+   * update language
+   * for prototype
+   */
+  updateLanguage() {}
 
 }
 

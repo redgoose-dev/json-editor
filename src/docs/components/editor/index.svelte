@@ -4,7 +4,7 @@
 
 <script>
 import { onMount, onDestroy, createEventDispatcher } from 'svelte'
-import { source, theme } from '../../store/service.js'
+import { source, theme, language } from '../../store/service.js'
 import JsonEditor from '../../../json-editor/exports.js'
 
 const dispatch = createEventDispatcher()

@@ -1,9 +1,11 @@
 import { writable, get } from 'svelte/store'
 import * as storage from '../libs/storage.js'
+import * as lang from '../libs/lang.js'
 
 const storageKeyName = {
   theme: 'json-editor-theme',
   source: 'json-editor-source',
+  language: 'json-editor-language',
 }
 
 export const theme = (() => {
@@ -58,3 +60,38 @@ export const source = (() => {
     },
   }
 })()
+
+// language
+export const language = (() => {
+  const values = [ 'en', 'ko', 'jp' ]
+  let defaultCode
+  try
+  {
+    const src = storage.get(storageKeyName.language)
+    defaultCode = src || values[0]
+  }
+  catch (e)
+  {
+    defaultCode = values[0]
+  }
+  const { subscribe, set, update } = writable(defaultCode)
+  function updateHtml(code)
+  {
+    const html = document.querySelector('html')
+    html.setAttribute('lang', code)
+  }
+  updateHtml(defaultCode)
+  return {
+    subscribe,
+    set,
+    change: newValue => update(value => {
+      if (!values.includes(newValue)) return value
+      if (value === newValue) return value
+      storage.set(storageKeyName.language, newValue)
+      _language.set(lang.get(newValue))
+      updateHtml(newValue)
+      return newValue
+    }),
+  }
+})()
+export const _language = writable(lang.get(get(language)))

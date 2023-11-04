@@ -1,11 +1,8 @@
 <article class="data">
   <div class="data__wrap">
     <header class="data__header">
-      <h1>Export JSON Data</h1>
-      <p>
-        The content edited in the editor can be saved as JSON data.<br/>
-        You can copy the JSON code or save it as a file.
-      </p>
+      <h1>{$_language.exportTitle}</h1>
+      <p>{@html $_language.exportDescription}</p>
     </header>
     <div class="source-result scroll-area" on:click={onClickSource}>
       <pre>{_source}</pre>
@@ -27,14 +24,14 @@
           type="button"
           on:click={() => dispatch('close')}>
           <Icon name="x"/>
-          <span>Close</span>
+          <span>{$_language.close}</span>
         </Button>
         <Button
           type="button"
           color="key"
           on:click={onClickSaveFile}>
           <Icon name="save"/>
-          <span>Save File..</span>
+          <span>{$_language.exportSaveFile}</span>
         </Button>
       </div>
     </nav>
@@ -43,6 +40,7 @@
 
 <script>
 import { createEventDispatcher } from 'svelte'
+import { _language } from '../../store/service.js'
 import { selectText, saveFileText, dateFormat } from '../../libs/util.js'
 import Button from '../assets/button.svelte'
 import Icon from '../assets/icon.svelte'

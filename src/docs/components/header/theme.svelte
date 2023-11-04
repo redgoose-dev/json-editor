@@ -1,6 +1,6 @@
 <button
   type="button"
-  title="Theme switch"
+  title={$_language.changeTheme}
   class="switch-theme"
   class:switch-theme--dark={$theme === 'dark'}
   on:click={onClickButton}>
@@ -11,12 +11,10 @@
 </button>
 
 <script>
-import { theme } from '../../store/service.js'
+import { theme, _language } from '../../store/service.js'
 import Icon from '../assets/icon.svelte'
 
-let sw = false
-
-function onClickButton(e)
+function onClickButton()
 {
   theme.change($theme === 'dark' ? 'light' : 'dark')
 }
