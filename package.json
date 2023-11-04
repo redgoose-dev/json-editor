@@ -2,7 +2,7 @@
   "name": "@redgoose/json-editor",
   "description": "Easy editing JSON data",
   "author": "redgoose <scripter@me.com>",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "keywords": [ "json", "editor", "library", "tool" ],
   "license": "MIT",
   "main": "./lib/json-editor.js",

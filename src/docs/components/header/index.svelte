@@ -61,7 +61,11 @@
           </div>
           <div class="gnb__sub">
             <SubMenu
-              items={menus.map(o => ({ ...o, active: $language === o.key }))}
+              items={menuCodes.map(code => ({
+                key: code,
+                label: $_language.languageLabel[code],
+                active: $language === code,
+              }))}
               on:select={e => selectMenuItem('language', e)}/>
           </div>
         </li>
@@ -85,7 +89,7 @@
 import { createEventDispatcher, onMount, onDestroy } from 'svelte'
 import { visiblePreview } from '../../store/visible.js'
 import { language, _language } from '../../store/service.js'
-import { menus } from '../../libs/lang.js'
+import { menuCodes } from '../../libs/lang.js'
 import LogoSymbol from '../assets/logo-symbol.svelte'
 import MenuItem from './menu-item.svelte'
 import SubMenu from './sub-menu.svelte'

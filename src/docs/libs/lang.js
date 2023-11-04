@@ -1,8 +1,4 @@
-export const menus = [
-  { key: 'en', label: 'English' },
-  { key: 'ko', label: '한국어' },
-  { key: 'jp', label: '日本語' },
-]
+export const menuCodes = [ 'en', 'ko', 'jp' ]
 
 const pack = {
   en: {
@@ -13,7 +9,9 @@ const pack = {
     about: 'About',
     clear: 'Clear',
     import: 'Import',
+    importJson: 'Import JSON',
     export: 'Export',
+    exportJson: 'Export JSON',
     fold: 'Fold tree',
     unfold: 'Unfold tree',
     hidePreview: 'Hide live preview',
@@ -31,6 +29,11 @@ const pack = {
     exportSaveFile: 'Save File',
     aboutDescription: `"JSON Editor" is an editor that edits JSON data in a web browser.<br/>This program was created for those who cannot use text editing tools or to easily handle JSON data.<br/>This editor can be used by inserting it into a web project component.`,
     aboutInformation: 'Information',
+    languageLabel: {
+      en: 'English',
+      ko: 'Korean',
+      jp: 'Japanese',
+    },
     editor: {
       nodeChangeSort: 'Change node sort',
       nodeContextMenu: 'Node context menu',
@@ -55,7 +58,9 @@ const pack = {
     about: '정보',
     clear: '초기화',
     import: '가져오기',
+    importJson: 'JSON 가져오기',
     export: '내보내기',
+    exportJson: 'JSON 내보내기',
     fold: '접기',
     unfold: '펼치기',
     hidePreview: '프리뷰 숨기기',
@@ -73,6 +78,11 @@ const pack = {
     exportSaveFile: '파일로 저장',
     aboutDescription: `"JSON Editor"는 웹브라우저에서 JSON 데이터를 편집하는 에디터입니다.<br/>텍스트 편집툴을 사용할 수 없거나 JSON 데이터를 손쉽게 다루기 위하여 만들어진 프로그램 입니다.<br/>이 에디터는 웹 프로젝트 컴포넌트에 삽입하여 사용할 수 있습니다.`,
     aboutInformation: '정보',
+    languageLabel: {
+      en: '영어',
+      ko: '한국어',
+      jp: '일본어',
+    },
     editor: {
       nodeChangeSort: '노드 순서변경',
       nodeContextMenu: '노드 메뉴',
@@ -97,7 +107,9 @@ const pack = {
     about: 'について',
     clear: 'リセット',
     import: 'インポート',
+    importJson: 'JSON インポート',
     export: 'エクスポート',
+    exportJson: 'JSON エクスポート',
     fold: '折る',
     unfold: '広げる',
     hidePreview: 'プレビューを隠す',
@@ -115,6 +127,11 @@ const pack = {
     exportSaveFile: 'ファイルに保存',
     aboutDescription: `「JSON Editor」は、WebブラウザでJSONデータを編集するエディタです。<br/>テキスト編集ツールが利用できない、またはJSONデータを簡単に扱うために作成されたプログラムです。<br/>このエディタはWebプロジェクトコンポーネントに挿入して使用できます。`,
     aboutInformation: '情報',
+    languageLabel: {
+      en: '英語',
+      ko: '韓国語',
+      jp: '日本語',
+    },
     editor: {
       nodeChangeSort: 'ノード順序の変更',
       nodeContextMenu: 'ノードメニュー',
