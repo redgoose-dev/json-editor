@@ -36,7 +36,8 @@ class JsonEditorCore {
     this.el.wrap.append(this.el.body)
     this.#changeTheme(this.options.theme)
     this.#changeEdit(this.options.edit)
-    this.replace({}, false)
+    this.replace(options.node || {}, {}, false)
+    this.#openNodesWithDepth(options.openDepth)
   }
 
   #setOptions(obj, prop, value)
@@ -275,6 +276,20 @@ class JsonEditorCore {
     {
       this.el.body.attr('data-edit', value)
     }
+  }
+
+  /**
+   * depth 이하의 노드를 열어준다.
+   * @param {number} depth
+   */
+  #openNodesWithDepth(depth = 0)
+  {
+    if (!(depth > 0)) return
+    const $nodes = this.el.body.find('.node:not(.root)')
+    let arr = []
+    $nodes.each((i, el) => {
+      if ($(el).data('depth') < depth) this.fold($(el), true)
+    })
   }
 
   /**
@@ -620,7 +635,7 @@ class JsonEditorCore {
   {
     if (!this.el.tree) return
     this.el.body.empty()
-    this.replace({}, false)
+    this.replace({}, {}, false)
     this.#updateTick()
   }
 
@@ -636,15 +651,17 @@ class JsonEditorCore {
   /**
    * replace
    * @param {object|array} data
+   * @param {object} options
    * @param {boolean} useUpdate
    */
-  replace(data, useUpdate = true)
+  replace(data, options = {}, useUpdate = true)
   {
     this.el.body.empty()
     data = checkData(data)
     const $item = this.#createRoot(data)
     this.import($item, data, false, false)
     if (useUpdate) this.#updateTick()
+    if (options?.openDepth) this.#openNodesWithDepth(options?.openDepth)
   }
 
   /**

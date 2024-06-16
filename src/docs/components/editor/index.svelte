@@ -61,7 +61,7 @@ function setupJsonEditor()
     live: true,
     theme: $theme,
   })
-  editor.replace($source, false)
+  editor.replace($source, {}, false)
   _editor.addEventListener('update', updateSource)
   _editor.addEventListener('context', customContext)
   dispatch('init', { instance: editor })

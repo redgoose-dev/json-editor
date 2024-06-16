@@ -26,6 +26,8 @@ const jsonEditor = new JsonEditor(document.getElementById('target'), {
   live: true,
   theme: 'system',
   edit: 'all',
+  node: {},
+  openDepth: 2,
 })
 ```
 
@@ -40,6 +42,10 @@ const jsonEditor = new JsonEditor(document.getElementById('target'), {
   다크모드를 사용하는지에 대한 값입니다.
 - `edit` / (all,value,none)  
   컨트롤할 수 있는 범위를 정합니다.
+- `node` / ({},[])  
+  클래스를 초기화할때 사용하는 노드 데이터 값입니다.
+- `openDepth` / 0  
+  x번째 뎁스의 노드가 열리는지에 대하여 정합니다.
 
 
 ## Methods
@@ -186,16 +192,20 @@ jsonEditor.import(node, { foo: 'bar' }, true, true)
 데이터를 모두 교체합니다.
 
 ```javascript
-jsonEditor.replace(data, useUpdate)
+jsonEditor.replace(data, options, useUpdate)
 ```
 
 - `data`: 새로 교체할 데이터
+- `options`: 옵션
+  - `openDepth`: 데이터가 교체될때 노드가 열리는 x번째 뎁스
 - `useUpdate`: 노드를 수정하고 업데이트 메서드를 실행합니다.
 
 다음과 같이 사용할 수 있습니다.
 
 ```javascript
-jsonEditor.replace({ foo: 'bar' }, true)
+jsonEditor.replace({ foo: 'bar' }, {
+  openDepth: 2,
+}, true)
 ```
 
 ### export

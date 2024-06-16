@@ -2,7 +2,7 @@
   "name": "@redgoose/json-editor",
   "description": "Easy editing JSON data",
   "author": "redgoose <scripter@me.com>",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "keywords": [ "json", "editor", "library", "tool" ],
   "license": "MIT",
   "main": "./lib/json-editor.js",
@@ -40,11 +40,11 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^2.4.6",
+    "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "cash-dom": "^8.1.5",
-    "feather-icons": "^4.29.1",
-    "sass": "^1.69.5",
-    "svelte": "^4.2.2",
-    "vite": "^4.5.0"
+    "feather-icons": "^4.29.2",
+    "sass": "^1.77.5",
+    "svelte": "^4.2.18",
+    "vite": "^5.3.1"
   }
 }

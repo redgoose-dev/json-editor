@@ -4,6 +4,8 @@ declare module '@redgoose/json-editor' {
     live?: boolean
     theme?: 'system' | 'light' | 'dark'
     edit?: 'all' | 'value' | 'none'
+    openDepth?: boolean
+    node?: object | any[]
   }
   type typeData = any[] | object
   type typeAddNodeOptions = {
@@ -12,7 +14,7 @@ declare module '@redgoose/json-editor' {
   }
   type typeNames = 'object' | 'array' | 'string' | 'number' | 'boolean' | 'null'
 
-  class JsonEditor {
+  export default class JsonEditor {
     // properties
     options: typeOptions
     context: Context
@@ -28,13 +30,13 @@ declare module '@redgoose/json-editor' {
     fold(node: HTMLElement, sw?: boolean): void
     clear(): void
     destroy(): void
-    replace(data: typeData, useUpdate?: boolean): void
+    replace(data: typeData, options?: object, useUpdate?: boolean): void
     import(target: HTMLElement, data: typeData, useUpdate?: boolean): void
     export(node: HTMLElement, json?: boolean, space?: number): any[]|object
     updateLanguage(): void
   }
 
-  class Context {
+  export class Context {
     constructor(parent: JsonEditor, node: HTMLElement, isRoot: boolean)
     close(): void
   }

@@ -42,6 +42,8 @@ window.jsonEditor = new JsonEditor(editor, {
   theme: options.theme,
   live: options.live,
   edit: options.edit,
+  openDepth: 3,
+  node: {},
 })
 $ = window.$ = jsonEditor.$
 initJsonEditor()
@@ -126,7 +128,9 @@ function visiblePreview(sw)
 
 function randomReplaceSampleItem()
 {
-  jsonEditor.replace(randomPickInArray(samples), true)
+  jsonEditor.replace(randomPickInArray(samples), {
+    openDepth: 2,
+  }, true)
 }
 
 function renderPreview(src)

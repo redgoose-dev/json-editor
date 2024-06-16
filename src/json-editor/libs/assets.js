@@ -2,6 +2,8 @@ export const defaultOptions = {
   live: false, // live update
   theme: 'system', // system,light,dark
   edit: 'all', // all,value,none
+  openDepth: 0, // open a node with a depth
+  node: undefined, // initial node
 }
 
 export const defaultAddNodeOptions = {
