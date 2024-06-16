@@ -60,8 +60,9 @@ function setupJsonEditor()
   editor = new JsonEditor(_editor, {
     live: true,
     theme: $theme,
+    node: $source,
+    openDepth: 3,
   })
-  editor.replace($source, {}, false)
   _editor.addEventListener('update', updateSource)
   _editor.addEventListener('context', customContext)
   dispatch('init', { instance: editor })
@@ -80,7 +81,6 @@ function restartJsonEditor()
 {
   if (!_editor) return
   destroyJsonEditor()
-  // TODO: 언어변경
   setupJsonEditor()
 }
 
