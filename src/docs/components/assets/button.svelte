@@ -22,5 +22,5 @@ function onClick(e)
 </script>
 
 <style lang="scss">
-@import 'button';
+@forward 'button';
 </style>

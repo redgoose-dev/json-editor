@@ -1,6 +1,7 @@
 import { defineConfig, loadEnv } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+import { css } from './_libs.js'
 
 const config = defineConfig(({ mode }) => {
   const path = process.cwd()
@@ -12,6 +13,9 @@ const config = defineConfig(({ mode }) => {
       host: env.VITE_HOST,
       port: Number(env.VITE_PORT),
       open: false,
+    },
+    css: {
+      ...css,
     },
     build: {
       outDir: path + '/docs',

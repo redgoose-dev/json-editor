@@ -126,5 +126,5 @@ onDestroy(() => {
 </script>
 
 <style lang="scss">
-@import './index';
+@forward './index';
 </style>

@@ -27,5 +27,5 @@ const version = pkg.version
 </script>
 
 <style lang="scss">
-@import './index';
+@forward './index';
 </style>

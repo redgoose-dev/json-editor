@@ -4,7 +4,7 @@ declare module '@redgoose/json-editor' {
     live?: boolean
     theme?: 'system' | 'light' | 'dark'
     edit?: 'all' | 'value' | 'none'
-    openDepth?: boolean
+    openDepth?: number
     node?: object | any[]
   }
   type typeData = any[] | object

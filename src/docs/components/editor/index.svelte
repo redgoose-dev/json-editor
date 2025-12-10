@@ -89,5 +89,5 @@ onDestroy(() => destroyJsonEditor())
 </script>
 
 <style lang="scss">
-@import './index';
+@forward './index';
 </style>

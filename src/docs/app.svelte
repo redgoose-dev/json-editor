@@ -181,5 +181,5 @@ onMount(async () => {
 </script>
 
 <style lang="scss">
-@import './app';
+@forward './app';
 </style>

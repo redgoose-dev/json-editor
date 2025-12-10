@@ -21,5 +21,5 @@ function onClickButton()
 </script>
 
 <style lang="scss">
-@import './theme';
+@forward './theme';
 </style>

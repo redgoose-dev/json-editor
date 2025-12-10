@@ -2,6 +2,7 @@ import fs from 'fs'
 import { build } from 'vite'
 import { svelte } from '@sveltejs/vite-plugin-svelte'
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte'
+import { css } from './_libs.js'
 
 const path = process.cwd()
 const minify = true
@@ -31,11 +32,17 @@ const buildConfig = {
       minify,
     },
     configFile: false,
+    css: {
+      ...css,
+    },
   },
   docs: {
     configFile: false,
     root: `${path}/src/docs`,
     base: './',
+    css: {
+      ...css,
+    },
     build: {
       outDir: path + '/docs',
       assetsDir: 'assets',

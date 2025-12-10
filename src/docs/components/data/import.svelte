@@ -136,5 +136,5 @@ function onSubmit()
 </script>
 
 <style lang="scss">
-@import './common';
+@forward './common';
 </style>

@@ -20,5 +20,5 @@ $: _data = JSON.stringify($source, null, 2)
 </script>
 
 <style lang="scss">
-@import './index';
+@forward './index';
 </style>

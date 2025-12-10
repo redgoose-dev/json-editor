@@ -32,5 +32,5 @@ function onClickItem(e)
 </script>
 
 <style lang="scss">
-@import './sub-menu';
+@forward './sub-menu';
 </style>
