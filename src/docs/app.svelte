@@ -145,7 +145,7 @@ function onImportData(e)
     if (dataImport.node)
     {
       editor.fold(dataImport.node, true)
-      editor.import(dataImport.node, parsedSource)
+      editor.importData(dataImport.node, parsedSource)
     }
     else
     {

@@ -168,12 +168,12 @@ jsonEditor.duplicate(node, true)
 jsonEditor.fold(node, true)
 ```
 
-### import
+### importData
 
 데이터를 가져옵니다.
 
 ```javascript
-jsonEditor.import(node, data, useUpdate, useUpdateCount)
+jsonEditor.importData(node, data, useUpdate, useUpdateCount)
 ```
 
 - `node`: 데이터를 추가할 노드 엘리먼트
@@ -184,7 +184,7 @@ jsonEditor.import(node, data, useUpdate, useUpdateCount)
 다음과 같이 사용할 수 있습니다.
 
 ```javascript
-jsonEditor.import(node, { foo: 'bar' }, true, true)
+jsonEditor.importData(node, { foo: 'bar' }, true, true)
 ```
 
 ### replace

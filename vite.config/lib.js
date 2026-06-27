@@ -18,7 +18,6 @@ const buildConfig = {
       outDir: './lib',
       rollupOptions: {
         output: {
-          inlineDynamicImports: true,
           preserveModules: false,
           assetFileNames: (assetInfo) => {
             const info = assetInfo.name.split('.')
@@ -28,6 +27,7 @@ const buildConfig = {
           },
         },
       },
+      codeSplitting: false,
       emptyOutDir: false,
       minify,
     },
@@ -53,6 +53,11 @@ const buildConfig = {
       svelte({
         preprocess: vitePreprocess(),
         extensions: [ '.svelte' ],
+        compilerOptions: {
+          warningFilter: (warning) => {
+            return false
+          },
+        },
         onwarn(warning, defaultHandler)
         {
           switch (warning.code)

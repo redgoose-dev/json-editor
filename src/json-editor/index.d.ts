@@ -31,7 +31,7 @@ declare module '@redgoose/json-editor' {
     clear(): void
     destroy(): void
     replace(data: typeData, options?: object, useUpdate?: boolean): void
-    import(target: HTMLElement, data: typeData, useUpdate?: boolean): void
+    importData(target: HTMLElement, data: typeData, useUpdate?: boolean): void
     export(node: HTMLElement, json?: boolean, space?: number): any[]|object
     updateLanguage(): void
   }

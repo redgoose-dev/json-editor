@@ -21,8 +21,6 @@ class JsonEditorCore {
   #changeInput = false
   lang = lang
 
-  static foo = 'bar'
-
   constructor(wrap, options = {})
   {
     this.$ = $
@@ -659,7 +657,7 @@ class JsonEditorCore {
     this.el.body.empty()
     data = checkData(data)
     const $item = this.#createRoot(data)
-    this.import($item, data, false, false)
+    this.importData($item, data, false, false)
     if (useUpdate) this.#updateTick()
     if (options?.openDepth) this.#openNodesWithDepth(options?.openDepth)
   }
@@ -671,14 +669,14 @@ class JsonEditorCore {
    * @param {boolean} useUpdate
    * @param {boolean} useUpdateCount
    */
-  import($target, data, useUpdate = true, useUpdateCount = true)
+  importData($target, data, useUpdate = true, useUpdateCount = true)
   {
     $target = $($target)
     $.each(data, (key, value) => {
       const data = { key, value }
       const options = {
         open: false,
-        callback: (node, value) => this.import(node, value, false, false),
+        callback: (node, value) => this.importData(node, value, false, false),
       }
       this.addNode($target, data, options, false, false)
     })

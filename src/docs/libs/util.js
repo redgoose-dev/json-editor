@@ -60,7 +60,8 @@ export async function getRandomApi()
 {
   try
   {
-    const res = await fetch('https://random-data-api.com/api/v2/beers')
+    const id = Math.floor(Math.random() * 78)
+    const res = await fetch(`https://dummyjson.com/products/${id}`)
     return await res.json()
   }
   catch (e)

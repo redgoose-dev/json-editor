@@ -28,6 +28,7 @@ const config = defineConfig(({ mode }) => {
         extensions: [ '.svelte' ],
         compilerOptions: {
           customElement: false,
+          warningFilter: (warning) => false,
         },
         onwarn(warning, defaultHandler)
         {

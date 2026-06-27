@@ -2,7 +2,7 @@
   "name": "@redgoose/json-editor",
   "description": "Easy Editing JSON Data",
   "author": "redgoose <scripter@me.com>",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "keywords": ["json", "editor", "library", "tool"],
   "license": "MIT",
   "main": "./lib/json-editor.js",
@@ -27,10 +27,10 @@
   "homepage": "https://redgoose-dev.github.io/json-editor",
   "type": "module",
   "scripts": {
-    "dev": "vite --config vite.config/dev.js",
-    "docs": "vite --config vite.config/docs.js",
+    "dev": "bunx --bun vite --config vite.config/dev.js",
+    "docs": "bunx --bun vite --config vite.config/docs.js",
     "prebuild": "rm -rf docs && rm -rf lib",
-    "build": "node vite.config/lib.js"
+    "build": "bun run vite.config/lib.js"
   },
   "browserslist": [
     "> 1%",
@@ -40,11 +40,11 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^3.1.2",
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
     "cash-dom": "^8.1.5",
     "feather-icons": "^4.29.2",
-    "sass": "^1.95.1",
-    "svelte": "^4.2.20",
-    "vite": "^5.4.21"
+    "sass": "^1.101.0",
+    "svelte": "^5.56.4",
+    "vite": "^8.1.0"
   }
 }
