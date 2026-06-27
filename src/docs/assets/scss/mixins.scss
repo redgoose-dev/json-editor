@@ -51,7 +51,6 @@
 {
   @supports (backdrop-filter: blur(#{$size})) or (-webkit-backdrop-filter: blur(#{$size})) {
     backdrop-filter: blur(#{$size});
-    -webkit-backdrop-filter: blur(#{$size});
     @content;
   }
 }
