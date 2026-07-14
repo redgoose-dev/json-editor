@@ -104,3 +104,16 @@ export function pastePlainText(e)
   let text = clipboardData.getData('text/plain')
   document.execCommand('insertText', false, text)
 }
+
+/**
+ * string to plain text
+ */
+export function stringToPlainText(str)
+{
+  return String(str)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('\'', '&#39;')
+}

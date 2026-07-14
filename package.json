@@ -2,8 +2,8 @@
   "name": "@redgoose/json-editor",
   "description": "Easy Editing JSON Data",
   "author": "redgoose <scripter@me.com>",
-  "version": "1.2.6",
-  "keywords": ["json", "editor", "library", "tool"],
+  "version": "1.2.7",
+  "keywords": [ "json", "editor", "library", "tool" ],
   "license": "MIT",
   "main": "./lib/json-editor.js",
   "types": "./lib/json-editor.d.ts",
@@ -36,15 +36,12 @@
     "> 1%",
     "last 2 versions"
   ],
-  "engines": {
-    "node": ">=20"
-  },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "@sveltejs/vite-plugin-svelte": "^7.2.0",
     "cash-dom": "^8.1.5",
     "feather-icons": "^4.29.2",
     "sass": "^1.101.0",
-    "svelte": "^5.56.4",
-    "vite": "^8.1.0"
+    "svelte": "^5.56.5",
+    "vite": "^8.1.4"
   }
 }

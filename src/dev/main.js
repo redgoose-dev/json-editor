@@ -64,10 +64,15 @@ function initMenu()
   $(gnb).find('button').on('click', onClickMenu)
 }
 
+/**
+ * init json editor
+ */
 function initJsonEditor()
 {
   editor.addEventListener('update', onUpdateJsonEditor)
-  randomReplaceSampleItem()
+  jsonEditor.replace(samples[0], {
+    openDepth: 2,
+  }, true)
 }
 
 function onClickMenu(e)

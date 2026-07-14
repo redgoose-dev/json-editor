@@ -1,6 +1,6 @@
 import $ from 'cash-dom'
 import Context from './context.js'
-import { getTypeName, checkData, getCountProperty, checkFontShortcut, selectText, pastePlainText } from './libs/util.js'
+import { getTypeName, checkData, getCountProperty, checkFontShortcut, selectText, pastePlainText, stringToPlainText } from './libs/util.js'
 import { defaultOptions, defaultAddNodeOptions, TYPES, DRAG_EVENT, DRAG_HOVER_NODE_CLASS, CONTEXT_EVENT } from './libs/assets.js'
 import { iconSort, iconFold, iconType } from './assets/icons.js'
 import lang from './libs/lang.js'
@@ -141,7 +141,7 @@ class JsonEditorCore {
       switch (type)
       {
         case TYPES.STRING:
-          $value.html(`<div contenteditable="true" data-placeholder="empty" class="label-field type-string">${String(value)}</div>`)
+          $value.html(`<div contenteditable="true" data-placeholder="empty" class="label-field type-string">${stringToPlainText(value)}</div>`)
           break
         case TYPES.NUMBER:
           newValue = Number(value)
